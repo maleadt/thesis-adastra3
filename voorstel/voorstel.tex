@@ -1,0 +1,130 @@
+%
+% Configuratie
+%
+
+% Preambule met standaardinstellingen
+\documentclass[a4paper,oneside,11pt,final]{memoir}
+
+% Noot: zorg ervoor dat Nederlandse woord-splitsing geactiveerd is.
+\usepackage[dutch]{babel}
+
+% UTF8 gebruiken voor gebruik van alle symbolen
+\usepackage[utf8]{inputenc}
+
+% Noot: je kan het graphicxpakket een optie dvips of pdftex doorgeven
+% in dat geval moet je ze ook aan iiiscriptie doorgeven, dus bijvoorbeeld
+% \usepackage[dvips]{graphicx}
+% \usepackage[dvips]{iiiscriptie}
+\usepackage{graphicx}
+\usepackage{iiiscriptie}
+
+% Tabellen eleganter maken
+\usepackage{booktabs}
+
+% Navigeerbaarheid van hyperlinks in PDF
+\usepackage{hyperref}
+
+% Extra functies
+\input{functies.tex}
+
+
+%
+% Titelpagina
+%
+
+% Invullen velden
+\departement{Departement Toegepaste Ingenieurswetenschappen}
+\deptadres{Schoonmeersstraat 52 - 9000 Gent}
+\studiejaar{3e Bachelor Informatica}
+\soortrapport{Voorstel Masterproef Informatica}
+\title{Ontwikkeling van een museum kiosk}
+\author{Tim BESARD}
+
+% Pagina maken
+\begin{document}
+\maketitle
+\pagenumbering{roman}
+%\tableofcontents
+\pagenumbering{arabic}
+
+
+%
+% Inhoud
+%
+
+\chapter{Voorstelling onderwerp}
+
+\section{Informatie over het bedrijf}
+
+Het is de eerste keer dat er in samenwerking met dit bedrijf een masterproef gerealiseerd wordt.
+
+\begin{tabular}{| l c |}
+  \hline
+  \textbf{Naam van het bedrijf} & Volkssterrenwacht MIRA vzw \\
+  \textbf{Adres} & Abdijstraat 22, 1850 Grimbergen \\
+  \textbf{Telefoonnummer} & 02/269.12.80 \\
+  \textbf{Externe promotor} & Philippe Mollet \\
+  \textbf{Email-adres externe promotor} & \makeurl{philippe@mira.be}{mailto:philippe@mira.be} \\
+  \hline
+\end{tabular}
+
+\paragraph{Begeleiding} Voor inhoudelijke begeleiding kan de student steeds contact opnemen met Philippe Mollet, alsook is er een netwerkspecialist in het bedrijf aanwezig die kan zorgen voor de nodige technische begeleiding.
+
+
+\section{Doelstelling van het project}
+
+Het vervangen van een gedateerde kiosk-infrastructuur door een flexibel en toekomstgericht informatica-systeem.
+
+
+\section{Bestaande situatie en probleemstelling}
+
+Momenteel bestaan de interactieve kiosken in het museum uit een DVD-speler waarbij bepaalde knoppen van de afstandsbediening verbonden zijn met knoppen die de bezoeker kan indrukken. De presentatie is dan ontworpen als een DVD video, waarbij het ``menu'' dat zorgt voor de nodige interactiviteit. Hoewel dit werkt, kent dit systeem verschillende tekortkomingen:
+\begin{enumerate}
+\item \textbf{Duurzaamheid}: DVD-spelers die continu draaien verslijten snel, en bij het aanschaffen van nieuwe spelers moet er steeds op gelet worden dat het model compatibel is met de gebruikte afstandsbediening.
+\item \textbf{Deployment}: het aanpassen van een presentatie vereist veel werk, er moet steeds een nieuwe DVD aangemaakt en de kiosk moet geopend worden om de presentatie te vervangen.
+\item \textbf{Beperkte presentatiemogelijkheden}: aangezien de interactie volledig gerealiseerd wordt via de menu's van de DVD, zijn de mogelijkheden ervan sterk beperkt.
+\end{enumerate}
+
+Door de infrastructuur te informatiseren, kunnen deze problemen opgelost worden.
+
+
+\section{Technologieën die aan bod komen}
+
+\subsection{HTML en Javascript}
+
+Hierin worden de presentaties gemaakt die op de kiosken zullen afgespeeld worden. De krachtige combinatie van twee relatief eenvoudige bouwstenen houdt de drempel laag om later de presentaties aan te passen.
+
+Weergeven van de presentaties kan vervolgens gerealiseerd worden met bestaande rendering engines, zoals Webkit of Gecko.
+
+\subsection{Inladen van presentaties}
+
+De manier waarop presentaties moeten ingeladen worden, ligt nog niet vast. De keuze zal moeten gemaakt worden gebaseerd op de beschikbare netwerkinfrastructuur, alsook de grootte van de uiteindelijke presentaties. De beslissing kent echter verschillende implicaties:
+
+\paragraph{Over het netwerk} Indien het aanwezige netwerk performant genoeg blijkt te zijn om de presentaties over het netwerk op te halen, is er nood aan een centrale server waardoor het beheer van de kiosken vermoedelijk centraal zal georganiseerd worden. Ook loont het dan de moeite om de onderzoeken in welke mate ook het besturingssysteem over het netwerk kan ingeladen worden, waardoor de kiosken niet langer moeten voorzien worden van een harde schijf.
+
+\paragraph{Lokaal} Indien het netwerk niet voldoet of de presentaties te groot blijken te zijn, zal er lokale dataopslag nodig zijn als cache. Dergelijke opslag kan gerealiseerd worden met een normale harde-schijf, maar er kan ook gekeken worden naar energiezuinige solid-state dataopslag.
+Hierdoor is het ook niet langer interessant om het besturingssysteem op afstand in te laten (zie later), en zal het beheer bij gebrek aan centrale server wellicht gedistribueerd verlopen.
+
+\subsection{Deployment en beheer}
+
+Het moet ten alle tijde eenvoudig zijn voor medewerkers binnen het bedrijf om een presentatie aan te passen of bij te werken, alsook kiosken te beheren. Hiervoor wordt voorzien in een gebruiksvriendelijke applicatie, waarvan het nog niet vast ligt of die op een centrale server zal draaien of eerder op een meer gedistribueerde manier zal verlopen:
+
+\paragraph{Centraal} In het geval van een centrale server kan voorzien worden in een webinterface die toelaat kiosken te beheren, alsook presentaties te maken of wijzigen.
+
+\paragraph{Gedistribueerd} Hierbij kan een applicatie op een willekeurige computer via een ZeroConf-achtige technologie kiosken detecteren, alsook die contacteren om wijzigingen door te voeren.
+
+\subsection{Gebruikersinteractie}
+
+Om tenslotte de gebruiker toe te laten de presentatie te sturen (of andere interactiviteit te controleren) moet voorzien worden in een bepaalde vorm van bediening. Hoewel veel museumkiosken daarvoor een volledig toetsenbord inbouwen, voorzien de huidige kiosken in 4 grote knoppen (start, stop, naar boven, naar beneden) die het geheel gebruiksvriendelijker houden.
+
+Deze knoppen zullen moeten kunnen uitgelezen worden binnen de software, wat op verschillende manieren kan gerealiseerd worden (seriële poort, parallelle poort, USB, ...) waarbij de afweging nog moet gemaakt worden welke oplossing de beste is binnen de huidige context. Hoewel een oplossing die gebruik maakt van de seriële of parallelle poort heel eenvoudig kan gerealiseerd worden (quasi rechtstreekse verbinding van de schakelaars met poortpinnen), is dit niet toekomstgericht daar veel thinclients nu reeds zonder de desbetreffende poorten geleverd worden. In het geval van een aansluiting via USB is een hulpcircuit nodig dat de standen van de schakelaars omzet in een datastroom die de computer kan verwerken (iets dat eenvoudig een goedkoop kan gebeuren met behulp van een minimale microprocessor).
+
+
+\section{Mogelijke uitbreidingen en opties}
+
+\paragraph{Remote besturingssysteem} Om de hardware binnen kiosken goedkoop en energiezuinig te houden, kan het besturingssysteem zich bevinden op een externe server, waarbij de kiosken vervolgens de benodigde bestanden over het netwerk laden vooraleer op te starten. In geval van een bekabelde netwerkverbinding kan dit gerealiseerd worden via PXE booting, terwijl een draadloze verbinding een complexer systeem zal vereisen. Deze uitbreiding is natuurlijk enkel mogelijk indien een centrale server beschikbaar is.
+
+\paragraph{Herbruikbare kiosk-software} Door de kiosk-software (met of zonder servercomponent) modulair te ontwerpen, kan die eventueel een nut hebben voor andere bedrijven met vergelijkbare doelstellingen. Dit vereist wel dat de componenten specifiek aan de huidige situatie (bijvoorbeeld de bedieningsknoppen) geen basiscomponent zijn van de software, maar eerder dynamisch ingeladen en geconfigureerd worden. Dit kan gerealiseerd worden met een plugins, die eventueel toegankelijk kunnen gehouden worden via een scripttaal zoals Lua.
+
+
+\end{document}

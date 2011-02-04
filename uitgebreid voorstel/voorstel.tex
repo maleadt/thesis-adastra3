@@ -1,0 +1,254 @@
+%
+% Configuratie
+%
+
+% Preambule met standaardinstellingen
+\documentclass[a4paper,oneside,11pt,final]{memoir}
+
+% Noot: zorg ervoor dat Nederlandse woord-splitsing geactiveerd is.
+\usepackage[dutch]{babel}
+
+% UTF8 gebruiken voor gebruik van alle symbolen
+\usepackage[utf8]{inputenc}
+\usepackage{eurosym}
+
+% Noot: je kan het graphicxpakket een optie dvips of pdftex doorgeven
+% in dat geval moet je ze ook aan iiiscriptie doorgeven, dus bijvoorbeeld
+% \usepackage[dvips]{graphicx}
+% \usepackage[dvips]{iiiscriptie}
+\usepackage{graphicx}
+\usepackage{iiiscriptie}
+
+% Tabellen eleganter maken
+\usepackage{booktabs}
+
+% Navigeerbaarheid van hyperlinks in PDF
+\usepackage{hyperref}
+
+% Extra functies
+\input{functies.tex}
+
+
+%
+% Titelpagina
+%
+
+% Invullen velden
+\departement{Departement Toegepaste Ingenieurswetenschappen}
+\deptadres{Schoonmeersstraat 52 - 9000 Gent}
+\studiejaar{1e Master Informatica}
+\soortrapport{Uitgebreid voorstel Masterproef Informatica}
+\title{Ontwikkeling van een museum kiosk}
+\author{Tim BESARD}
+
+% Pagina maken
+\begin{document}
+\maketitle
+\pagenumbering{roman}
+%\tableofcontents
+\pagenumbering{arabic}
+
+
+%
+% Inhoud
+%
+
+\chapter{Uitgebreid voorstel}
+
+\section{Algemene informatie}
+
+\begin{tabular}{| l l |}
+	\hline
+	\textbf{Naam van het bedrijf} & Volkssterrenwacht MIRA vzw \\
+	\textbf{Externe promotor} & Philippe Mollet (philippe@mira.be) \\
+	\textbf{Interne promotor} & Leen Brouns (leen.brouns@hogent.be) \\
+	\hline
+\end{tabular}
+
+\paragraph{Begeleiding} Voor inhoudelijke begeleiding kan de student steeds contact opnemen met Philippe Mollet. Voor technische begeleiding is er een netwerkspecialist in het bedrijf aanwezig.
+
+
+\section{Doelstelling van het project}
+
+Het vervangen van een gedateerde kiosk-infrastructuur door een flexibel en toekomstgericht informatica-systeem.
+
+
+\section{Bestaande situatie en probleemstelling}
+
+Momenteel bestaan de interactieve kiosken in het museum uit een DVD-speler waarbij bepaalde knoppen van de afstandsbediening verbonden zijn met knoppen die de bezoeker kan indrukken. De presentatie is dan ontworpen als een DVD video, waarbij het ``menu'' zorgt voor de nodige interactiviteit. Hoewel dit werkt, kent dit systeem de volgende tekortkomingen:
+\begin{enumerate}
+\item \textbf{Duurzaamheid}: DVD-spelers die continu draaien verslijten snel, en bij het aanschaffen van nieuwe spelers moet er steeds op gelet worden dat het model compatibel is met de gebruikte afstandsbediening.
+\item \textbf{Deployment}: het aanpassen van een presentatie vereist veel werk, aangezien er steeds een nieuwe DVD moet aangemaakt worden. Deze drempel bleek zodanig hoog te zijn dat in de huidige opzet na de initiële versie geen enkele wijziging doorgevoerd werd.
+\item \textbf{Beperkte presentatiemogelijkheden}: aangezien de interactie volledig gerealiseerd wordt via de menu's van de DVD, zijn de mogelijkheden ervan sterk beperkt.
+\end{enumerate}
+
+Door informatisering van de infrastructuur kunnen deze problemen opgelost worden.
+
+\section{Gedetailleerde omschrijving}
+
+Het grote probleem nu is de levensduur van de kiosk-hardware. Om deze te verlengen, zullen we de DVD-spelers vervangen door een compacte computer. Deze zal, om snel verslijtende hardeschijven te vermijden, de presentaties via het netwerk inladen van een centrale server, terwijl het lokaal besturingssysteem zich op goedkope alleen-lezen media zonder bewegende componenten bevindt.
+
+De centrale server staat niet enkel in voor het hosten van presentaties, maar voorziet ook in een beheerinterface die bovendien de toestand van de kiosken in de gaten houdt en eventuele problemen direct meldt aan een beheerder. Het nadeel van een dergelijke opstelling is dat alles berust op deze centrale server. Daarom dient de server redundant opgesteld zijn, of moet er voorzien worden in een secundaire server (zie \emph{mogelijke uitbreidingen}).
+
+De software van deze servers interageert met te ontwerpen software op de kiosken, die tevens instaat voor weergave van presentaties alsook verwerking van gebruikersinput. Die input wordt niet gerealiseerd via een standaard toetsenbord, maar via 4 eenvoudige knoppen die momenteel reeds in de kasten van de kiosken ingebouwd zijn. Om deze te kunnen gebruiken moet een compacte chip ontworpen worden die impulsen van deze knoppen kan ingeven in het systeem om tenslotte een impact te hebben op de weergave van presentaties.
+
+Ook zullen de presentaties vervangen worden door een flexibel en toekomstgericht formaat. Toch is het niet de bedoeling (en ook niet mogelijk) om binnen het tijdsbestek van dit eindwerk alle huidige presentaties te converteren naar het nieuwe formaat. Om toch de mogelijkheden ervan te demonstreren, zal voorzien worden in een enkele \emph{proof of concept}-kiosk waarop een speciaal hiervoor ontworpen presentatie de mogelijkheden van het formaat zal aanschouwelijk maken.
+
+
+\section{Op te lossen problemen}
+
+Bij verschillende van de volgende probleembeschrijvingen wordt gesteld dat de kostprijs moet geminimaliseerd worden. Dit omdat het ter beschikking gestelde budget sterk beperkt is: slechts \euro 2500. Hoewel enige flexibiliteit mogelijk is, wordt er verwacht dat hiermee de infrastructuur voor 10 kiosken gerealiseerd wordt.
+
+\subsection{Formaat van presentaties}
+
+Er moet exact bepaald worden wat het beste formaat is voor toekomstige presentaties, waarbij de volgende eisen gesteld worden:
+\begin{itemize}
+	\item Backwards compatibel, opdat de huidige presentaties niet allemaal hermaakt moeten worden.
+	\item Compact, aangezien alles over het netwerk moet kunnen ingeladen worden.
+	\item Niet veeleisend, zodat de kiosken met beperkte hardware kunnen uitgerust worden.
+	\item Flexibel, om een designer toe te laten rijke presentaties te ontwerpen.
+\end{itemize}
+
+\subsection{Samenstellen van kiosken}
+
+De kiosk staat in voor verschillende zaken:
+\begin{itemize}
+	\item Weergave.
+	\item Interactie, input en verwerking van eventuele gebruikersinput.
+	\item Distributie, nieuwe presentaties moeten volautomatisch kunnen gedistribueerd worden.
+	\item Beheer, waarbij een beheerprotocol voorzien wordt dat vervolgens aangesproken wordt door een externe beheerinterface.
+\end{itemize}
+
+\paragraph{Hardware} Er moet hardware aangekocht worden die de taken toegeschreven aan de kiosken goed kan uitvoeren. Hierbij moet rekening gehouden worden met een aantal noden:
+\begin{itemize}
+	\item Goedkoop, gezien het beperkt budget mag de hardware niet te veel kosten.
+	\item Energie-vriendelijk, met minimaal 10 kiosken simultaan actief tijdens de werkuren moet het toestel energie-vriendelijk zijn.
+	\item Voldoende performant, zodat het gekozen formaat voor de presentaties adequaat kan weergegeven worden.
+	\item Duurzaam, aangezien de toestellen afgeschreven worden op meerdere jaren.
+	\item Stil.
+	\item Toekomstgericht, hoewel de configuratie normaal statisch zal blijven moet rekening gehouden worden met eventuele vervanging van deelcomponenten.
+\end{itemize}
+
+\paragraph{Software} Deze moet ontwikkeld worden zodat alle taken autonoom op een strikt beheerde manier kunnen gerealiseerd worden. De elementaire eisen die gesteld worden aan de software zijn als volgt:
+\begin{itemize}
+	\item Geautomatiseerd, zoveel mogelijk taken moeten volledig autonoom verlopen, zonder daarbij interventie van een beheerder te vereisen.
+	\item Gebruiksvriendelijk, in de zin dat de applicatie robuust en beveiligd moet zijn zodat een normale gebruiker enkel zicht kan hebben op de weergegeven presentaties.	
+	\item Vlot, de applicatie moet snel opstarten, geen problemen hebben met de weergave van presentaties, en direct reageren op eventuele gebruikersinput.
+\end{itemize}
+
+\subsection{Samenstellen van primaire server}
+
+De taken van de centrale server zijn als volgt:
+\begin{itemize}
+	\item Hosten van presentaties.
+	\item Monitoren van de kiosken.
+	\item Aanbieden van beheerinterface.
+	\item Voorzien van een interface die toelaat presentaties te wijzigen.
+\end{itemize}
+
+\paragraph{Hardware} Hieromtrent worden weinig specifieke eisen gesteld:
+\begin{itemize}
+	\item Voldoende snel netwerk, om simultaan presentaties aan alle kiosken te hosten.
+	\item Gepaste opslag, waarbij vooral zal moeten gekeken worden naar parallellisme en een beperkte vorm van redundantie.
+\end{itemize}
+
+Gezien het kleine aantal kiosken zal echter de het netwerk noch de opslag beperkend zijn.
+
+\paragraph{Software} De meerderheid van de taken kan gerealiseerd worden door hergebruik van bestaande software:
+\begin{itemize}
+	\item Hosting: Apache webserver.
+	\item Monitoring: munin en monit.
+	\item Toegang om presentaties te wijzigen: SAMBA fileserver.
+\end{itemize}
+
+De beheerinterface moet wel nog zelf gemaakt worden, inhakend op het beheerprotocol van de kiosksoftware. Toch kan er misschien door een slimme keuze van dit protocol (vb. SNMP) gebruik gemaakt worden van bestaande software voor deze beheerinterface.
+
+\subsection{Ontwerpen van een input-chip}
+
+De enige taak van deze component is het registreren en doorgeven van toetsaandrukken. Daarbij worden de volgende eisen gesteld:
+\begin{itemize}
+	\item Minimale kost.
+	\item Duurzaam, de chip moet verschillende jaren meegaan alsook relatief robuust zijn. Ook moet de chip bij voorkeur gebruik maken van een moderne aansluiting (vb. USB).
+	\item Minimaal energieverbruik, zodat geen externe voeding nodigd.
+	\item Uitbreidbaar, opdat later eventueel extra knoppen kunnen verbonden worden.
+	\item Gebruiksvriendelijk, meer bepaald te gebruiken zonder extra drivers.
+	\item Minimale latentie, zodat gebruikers geïnteresseerd blijven.
+\end{itemize}
+
+
+\section{Technologieën die aan bod komen}
+
+De hieronder vermeldde technologieën zijn tentatief bepaald gebaseerd op het beperkte onderzoek van de voorbije maanden. Indien in de loop van het eindwerk een superieur alternatief opduikt, zal hier (natuurlijk beargumenteerd) voor gekozen worden.
+
+\subsection{HTML en Javascript}
+
+Hierin zullen de presentaties gemaakt worden die op de kiosken zullen afgespeeld worden. De krachtige combinatie van twee relatief eenvoudige bouwstenen houdt de drempel laag om later de presentaties aan te passen.
+
+Weergeven van de presentaties kan vervolgens gerealiseerd worden met bestaande rendering engines, zoals Webkit of Gecko.
+
+\subsection{Videocompressie}
+
+De oude presentaties zullen zo moeten verwerkt worden dat het nieuwe presentatieformaat ze ook kan weergeven. Hiervoor zal videocompressie moeten toegepast worden zodat de data over het netwerk kunnen verstuurd worden. In geval van een HTML5 presentatie zal dit bijvoorbeeld een x264 of WebM video worden.
+
+\subsection{HTTP}
+
+Om de kiosken toegang te geven tot de presentaties, zal het HTTP protocol gebruikt worden. Daardoor kunnen we bestaande server-software inzetten en bovendien de primaire server eenvoudig vervangen door de bronbestanden te repliceren en over te zetten naar een andere server.
+
+\subsection{Qt}
+
+De kiosk-applicatie zal geschreven worden in het platform-onafhankelijke Qt framework. Deze biedt tevens ondersteuning voor Webkit (via QtWebkit).
+
+\subsection{Linux (e.d.)}
+
+Het besturingssysteem op zowel de kiosken als de servers zal wellicht gebaseerd zijn op de Linux kernel en compatibele userland-applicaties. In geval van de servers zal dit een stabiele serverdistributie (zoals Debian) worden, terwijl in geval van de kiosken nog manueel een distributie zal moeten samengesteld worden.
+
+\subsection{AVR microcontroller}
+
+De input-chip zal gestuurd worden door een AVR microcontroller (zoals een ATtiny), met de firmware in C geschreven.
+
+\subsection{USB en V-USB}
+
+De input-chip zal via USB communiceren met de kiosken, omdat dit een alomtegenwoordige aansluitingsmogelijkheid is en dit wellicht nog verschillende jaren zo zal blijven. Hierdoor blijft het systeem flexibel, en kan de overige hardware gemakkelijk vervangen worden zonder ook de inputchip te moeten vernieuwen.
+
+Om de chip zo goedkoop mogelijk te houden zal wellicht geen gebruik gemaakt worden van een speciale USB-chip, maar eerder van een software matige oplossing zoals V-USB. Dit voor AVR microcontrollers ontworpen framework biedt mogelijkheden om zonder extra componenten USB datagrammen aan te maken.
+
+\subsection{Andere}
+
+\paragraph{Beheer} Hoe de beheerinterface zal gerealiseerd worden, is nog niet duidelijk. Als die zelf geschreven moet worden, zal wellicht gebruik gemaakt worden van een Java-based applicatie, draaiende op Tomcat, die via een nog vast te leggen beheerprotocol met de kiosken communiceert.
+
+
+\section{Mogelijke uitbreidingen en opties}
+
+\paragraph{Distributie kiosk-software} Om het mogelijk te maken op een flexibele manier upgrades aan het besturingssysteem door te voeren, kan eventueel voorzien worden in software-upgrade functionaliteit binnen de kiosk-software. Dit kan misschien doorgedreven worden zodat het besturingssysteem zich volledig op de server bevindt, via technologieën zoals PXE.
+
+\paragraph{Herbruikbare kiosk-software} Door de kiosk-software (met of zonder servercomponent) modulair te ontwerpen, kan die eventueel een nut hebben voor andere bedrijven met vergelijkbare doelstellingen. Dit vereist wel dat de componenten specifiek aan de huidige situatie (bijvoorbeeld de bediening) geen basiscomponent zijn van de software, maar eerder dynamisch ingeladen en geconfigureerd worden. Dit kan gerealiseerd worden met plugins, die eventueel toegankelijk kunnen gehouden worden via een scripttaal zoals Lua.
+
+\paragraph{Redundantie via een secundaire server} Omdat het budget niet toelaat een hoogwaardige server met redundante hardware samen te stellen, kan om uitval te reduceren voorzien worden in een goedkope secundaire server, die de primaire server monitort en in geval van een defect diens taken tijdelijk kan overnemen, desnoods op een beperkte manier (geen beheerinterface, read-only presentaties, etc).
+
+
+\section{Vernieuwende aspecten}
+
+In het eindwerk worden verschillende technieken en methodes toegepast die niet aan bod komen tijdens de opleiding. Zo is er:
+\begin{itemize}
+\item Gebruik van streaming video via HTML5.
+\item Het Qt framework.
+\item AVR microcontrollers.
+\item Communicatie over USB en het V-USB framework.
+\item Monitoring van hard- en software.
+\item Samenstellen van een minimale Linux distributie.
+\end{itemize}
+
+
+\section{Overzicht items scriptietekst}
+
+\begin{itemize}
+\item Afweging van de verschillende presentatieformaten en videocompressies.
+\item Selectie van de kiosk- en serverhardware.
+\item Vergelijken van verschillende protocollen ter overdracht van de presentaties.
+\item Bespreking van bestaande beheerprotocollen, en eventueel het ontwerp van een alternatief.
+\item Ontwerp en implementatie van de kiosk-software, zowel het besturingssysteem als de applicatie.
+\item Ontwerp en realisatie van de input-chip.
+\end{itemize}
+
+
+\end{document}
