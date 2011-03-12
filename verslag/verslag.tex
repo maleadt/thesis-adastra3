@@ -1,0 +1,59 @@
+%
+% Configuratie
+%
+
+% Preambule met standaardinstellingen
+\documentclass[a4paper,oneside,11pt,final]{memoir}
+
+% Noot: zorg ervoor dat Nederlandse woord-splitsing geactiveerd is.
+\usepackage[dutch]{babel}
+
+% UTF8 gebruiken voor gebruik van alle symbolen
+\usepackage[utf8]{inputenc}
+\usepackage{eurosym}
+
+% Noot: je kan het graphicxpakket een optie dvips of pdftex doorgeven
+% in dat geval moet je ze ook aan iiiscriptie doorgeven, dus bijvoorbeeld
+% \usepackage[dvips]{graphicx}
+% \usepackage[dvips]{iiiscriptie}
+\usepackage{graphicx}
+\usepackage{iiiscriptie}
+
+% Tabellen eleganter maken
+\usepackage{booktabs}
+
+% Navigeerbaarheid van hyperlinks in PDF
+\usepackage{hyperref}
+
+% Extra functies
+\input{functies.tex}
+
+
+%
+% Titelpagina
+%
+
+% Invullen velden
+\departement{Departement Toegepaste Ingenieurswetenschappen}
+\deptadres{Schoonmeersstraat 52 - 9000 Gent}
+\studiejaar{1e Master Informatica}
+\soortrapport{Scriptie voorgelegd tot het behalen van de titel van Master in de Toegepaste Ingenieurswetenschappen}
+\title{Ontwikkeling van een museum kiosk}
+\author{Tim BESARD}
+
+
+%
+% Inhoud
+%
+
+\begin{document}
+
+\input{1_algemeen.tex}
+
+\input{2_introductie.tex}
+\input{3_ontwerp.tex}
+\input{4_server.tex}
+\input{5_kiosk.tex}
+\input{6_invoering.tex}
+
+\end{document}
