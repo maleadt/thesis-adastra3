@@ -30,7 +30,7 @@
 #
 fileinfo	:= LaTeX Makefile
 author		:= Chris Monson
-version		:= 2.2.0-rc11
+version		:= 2.2.0-rc10
 #
 # Note that the user-global version is imported *after* the source directory,
 # so that you can use stuff like ?= to get proper override behavior.
@@ -106,9 +106,6 @@ export LC_ALL		?= C
 #
 #
 # CHANGES:
-# Chris Monson (2011-03-03):
-# * Bumped version to 2.2.0-rc11
-# * Issue 112: Fixed regression introduced by use of cygpath (ugly warnings)
 # Chris Monson (2011-02-03):
 # * Bumped version to 2.2.0-rc10
 # * Issue 112: Added path normalization for cygwin systems
@@ -693,7 +690,7 @@ VIEW_GRAPHICS	?= display
 
 # If cygpath is present, then we create a path-norm function that uses it,
 # otherwise the function is just a no-op.  Issue 112 has details.
-USE_CYGPATH := $(if $(shell $(WHICH) $(CYGPATH) >/dev/null 2>&1),yes,)
+USE_CYGPATH := $(if $(shell $(WHICH) $(CYGPATH)),yes,)
 
 # $(call get-cygpath,<path>)
 define get-cygpath

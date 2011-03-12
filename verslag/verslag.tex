@@ -12,26 +12,18 @@
 \usepackage[utf8]{inputenc}
 \usepackage{eurosym}
 
+% Noot: je kan het graphicxpakket een optie dvips of pdftex doorgeven
+% in dat geval moet je ze ook aan iiiscriptie doorgeven, dus bijvoorbeeld
+% \usepackage[dvips]{graphicx}
+% \usepackage[dvips]{iiiscriptie}
+\usepackage{graphicx}
+\usepackage{iiiscriptie}
+
 % Tabellen eleganter maken
 \usepackage{booktabs}
 
 % Navigeerbaarheid van hyperlinks in PDF
 \usepackage{hyperref}
-
-% Emp voor MetaUML
-\usepackage{emp}
-\ifx\pdftexversion\undefined
-\usepackage[dvips]{graphicx}
-\usepackage[dvips]{iiiscriptie}
-\else
-\usepackage[pdftex]{graphicx}
-\usepackage[pdftex]{iiiscriptie}
-\DeclareGraphicsRule{*}{mps}{*}{}
-\fi
-
-% Noot: je kan het graphicxpakket een optie dvips of pdftex doorgeven
-% in dat geval moet je ze ook aan iiiscriptie doorgeven, dus bijvoorbeeld
-\usepackage{iiiscriptie}
 
 % Extra functies
 \input{functies.tex}
@@ -55,10 +47,6 @@
 %
 
 \begin{document}
-\begin{empfile}
-\begin{empcmds}
-input metauml;
-\end{empcmds}
 
 \input{1_algemeen.tex}
 
@@ -68,5 +56,4 @@ input metauml;
 \input{5_kiosk.tex}
 \input{6_invoering.tex}
 
-\end{empfile}
 \end{document}
