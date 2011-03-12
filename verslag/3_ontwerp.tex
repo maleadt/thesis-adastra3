@@ -8,12 +8,16 @@
 \chapter{Systeemmodel}
 \label{chap:systeemmodel}
 
-De eerste stap van het ontwerp was de identificatie van de verschillende deelsystemen. Hiertoe hebben we eerst gekeken naar de verschillende taken die het systeem als een geheel moet vervullen. Zo zijn er natuurlijk de kiosken, die instaan voor het weergeven van de presentaties, en het verwerken van gebruikersinput. Om het systeem flexibel te houden, zullen we de kiosken zo inrichten dat zowel de configuratie als de weer te geven presentaties zich niet op voorhand op de kiosk bevinden, maar van een centrale server gehaald worden. Diezelfde centrale server kan dan ook voorzien in een beheersinterface, waarbij de status van de verschillende kiosken gevisualiseerd wordt, en de administrator eventueel bepaalde acties kan ondernemen.
+De eerste stap van het ontwerp was de identificatie van de verschillende deelsystemen, en op welke toestellen die te vinden zijn. Hiertoe hebben we eerst gekeken naar de verschillende taken die het systeem als een geheel moet vervullen. Zo zijn er natuurlijk de kiosken, die instaan voor het weergeven van de presentaties, en het verwerken van gebruikersinput. Om het systeem flexibel te houden, zullen we de kiosken zo inrichten dat zowel de configuratie als de weer te geven presentaties zich niet op voorhand op de kiosk bevinden, maar van een centrale server gehaald worden. Diezelfde centrale server kan dan ook voorzien in een beheersinterface, waarbij de status van de verschillende kiosken gevisualiseerd wordt, en de administrator eventueel bepaalde acties kan ondernemen. Al deze functionaliteit zullen we bundelen binnen het specifiek hiervoor ontworpen applicatie-raamwerk, waarvoor we ook een communicatieprotocol zullen voor moeten definiëren
+
+Het is voor de administrator echter ook belangrijk om zicht te hebben op de status van de overige componenten van de kiosk, zoals het besturingssysteem, of de hardware. Omdat er voor dit vrij generiek probleem al verschillende bestaande oplossingen zijn, zullen we dit beschouwen als een apart deelsysteem, los van de hierboven omschreven applicatieraamwerk.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{diagrammen/ontplooiingsdiagram}
 	\caption{Ontplooiingsdiagram}
 \end{figure}
+
+In de volgende hoofdstukken zullen we nu elk van deze deelsystemen, en al wat daar bij hoort, tot in details uitwerken.
 
 %
 % Applicatie
@@ -21,6 +25,22 @@ De eerste stap van het ontwerp was de identificatie van de verschillende deelsys
 
 \chapter{Applicatie}
 \label{chap:applicatie}
+
+\section{Taken}
+
+\section{Voorstellingen}
+
+\section{Applicatieprotocol}
+
+\subsection{Service discovery}
+
+\subsection{Data uitwisseling}
+
+\subsection{Remote procedure}
+
+\section{Server}
+
+\section{Kiosk}
 
 
 %
