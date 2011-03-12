@@ -1,0 +1,9 @@
+VUSB heeft een aantal minimumvereisten
+- 256kb RAM
+- 1.5 KB flash
+Het minimum hiervoor is een processor uit de AtTiny4x reeks.
+
+Normaal is er nood aan een externe oscillator, maar vUSB kan gebruik maken
+van bepaalde interne oscillatoren, zoals bij de AtTiny54-20P
+http://www.obdev.at/products/vusb/easylogger.html
+Hierdoor komen er extra IO pinnen vrij.

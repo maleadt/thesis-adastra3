@@ -1,0 +1,33 @@
+1) Formatteren
+--------------
+
+omap3-mkcard.sh script op /dev/sdx of /dev/mmcblkn
+
+
+
+2) Opstartbestanden
+------------------
+
+a) MLO
+MLO
+Van http://www.angstrom-distribution.org/demo/beagleboard/ (of het common mapje hier)
+moet als eerste file op de partitie (eerste sectoren)
+
+
+b) uBoot
+uBoot.bin
+
+die van BeagleBoard werken NIET. originals nodig, daar werkt de uboot bootargs voor boot van mmc
+http://labs.igep.es/index.php/The_bootloader_U-Boot
+
+
+c) Kernel
+uImage
+
+Uit de image /boot folder
+
+
+
+3) Image
+--------
+

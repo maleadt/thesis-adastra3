@@ -1,0 +1,7 @@
+doel: impressie van een desktop applicatie, zonder teveel te moeten configureren.
+dus geen html, maar iets met widgets.
+
+gekozen voor vaadin: eenvoudig te integreren als servlet.
+
+ondersteunt plugins
+http://vaadin.com/directory#addon/vaadin-timeline timeline van de bekeken dingen enzo

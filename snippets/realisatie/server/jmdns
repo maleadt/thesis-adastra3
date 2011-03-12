@@ -1,0 +1,23 @@
+jmdns niet zo stabiel, robuuster en veiliger maken door alle event handlers
+te synchroniseren.
+
+gedrag niet zo heel duidelijk, vb added maar 1 keer voor een nieuwe service,
+ vervolgens ook na removal enkel een nieuwe resolved. eigenlijk wel hanndig voor
+ de state, die zo echt wel niet moet bewaard worden.
+
+
+een native avahi-binding zou eigenlijk interessanter zijn (iets meer features),
+maar goed uiteindelijk moet avahi ook maar gewoon mDNS implementeren, en maakt
+de java-only JmDNS implementatie het geheel cross-platform. het zou mogelijk zijn
+om avahi te gebruiken (zonder de Java bindings die momenteel niet bestaan) door
+gebruik te maken van de avahi Dbus interface. Hierdoor wordt avahi natively, en
+relatief eenvoudig ondersteund, maar is het geheel min of meer gebonden aan linux
+of bsd systemen.
+
+testen van de mdns service doe ik met avahi-publish enzo, aangezien dat ook
+de technologie zal zijn (niet mdns dus, maar de avahi mdns implementatie) die
+vanuit qt voor de kiosken zal gebruikt worden. blijkt relatief goed te werken,
+los van soms heel lange delaye (> 5 sec). na synchronisatie van methoden en manueel
+opvragen van resolve informatie lijken de meeste problemen weggewerkt, los van
+een warning in het begein die klaagt over het resolven van een niet geresolvde
+service...

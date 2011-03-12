@@ -1,0 +1,17 @@
+verschillende opties om de applicatie en de interface te mengen
+
+1) applicatie als thread binnen tomcat draaien
+niet proper, plus onderhevig aan retricties die tomcat oplegt
+
+2) twee aparte eenheden (verschillende JVM) met RMI oid
+teveel werk, delen van de staat-objecten zou handiger zijn
+
+3) embedded servlet engine, zelf opstarten
+handig, maar we missen de deployment features die ide's bieden
+-> daarom: maven (zie ander doc)
+
+
+welke servlet engine?
+jetty: eenvoudig te deployen, maar verschillende jvm per webapp => rmi ofzo vereist
+tomcat: 1 jvm, maar relatief moeilijk embedded te gebrtuiken
+maar vanaf versie 7: eenvoudiger om embedded toe te passen

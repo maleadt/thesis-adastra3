@@ -1,0 +1,79 @@
+1) Distributie?
+
+Linaro: http://labs.igep.es/index.php/How_to_get_the_Linaro_distribution
+Gefound door consortium van fabrikanten, relatief nieuw. geoptimaliseerd voor
+ARM cpu & TI omap.
+
+Ångström: http://labs.igep.es/index.php/How_to_get_the_Angstrom_distribution
+Resultaat van samensmelting van verschillende OSS projecten.
+
+
+Linaro lijkt makkelijker te gebruiken, daar het dichter bij de fabrikanten
+staat en meer essentiele hardwarecomponenten in de repositories heeft.
+
+Anderzijds biedt Angstrom meer mogelijkheden om het resultaat te customizen.
+Ook kan de SDK volledig uit de image weggelaten worden: ideaal voor het
+eindproduct.
+
+Als het mogelijk is om van een bepaalde configuratie snel zowel een dev als
+release image te genereren, is dit ideaal: snel ontwikkelen + configuratie
+tweaken, en finaal een release image genereren zonder enige SDK.
+Indien dit niet lukt, blijft de SDK toch op het device, en kan er er even goed
+voor Linaro gekozen worden.
+
+
+2) SGX acceleratie
+
+Beagleboard/IGEPv2 instructies relatief uitwisselbaar, daar ze beide praten over
+SGX op de OMAP35xx chip, die in beide boardjes te vinden is.
+
+
+Linaro: http://labs.igep.es/index.php/How_to_get_the_Linaro_distribution#SGX_Acceleration_.5BEXPERIMENTAL.21.5D
+Ångström: http://code.google.com/p/beagleboard/wiki/HowtoUseSGXunderAngstrom
+
+Lijkt veel makkelijker te zijn met Linaro: directe integratie via pakket
+uit de repo's
+
+Angstrom biedt echter ook een "recipe" voor Qt/e + sgx
+
+
+
+3) Qt
+
+-> SGX
+-> QWS ipv X11
+http://labs.qt.nokia.com/2009/11/20/building-qt-to-make-use-of-the-beagle-boards-sgx-gpu/
+
+Uiteindelijk is het misschien niet zo nuttig om QWS te gebruiken. Er is toch
+flash genoeg en maakt het proces enkel gecompliceerder. Ook blijkt het OpenGL
+graphicssystem niet te werken onder QWS (QGLWidget nodig) wat acceleratie van
+QtWebkit misschien ook ongedaan zou kunnen maken:
+<<<<<
+http://labs.qt.nokia.com/2009/11/20/building-qt-to-make-use-of-the-beagle-boards-sgx-gpu/#comment-5986
+I’m fairly sure “-graphicssystem opengl” will only work on the Qt/X11 flavor. To use the SGX for painting under Qt/Embedded (where -graphicssystem opengl has no effect), you must use QGLWidget: Either inherit from QGLWidget (rather than QWidget) or, if using graphics view, set a QGLWidget as the viewport. Of course you’ll always be using the SGX when rendering into a QGLFramebufferObject or QGLPixelBuffer (if supported?) too.
+>>>>>
+
+Anderzijds lijkt QWS toch minder overhead te kennen:
+<<<<<
+http://labs.qt.nokia.com/2009/11/20/building-qt-to-make-use-of-the-beagle-boards-sgx-gpu/#comment-5987
+Qt with OpenGL for embedded and for X11 should be different. In Qt/Embedded, Qt with OpenGL talks to GPU accelerated openGL lib while in X11, Qt either talks to GLX, which passes OpenGL commands to X server, or talks to DRI (I think in this case the former applies). In either case, a GPU accelerated X/DRI driver is needed besides a OpenGL lib in Qt/Embedded case, however, in GLX case, the rendering happens in Xserver.
+Because of GLX/DRI, overhead is added, and this can explain performance loss in Qt/X11 with OpenGL.
+>>>>>
+Zie echter ook comment 10 en 11: die indirectie+overhead is er enkel voor standaard OpenGL drivers, in geval van IGEPv2/Beagleboard wordt er toch DRI-alike met de GPU gecommuniceerd.
+
+
+
+
+<<<<<
+You will get optimal mileage on your QGLWidget backed QGraphicsView with the following configuration:
+
+QGraphicsView view(&scene);
+view.setViewport(new QGLWidget());
+view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+view.setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+view.setFrameStyle(0);
+view.showFullScreen();
+
+Add content as you see fit
+>>>>>

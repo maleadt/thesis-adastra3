@@ -1,0 +1,60 @@
+Hardware + OS
+~~~~~~~~~~~~~
+
+1) Type computer
+
+- Thinclient
+  eBay, ... voor €20/€30 stuk
+  nieuw: minimum €200 (Dell)
+  http://ask.slashdot.org/story/09/12/19/237241/Where-Are-the-Cheap-Thin-Clients?from=rss
+- Embedded solution
+- Nettop: specifiek gemaakt om te kunnen surfen
+  eBay, ... meestal duurder
+  nieuw: reeds vanaf €100 te vinden
+
+
+2) Opstartprocedure
+
+- PXE boot
+- ROM op Thinclient
+- Bootstrapping (minimale kernel op ROM/CF, remote userland)
+- CF + clonezilla distributie
+
+
+3) HID
+
+- LPT/PS2/USB knoppen
+- Touchscreen
+
+
+
+Software
+~~~~~~~~
+
+1) Ontwerp van media
+
+- HTML5/SVG + Webkit/Gecko weergave
+- Powerpoint
+- Flash
+
+
+2) Distributie van media
+
+- Afspelen vanop centrale netwerklocatie
+- Inladen in RAM tijdens opstartprocedure
+- Inladen op harde schijf, enkel updaten wanneer vernieuwd
+
+
+3) Beheer
+
+- Beheersapplicatie op centrale server
+- Gedistribueerd beheer
+
+
+
+Extras
+~~~~~~
+
+- Kiosk app uitbreidbaar maken (input van keys via plugin, layout kiosk kiezen
+  via config file, etc) => volwaardig FOSS app
+

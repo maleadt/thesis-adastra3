@@ -1,0 +1,14 @@
+Issues
+
+1) docboox-xsl vereist, anders faalt compilatie
+2) http://patches.openembedded.org/patch/69/ anders laadt em lib uit host system (wel weer snel terugzetten of fontconfig compileert niet)
+3) qt4-embedded wordt gebuild, terwijl qt4-embedded-gles zou moeten gebuild worden
+   PREFERRED_PROVIDER_qt4-embedded = "qt4-embedded-gles"  in local.conf ZOU het moeten fixen
+   http://comments.gmane.org/gmane.linux.distributions.gumstix.general/53506
+   veroorzaakt failure, want non-gles in sysroot, missing headers, etc
+
+
+IN VM
+1) packaging, error met angstrom-version
+   http://www.mail-archive.com/openembedded-devel@lists.openembedded.org/msg07245.html
+2) qt...

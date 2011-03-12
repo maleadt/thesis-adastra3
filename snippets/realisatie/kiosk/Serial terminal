@@ -1,0 +1,5 @@
+Baudrate: 115200 bps
+8 bits
+No parity
+1 stop bit
+No hardware|software control flow

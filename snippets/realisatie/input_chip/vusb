@@ -1,0 +1,6 @@
+vUSB laat toe om een HID device te simuleren, waardoor de nood aan
+extra drivers volledig teniet gedaan is.
+http://www.obdev.at/products/vusb/hidkeys.html
+
+Het nadeel is dat enkel USB 1.1 ondersteund wordt (wegens beperkte transfer-
+snelheden), maar gezien de beperkte vereisten van de chip voldoet dit perfect.

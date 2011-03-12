@@ -1,0 +1,6 @@
+probleem: door gebruik tomcat embedded zijn de meeste ide's niet meer direct
+te gebruiken
+
+probleem: dependency handling
+
+oplossing: compilatie en pakket beheer via maven

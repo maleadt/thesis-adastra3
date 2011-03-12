@@ -1,0 +1,5 @@
+Qt: door gebruik te maken van GLES, wat ondersteund wordt door de GPU (omap3)
+Webkit: gebruik maken van gstreamer playback, dewelke geaccelereerd is via
+        de dsp (gstrealer-ti)
+        
+        standaard bezigt webkit phonon, manueel gstreamer kiezen dus.
