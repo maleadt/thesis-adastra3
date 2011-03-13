@@ -27,67 +27,54 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1210</x>
-      <y>340</y>
-      <w>130</w>
-      <h>40</h>
+      <x>690</x>
+      <y>440</y>
+      <w>150</w>
+      <h>140</h>
     </coordinates>
-    <panel_attributes>&lt;&lt;servlet&gt;&gt;
-Admin interface</panel_attributes>
+    <panel_attributes>ServiceDiscovery
+--
+--
+-kioskAdded()
+-kioskResolved()
+-kioskRemoved()
+-serverAdded()
+-serverResolved()
+-serverRemoved()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1210</x>
-      <y>260</y>
-      <w>130</w>
-      <h>40</h>
+      <x>270</x>
+      <y>440</y>
+      <w>270</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>&lt;&lt;servlet&gt;&gt;
-Status view</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1200</x>
-      <y>120</y>
-      <w>140</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>ServiceDiscovery</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1200</x>
-      <y>480</y>
-      <w>140</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>RepositoryMonitor</panel_attributes>
+    <panel_attributes>RepositoryMonitor
+--
+--
+-commit()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>980</x>
-      <y>90</y>
-      <w>240</w>
-      <h>70</h>
+      <x>700</x>
+      <y>360</y>
+      <w>116</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 Populate</panel_attributes>
-    <additional_attributes>30;50;220;50</additional_attributes>
+    <additional_attributes>60;30;60;80</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>200</x>
-      <y>690</y>
-      <w>330</w>
+      <x>240</x>
+      <y>580</y>
+      <w>320</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>KioskProxy
@@ -102,178 +89,170 @@ Populate</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>680</x>
-      <y>80</y>
-      <w>330</w>
-      <h>140</h>
+      <x>670</x>
+      <y>300</y>
+      <w>180</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Topology
 --
---
-+getKiosk(name: String) : Kiosk
-+getKiosks() : List&lt;Kiosk&gt;
-+getServer(name: String) : Server
-+getServers() : List&lt;Server&gt;
-+getMachines() : List&lt;Machine&gt;
---
-</panel_attributes>
++kiosks: List&lt;Kiosk&gt;
++servers: List&lt;Server&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>390</x>
-      <y>190</y>
-      <w>150</w>
-      <h>90</h>
+      <x>760</x>
+      <y>160</y>
+      <w>200</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>Kiosk
 --
---
---
-</panel_attributes>
++presentation: Presentation</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>390</x>
-      <y>60</y>
-      <w>150</w>
-      <h>90</h>
+      <x>590</x>
+      <y>160</y>
+      <w>160</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>Server
 --
---
---
+
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>90</x>
-      <y>120</y>
-      <w>150</w>
+      <x>640</x>
+      <y>20</y>
+      <w>230</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>/Machine/
 --
---
---
++name: String
++addresses: List&lt;InetAddress&gt;
++state: State
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>210</x>
+      <x>610</x>
       <y>80</y>
-      <w>200</w>
+      <w>154</w>
       <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>30;80;180;30</additional_attributes>
+    <additional_attributes>120;30;120;60;40;60;40;80</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>210</x>
-      <y>160</y>
-      <w>200</w>
-      <h>110</h>
+      <x>730</x>
+      <y>80</y>
+      <w>154</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>30;30;180;90</additional_attributes>
+    <additional_attributes>40;30;40;60;120;60;120;80</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>510</x>
-      <y>80</y>
-      <w>190</w>
-      <h>80</h>
+      <x>660</x>
+      <y>230</y>
+      <w>60</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;170;60</additional_attributes>
+    <additional_attributes>30;30;40;70</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>510</x>
-      <y>140</y>
-      <w>190</w>
-      <h>120</h>
+      <x>790</x>
+      <y>230</y>
+      <w>60</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;100;170;30</additional_attributes>
+    <additional_attributes>40;30;30;70</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>680</x>
-      <y>420</y>
-      <w>330</w>
-      <h>140</h>
+      <x>230</x>
+      <y>300</y>
+      <w>360</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>Presentations
+    <panel_attributes>Repository
 --
---
-+getPresentation(kiosk: Kiosk) : Presentation
---
-</panel_attributes>
++presentations: List&lt;Presentation&gt;
++configuration: List&lt;Config&gt;
++kiosks: Map&lt;Kiosk, Pair&lt;Presentation, Config&gt; &gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>980</x>
-      <y>450</y>
-      <w>240</w>
-      <h>70</h>
+      <x>340</x>
+      <y>360</y>
+      <w>116</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 Populate</panel_attributes>
-    <additional_attributes>30;50;220;50</additional_attributes>
+    <additional_attributes>60;30;60;80</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>380</x>
-      <y>440</y>
+      <x>420</x>
+      <y>160</y>
       <w>150</w>
-      <h>90</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>Presentation
 --
---
---
-</panel_attributes>
++id: String
++location: URI
++start: String</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>500</x>
-      <y>460</y>
-      <w>200</w>
-      <h>50</h>
+      <x>450</x>
+      <y>230</y>
+      <w>60</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;180;30</additional_attributes>
+    <additional_attributes>40;30;30;70</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>670</x>
-      <y>670</y>
-      <w>330</w>
+      <x>250</x>
+      <y>700</y>
+      <w>300</w>
       <h>140</h>
     </coordinates>
     <panel_attributes>ProxyFactory
 --
+-XmlRpcClient client
 --
 +getKioskProxy(kiosk: Kiosk) : KioskProxy
 --
@@ -283,12 +262,113 @@ Populate</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>500</x>
-      <y>710</y>
-      <w>190</w>
+      <x>370</x>
+      <y>640</y>
+      <w>50</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;60</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>490</x>
+      <y>20</y>
+      <w>120</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Machine::State
+--
+UNKNOWN
+OFFLINE
+ONLINE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>580</x>
+      <y>40</y>
+      <w>80</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;170;30</additional_attributes>
+    <additional_attributes>30;30;60;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>240</x>
+      <y>160</y>
+      <w>170</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Config
+--
++id: String
++resolution: Pair&lt;Int&gt;
++volume: Int
++base: Config</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>300</x>
+      <y>230</y>
+      <w>60</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;40;70</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>660</x>
+      <y>630</y>
+      <w>230</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>KioskConfigurator
+--
++configureKiosk(kiosk: Kiosk)
++updateKiosk(kiosk: Kiosk)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>780</x>
+      <y>550</y>
+      <w>50</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;80;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>510</x>
+      <y>450</y>
+      <w>240</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>220;180;220;150;110;150;110;30;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>530</x>
+      <y>600</y>
+      <w>150</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;70;30;70;70;130;70</additional_attributes>
   </element>
 </diagram>

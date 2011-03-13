@@ -139,8 +139,27 @@ In eerste instantie was het niet de bedoeling gebruik te maken van een derde dee
 
 Nu voorzien we echter in een apart versiebeheersysteem (Subversion), dat vaak gebruikt wordt in aaneenschakeling met een webserver. Hierbij wordt het de communicatie bekomen over het WebDAV protocol, dat tevens over HTTP getransporteerd wordt. Dit laat ons opnieuw toe op eenvoudige wijze authenticatie toe te voegen, alsook ontlast het ons RPC protocol van de effectieve dataoverdracht.
 
+\section{Redundantie en robuustheid}
+\label{sec:redundantie}
+
+Een belangrijk aspect van het systeem is dat het robuust is, en dus voorziet in een bepaalde vorm van redundantie. Zoals het hardwareontwerp zal verduidelijken (zie hoofdstuk \ref{chap:hardware}), voorzien we reeds in hardwarematige redundantie onder de vorm van een RAID opstelling. Toch verhelpt dit het fundamentele probleem niet: de centrale server is een \emph{single point of failure}.
+
+Een eerste idee om dit te verhelpen was het voorzien van een \textbf{backup server}, die de centrale server continu zou monitoren. In geval van diens falen, zou de failover functionaliteit geactiveerd worden, waarbij de taken van de centrale server integraal overgenomen zouden worden. Gezien het configuratieloze aspect van de opstelling, en het feit dat elk initiatief steeds van de servers uit komt, zou dit totaal geen actie vereisen. Om ervoor te zorgen dat de backup server steeds over de meest recente informatie beschikt, activeert die tevens een (passieve) mDNS module, alsook registreert die zich bij de primaire server zodat updates aan de presentatie-repository steeds op beide servers aanwezig zijn.
+Hoewel deze configuratie zeer elegant lijkt (zeker indien de replicatie alsook promotie/degradatie van de server volledig autonoom verloopt), is ze niet realistisch op budgettair vlak. Het is niet alleen kostelijk om een tweede voldoende krachtige server samen te stellen, maar de aanwezigheid ervan betekent een extra continue energieconsumptie.
+
+Daarom hebben we gekozen voor een tweede piste, namelijk het gebruik van een \textbf{backup-cache in de kiosken}. Aangezien embedded hardware vaak komt met een optie voor een kaartslot, is het voordeliger om voor elke kiosk een dergelijke geheugenkaart aan te kopen, en de applicatie te voorzien van de functionaliteit om bij het opvragen van de configuratie en voorstellingen die lokaal op te slaan. Wanneer vervolgens de centrale server onbereikbaar blijkt te zijn, kan steeds gebruik gemaakt worden van deze lokale cache om toch volwaardig te kunnen blijven functioneren.
+
 \section{Server}
 \label{sec:server}
+
+\section{Raamwerk}
+
+\section{Structuur}
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{diagrammen/server_structuur}
+	\caption{Structuur van de serverapplicatie}
+\end{figure}
 
 \section{Kiosk}
 \label{sec:kiosk}
