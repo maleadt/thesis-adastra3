@@ -8,16 +8,25 @@
 \chapter{Systeemmodel}
 \label{chap:systeemmodel}
 
-De eerste stap van het ontwerp was de identificatie van de verschillende deelsystemen, en op welke toestellen die te vinden zijn. Hiertoe hebben we eerst gekeken naar de verschillende taken die het systeem als een geheel moet vervullen. Zo zijn er natuurlijk de kiosken, die instaan voor het weergeven van de presentaties, en het verwerken van gebruikersinput. Om het systeem flexibel te houden, zullen we de kiosken zo inrichten dat zowel de configuratie als de weer te geven presentaties zich niet op voorhand op de kiosk bevinden, maar van een centrale server gehaald worden. Diezelfde centrale server kan dan ook voorzien in een beheersinterface, waarbij de status van de verschillende kiosken gevisualiseerd wordt, en de administrator eventueel bepaalde acties kan ondernemen. Al deze functionaliteit zullen we bundelen binnen het specifiek hiervoor ontworpen applicatie-raamwerk, waarvoor we ook een communicatieprotocol zullen voor moeten definiëren
+De eerste stap van het ontwerp was de identificatie van de verschillende deelsystemen, en op welke toestellen die te vinden zijn. Hiertoe hebben we eerst gekeken naar de verschillende taken die het systeem als een geheel moet vervullen. Zo moet het systeem:
+\begin{itemize}
+\item Voorstellingen weergeven, en gebruikersinput verwerken;
+\item Toelaten om eenvoudig voorstellingen te wijzigen, zonder veel technische kennis;
+\item Voorzien in een gebruiksvriendelijke beheersinterface;
+\item Dit alles voldoende robuust uitvoeren.
+\end{itemize}
 
-Het is voor de administrator echter ook belangrijk om zicht te hebben op de status van de overige componenten van de kiosk, zoals het besturingssysteem, of de hardware. Omdat er voor dit vrij generiek probleem al verschillende bestaande oplossingen zijn, zullen we dit beschouwen als een apart deelsysteem, los van de hierboven omschreven applicatieraamwerk.
+Vervolgens hebben we de deelsystemen geïdentificeerd. Zo zijn er natuurlijk de kiosken, die instaan voor het weergeven van de voorstellingen, en het verwerken van gebruikersinput. Om het systeem flexibel te houden, zullen we de kiosken zo inrichten dat zowel de configuratie als de weer te geven voorstellingen zich niet op voorhand op de kiosk bevinden, maar van een centrale server gehaald worden. Diezelfde centrale server kan dan ook voorzien in een beheersinterface, waarbij de status van de verschillende kiosken gevisualiseerd wordt, en de administrator eventueel bepaalde acties kan ondernemen. Al deze functionaliteit zullen we bundelen binnen het specifiek hiervoor ontworpen applicatie-raamwerk, waarvoor we ook een communicatieprotocol zullen voor moeten definiëren.
+
+\todo{Eventueel vermelden van monitoring systeem.}
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{diagrammen/ontplooiingsdiagram}
 	\caption{Ontplooiingsdiagram}
 \end{figure}
 
-In de volgende hoofdstukken zullen we nu elk van deze deelsystemen, en al wat daar bij hoort, tot in details uitwerken.
+In de volgende hoofdstukken zullen we nu elk van deze deelsystemen, en al wat daar bij hoort, tot in details uitwerken. Zo zullen we ook frequent bestaande technologieën hergebruiken, of net een gerichte keuze maken zodat hergebruik mogelijk wordt. Daarbij gaan we meestal uit van een initiële selectie aan technologieën die gebruikt kan worden om een specifiek doel te bekomen, waarna de selectie uitgedund wordt tot er slechts 1 mogelijkheid overblijft. Het valt op te merken dat we bij dergelijke selectieprocedures steeds een impliciete doch sterke voorkeur zullen stellen voor gratis technologieën, die voorzien in een cross-platform en open-source implementatie. Dat we kiezen voor gratis technologieën, vloeit voort uit het beperkte budget dat toegekend is door de MIRA vzw. Het cross-platform aspect is belangrijk omdat op termijn de applicatie misschien op een ander systeem zal moeten draaien, alsook het interessant zou zijn om indien het product succesvol blijkt, het open te stellen voor andere bedrijven. Het open-source kenmerk tenslotte kent zijn oorsprong misschien deels in idealistische gronden, maar blijkt in de praktijk ook zeer praktisch te zijn. Zo is het tijdens de realisatie van het project verschillende keren extreem nuttig gebleken om vrije toegang te hebben tot de broncode van de bibliotheek.
+
 
 %
 % Applicatie
@@ -26,21 +35,103 @@ In de volgende hoofdstukken zullen we nu elk van deze deelsystemen, en al wat da
 \chapter{Applicatie}
 \label{chap:applicatie}
 
-\section{Taken}
-
 \section{Voorstellingen}
+\label{sec:voorstellingen}
+
+\subsection{Formaat}
+
+Aan het formaat van de voorstellingen worden een aantal specifieke eisen gesteld:
+\begin{itemize}
+\item Efficiënt te distribueren over het netwerk;
+\item Flexibel en toekomstgericht;
+\item Terugwaarts compatibel met de huidige voorstellingen;
+\item Laagdrempelig.
+\end{itemize}
+
+Zoals reeds gezegd bevinden de oude voorstellingen zich op een Dvd-schijf, in videoformaat. Het nieuwe formaat moet dus in staat zijn om video's weer te geven, eventueel mits bepaalde conversies.
+
+Na verschillende formaten vergeleken te hebben, hebben we besloten gebruik te maken van een combinatie van HTML5 en Javascript. Die combinatie wordt vaak op het web gebruikt voor de weergave van tekst en multimedia, en laat toe om heel dynamische voorstellingen te ontwerpen. Ook is het mogelijk om, zonder enige aanpassing aan het omliggende raamwerk, gebruik te maken van Javascript bibliotheken, waardoor de mogelijkheden onbegrensd zijn.
+
+Hoewel de mogelijkheden enorm zijn, zal de weergave van dergelijke voorstellingen nog relatief eenvoudig kunnen gerealiseerd worden. Dit omdat HTML en Javascript al jarenlang weergegeven worden binnen webbrowsers. We zullen dus de vruchten kunnen plukken van decennia aan ontwikkeling, door gebruik te maken van de \emph{rendering engines} van verschillende browsers.
+\todo{Vermelden Gecko, WebKit?}
+
+Sinds de nieuwste versie van de HTML standaard, HTML5, is er ook voorzien in een \texttt{<video>} tag, die toelaat om videofragmenten weer te geven. Hierdoor voldoen we ook aan de vereiste terugwaartse compatibiliteit, al is het met enige beperkingen. Momenteel is het immers nog niet duidelijk welke videostandaard algemeen zal ondersteund worden in de \texttt{<video>} tag, meer nog, er woedt een hele strijd tussen de verschillende fabrikanten en ontwikkelaars. Afhankelijk van welke versie van welke rendering engine we gebruiken, zullen we moeten kiezen uit een andere verzameling videostandaarden.
+\todo{Vermelden WebM,H264,Theora?}
+
+Ook efficiënte netwerktransmissie wordt bekomen door gebruik te maken van HTML en Javascript. Alle code wordt immers opgeslagen in tekstformaat, en de videostandaarden (los van welke we uiteindelijk zullen gebruiken) zijn steeds geselecteerd wegens hun nut in context van webpagina's, waar efficiënte compressie al even belangrijk is. Wanneer men een nieuwe voorstelling ontwerp kan men zelf door gebruik te maken van het volledige spectrum aan mogelijkheden die HTML5 biedt, de vertraging opgelopen door netwerktransmissie volledig verwaarlozen (vectorafbeeldingen in plaats van bitmaps, scripted animaties in plaats van videobestanden, ...).
+
+Tenslotte is dit formaat voor de voorstellingen ook zeer laagdrempelig. Veel mensen hebben een basiskennis over HTML, en indien ze dit niet hebben is het eenvoudig te leren via de overvloed aan tutorials die er beschikbaar zijn. Ook is er geen nood aan een \emph{toolchain}: zowel HTML als Javascript bronbestanden kunnen gewijzigd worden in elke tekstverwerker, en compilatie is al helemaal overbodig.
+Een mogelijk probleem is de beperkte scheiding tussen design en logica: wanneer dynamiek vereist is, moet de ontwerper nogal snel enige kennis hebben van Javascript. Toch kan dit verholpen worden door gebruik te maken van WYSIWYG-editors, al moet het gezegd worden dat die anno 2011 nog niet zo goed gebruik maken van alle mogelijkheden die deze nieuwe standaard biedt.
+
+\subsection{Repository}
+
+Zoals hierboven reeds vermeld, zullen de nieuwste voorstellingen zich niet direct op de relevante kiosken bevinden, maar op de centrale server. Dit maakt het gemakkelijk voor de administrator om wijzigingen door te voeren. Daartoe moeten we echter wel voorzien in een systeem dat toelaat om snel en efficiënt de nieuwe versie op te halen van de centrale server.
+
+Initieel zijn we op zoek gegaan naar een \textbf{database-systeem} om dit te implementeren. Hoewel dergelijke systemen vooral sterk zijn in het herbergen van structurele data, zou het perfect mogelijk zijn om er voorstellingen in op te slaan. Efficiënte overdracht wordt echter niet voorzien, alsook zou het vrij moeilijk zijn om een gebruiksvriendelijke interface te bouwen bovenop dit systeem.
+
+Een andere verzameling technologieën die we overwogen hebben, waren de \textbf{Enterprise Content Management} systemen. Hierbij vinden we al vaker een geïntegreerde beheersinterface, alsook wordt al vaker efficiëntere distributie bekomen door te voorzien in een versiebeheer-systeem. Toch voldeed deze oplossing niet, daar bij dergelijke systemen de nadruk vaak nog nadrukkelijker ligt op gestructureerde data, waardoor het niet praktisch zou zijn om er onze ongestructureerde voorstellingen in op te slaan.
+
+Daarom hebben we uiteindelijk te stap gemaakt naar gedediceerde \textbf{versiebeheer-systemen}. Hierbij is efficiënte overdracht van gegevens een basiseigenschap, alsook zorgt het bestandsgeoriënteerde aspect voor een relatief gebruiksvriendelijk beheer. Zo kan een administrator heel gemakkelijk lokaal enkele wijzigingen doorvoeren aan een voorstelling, het resultaat testen in zijn browser, en indien gewenst zijn werk doorsturen naar de centrale server.
+
+Maar er bestaan tientallen versiebeheersystemen, die we elk gepeild hebben aan ons eisenpakket:
+\begin{itemize}
+\item Client-server georiënteerd;
+\item Efficiënte omgang met binaire bestanden.
+\end{itemize}
+
+Gezien de uiteindelijke keuze van het applicatieprotocol (zie onderdeel \ref{sec:applicatieprotocol}), komen hier nog twee eisen bij:
+\begin{itemize}
+\item Te beveiligen via SSL;
+\item Te gebruiken over HTTP.
+\end{itemize}
+
+Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide selectie overlopen te hebben, blijkt enkel Subversion een geschikte keuze te zijn. Voor Subversion bestaan er tevens Java-bindings, te vinden in de \texttt{SVN-J} bibliotheek, waardoor de repository als 1 geheel zou kunnen geïntegreerd worden met de rest van de serverapplicatie. Jammer genoeg is de bibliotheek echter niet matuur genoeg voor integratie binnen het systeem, waardoor we zullen moeten gebruik maken van een overkoepelende webserver zoals Apache. Hierdoor wordt de binding tussen de applicatie en de repository iets minder sterk (wat bijvoorbeeld extra configuratie zal vereisen), maar het is de trade-off nodig om een realistisch systeem te bekomen.
 
 \section{Applicatieprotocol}
+\label{sec:applicatieprotocol}
+
+Het applicatieprotocol staat in voor de communicatie tussen de verschillende componenten. Omdat dit protocol instaat voor verschillende taken, zullen we dan ook gebruik maken van verschillende protocollen, elk meest geschikt voor de taak die ze moeten realiseren.
+
+Omdat we er naar streven om geen configuratie te voorzien op de kiosken, zal een kiosk na aanmelding op 1 of andere manier moeten geconfigureerd worden. We kiezen ervoor om die configuratie uit te laten gaan van de server, die via een \textbf{remote procedure protocol} de nodige configuratiemethodes op de kiosk aanroept. Hiertoe moet bij aanmelding van een kiosk, de server een bericht krijgen, wat we kunnen realiseren met een \textbf{service discovery protocol}. Vervolgens moet de kiosk, na geconfigureerd te zijn, weten welke voorstelling hij moet weergeven, en waar hij die moet halen. Hiervoor staat het \textbf{dataprotocol} in.
+
+\subsection{Beveiliging}
+
+Ook is het vanuit bedrijfsperspectief steeds interessant om bepaalde methodes van beveiliging te overwegen. Encryptie is niet belangrijk, daar geen van de verzonden data gevoelige informatie blootgeeft. Een vorm van authenticatie is echter wel interessant, om te voorkomen dat een kwaadwillende derde de configuratie op een kiosk vervalst, of verkeerde voorstellingen publiceert. Voor het service discovery gedeelte zal blijken dat authenticatie minder belangrijk alsook moeilijk te implementeren is (het netwerk kan hoogstens vertraagd of licht verstoord worden, corruptie van gegevens is onmogelijk).
+
+De overige twee protocollen willen we natuurlijk op een eenduidige manier van authenticatie kunnen voorzien. Hiertoe is het interessant om gebruik te maken van SSL, een matuur en momenteel ongenaakbaar systeem van beveiliging. Bovendien kunnen we, indien beide protocollen gebruik maken van HTTP transport, het beveiligingsaspect louter in de overkoepelende webserver implementeren, zodat de deelprotocollen zelf geen SSL moeten implementeren, maar toch beveiligd zijn door een robuust authenticatiemechanisme. Enkel voor clientside gebruik (wat belangrijk is voor de applicatieserver, die contact zal opnemen met een XMLRPC-interface op de kiosken) is dan wetenschap van het exacte gebruik van SSL nodig.
 
 \subsection{Service discovery}
 
-\subsection{Data uitwisseling}
+Service discovery is een onderdeel van de "Zeroconf" standaard, een verzameling technieken die instaat voor het initialiseren van een netwerk zonder daarbij te voorzien in expliciete configuratie. Service discovery staat daarbij in voor het ontdekken van andere toestellen, alsook eventuele services die erop aanwezig zijn. Meestal voorzien dergelijke protocollen in twee elementaire features: het \emph{publishen} van services, waarbij een toestel te kennen geeft wat zijn mogelijkheden zijn, en het \emph{browsen} van services, waarbij een toestel actief of passief op zoek gaat naar bepaalde services binnen het netwerk.
+
+In de context van dit systeem zal een nieuwe kiosk na het opstarten zijn applicatie publiceren op het netwerk. Een eventuele server zal passief luisteren naar een dergelijke publicatie, en de informatie daarbij bekomen gebruiken om over te gaan tot configuratie van de kiosk in kwestie.
+
+Opnieuw bestaan er verschillende technologieën die voorzien in deze elementaire functionaliteit. Opnieuw stellen we enkel bijkomende eisen om een selectie te kunnen maken:
+\begin{itemize}
+\item Vereist geen extra infrastructuur;
+\item Cross-language implementatie;
+\item Eenvoudig te gebruiken.
+\end{itemize}
+
+Een veelgebruikt protocol voor service discovery, is het Simple Service Discovery Protocol (SSDP), deel van het \textbf{Universal Plug and Play (UPnP)} systeem. Dit door Microsoft-ontwikkeld systeem, biedt een heel uitgebreid en generisch raamwerk voor service discovery, waarbij die services volledig beschreven worden door Device Control Protocols (DCP). Het geheel steunt sterk op XML en SOAP, en is strikt beheerd door het UPnP Forum. Hoewel het protocol essentieel wel voldoet aan onze eisen, is het groot en log, en biedt het veel te veel mogelijkheden die we toch niet gaan gebruiken.
+
+Een compacter alternatief is \textbf{multicast DNS (mDNS)}, onderdeel van het door Apple ontwikkelde Zeroconf systeem. Zoals de naam doet vermoeden, is dit een multicast uitbreiding van het \textbf{Domain Name System (DNS)}, dat via \texttt{SRV} records toelaat om services te publiceren. Dit is een veel eleganter systeem, essentieel slechts een eenvoudige uitbreiding van een bestaande technologie, maar kent zo ook zijn tekortkomingen. Zo worden bijvoorbeeld de mogelijkheden van elke service gedetailleerd via een ongespecificeerd tekstveld. Dergelijke tekortkomingen zijn echter niet van belang in de context van dit systeem, waardoor we zullen kiezen voor dit systeem. Bovendien kent mDNS bindings voor zowel Java als Qt, de twee frameworks die we zullen gebruiken bij de effectieve realisatie van de deelsystemen (zie sectie \ref{sec:server} en \ref{sec:kiosk}).
 
 \subsection{Remote procedure}
 
+Van zodra de server weet heeft van een nieuwe kiosk, moet die overgaan tot de configuratie ervan. Ook moet het mogelijk zijn om acties teweeg te brengen, bijvoorbeeld ten gevolge van acties in de beheersinterface. Daarom zijn we niet op zoek gegaan naar specialistische configuratieprotocollen, maar eerder naar meer generieke \emph{remote procedure} protocollen.
+
+Een remote procedure protocol waarmee we reeds ervaring hebben, is XML-RPC. Dit simplistisch protocol, dat bovendien getransporteerd wordt over HTTP, wordt gebruikt om functieaanroepen uit te voeren op een remote toestel. Hoewel hiervoor een webserver benodigd is, wordt dit vaak ondersteund door softwareframeworks.
+
+\subsection{Data uitwisseling}
+
+\subsection{Beveiliging}
+
 \section{Server}
+\label{sec:server}
 
 \section{Kiosk}
+\label{sec:kiosk}
 
 
 %

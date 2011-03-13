@@ -27,10 +27,10 @@
   <element>
     <type>com.umlet.element.custom.Node</type>
     <coordinates>
-      <x>380</x>
+      <x>370</x>
       <y>230</y>
-      <w>240</w>
-      <h>450</h>
+      <w>250</w>
+      <h>300</h>
     </coordinates>
     <panel_attributes>&gt;&lt;&lt;device&gt;&gt;
 &gt;Master server</panel_attributes>
@@ -58,17 +58,6 @@
     </coordinates>
     <panel_attributes>Applicatie server
 (master scheme)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.custom.SimpleComponent</type>
-    <coordinates>
-      <x>400</x>
-      <y>530</y>
-      <w>190</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>Monitoring server</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -116,20 +105,7 @@
 Applicatie
 protocol
 </panel_attributes>
-    <additional_attributes>30;50;210;50;450;50</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>560</x>
-      <y>390</y>
-      <w>470</w>
-      <h>190</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-Monitoring
-protocol</panel_attributes>
-    <additional_attributes>450;50;210;50;30;170</additional_attributes>
+    <additional_attributes>450;50;30;50</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -151,17 +127,6 @@ protocol</panel_attributes>
       <h>40</h>
     </coordinates>
     <panel_attributes>Beheersinterface</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>430</x>
-      <y>600</y>
-      <w>150</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Monitoring interface</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
