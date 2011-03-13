@@ -35,6 +35,8 @@ In de volgende hoofdstukken zullen we nu elk van deze deelsystemen, en al wat da
 \chapter{Applicatie}
 \label{chap:applicatie}
 
+Het volgende hoofdstuk zal het ontwerp van de applicatie bespreken. Daarbij zullen we eerst de technologieën vastleggen die we zullen bespreken, en pas dan de effectieve componenten waarop de applicatie draait (namelijk het servergedeelte, en het kioskgedeelte). In realiteit was dit proces echter niet zo afgelijnd: vaak werd er op een keuze teruggekomen wegens het veranderen van een of andere voordien gemaakte keuze. Bij verschillende keuzes zal het dan ook voorkomen dat een specifieke eis uit het niets gegrepen lijkt, of bevooroordeeld lijkt. Toch is dit niet het geval, pas na afloop van het hoofdstuk zal het complexe plaatje duidelijk worden en zullen alle beslissingen mooi in hun voegen vallen.
+
 \section{Voorstellingen}
 \label{sec:voorstellingen}
 
@@ -121,11 +123,21 @@ Een compacter alternatief is \textbf{multicast DNS (mDNS)}, onderdeel van het do
 
 Van zodra de server weet heeft van een nieuwe kiosk, moet die overgaan tot de configuratie ervan. Ook moet het mogelijk zijn om acties teweeg te brengen, bijvoorbeeld ten gevolge van acties in de beheersinterface. Daarom zijn we niet op zoek gegaan naar specialistische configuratieprotocollen, maar eerder naar meer generieke \emph{remote procedure} protocollen.
 
-Een remote procedure protocol waarmee we reeds ervaring hebben, is XML-RPC. Dit simplistisch protocol, dat bovendien getransporteerd wordt over HTTP, wordt gebruikt om functieaanroepen uit te voeren op een remote toestel. Hoewel hiervoor een webserver benodigd is, wordt dit vaak ondersteund door softwareframeworks.
+Opnieuw bestaan er vele verschillende remote procedure protocollen, elk met hun specifieke eigenschappen. Grotere enterprise-projecten geven vaak de voorkeur aan technologieën zoals \textbf{SOAP} of \textbf{CORBA}, enorme systemen die zeer uitgebreide mogelijkheden kennen. We zullen dergelijke technologieën echter om dezelfde reden vermijden als waarom we mDNS boven UPnP verkozen hebben: in de context van dit project is een compacter en eleganter protocol veel beter te controleren en dus interessanter dan een complex te configureren alleskunner waarvan de helft van de mogelijkheden toch onbenut blijven.
+
+In de categorie van compactere RPC-protocollen vinden we zo bijvoorbeeld \textbf{REST}. Hoewel dit lichtgewicht, HTTP-gebaseerd, en ook vaak gebruikt protocol op het eerste zicht aan onze eisen voldoet, kent het zijn mindere kanten. Zo kent het geen eenduidige manier om fouten terug te geven, alsook is het formaat waarin data verstuurd wordt niet gestandaardiseerd. Omdat het manueel voorzien van deze mogelijkheden nog vrij veel werk zou innemen, besteden we verder geen aandacht aan dit protocol.
+
+De meest courante ontwikkelframeworks zoals .NET en Java kennen meestal ook hun eigen RPC-protocol, zoals \textbf{WMI} en \textbf{RMI}. Hoewel deze protocollen meestal vrij matuur en veelzijdig zijn, zijn ze vaak niet cross-platform en zeker niet cross-language, waardoor ze tevens afvallen.
+
+Ook hebben we meer moderne RPC-frameworks overwogen zoals \textbf{Apache Etch}, of \textbf{Apache Thrift}. Deze vrij nieuwe en tevens veelbelovende systemen bleken echter enkele kritieke eisen mis te lopen. Zo kent Apache Etch slechts een beperkte verzameling language bindings, en kent geen van beide een authenticatiemechanisme. Omdat beide verlopen over een eigen protocol, vallen ze ook niet te overkoepelen onder een SSL webserver.
+
+Daarom hebben we uiteindelijk gekozen voor \textbf{XML-RPC}, een zeer simplistisch RPC-protocol dat XML-geformatteerde berichten verstuurd over HTTP transport. Hierdoor wordt het mogelijk om op een transparante manier een vorm van authenticatiecontrole toe te voegen. Toch kent XML-RPC ook zijn fundamentele problemen, zoals het inefficiënte berichtformaat. Omdat we berusten op een apart dataprotocol, is dit echter geen groot probleem. Ook is de specificatie, zacht uitgedrukt, vrij beperkt. Dit kan echter een voordeel zijn: de ermee geïmplementeerde interface wordt er compact mee gehouden, en valt eenvoudig te gebruiken vanuit verschillende talen. Dit wordt ook vereenvoudigd door de uitgebreide waaier aan implementaties, die er voor quasi elke taal is.
 
 \subsection{Data uitwisseling}
 
-\subsection{Beveiliging}
+In eerste instantie was het niet de bedoeling gebruik te maken van een derde deelprotocol, maar om de data te versturen over het RPC protocol. Na enig onderzoek bleek echter dat zowel het gebruik van een geïntegreerd datasysteem (zie \ref{sec:voorstellingen}), als het integreren van een versiebeheersysteem, niet zou lukken.
+
+Nu voorzien we echter in een apart versiebeheersysteem (Subversion), dat vaak gebruikt wordt in aaneenschakeling met een webserver. Hierbij wordt het de communicatie bekomen over het WebDAV protocol, dat tevens over HTTP getransporteerd wordt. Dit laat ons opnieuw toe op eenvoudige wijze authenticatie toe te voegen, alsook ontlast het ons RPC protocol van de effectieve dataoverdracht.
 
 \section{Server}
 \label{sec:server}
