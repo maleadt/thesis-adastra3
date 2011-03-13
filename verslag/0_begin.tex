@@ -1,0 +1,77 @@
+%
+% Titelpagina
+%
+
+\maketitle
+\pagenumbering{roman}
+
+
+%
+% Abstract
+%
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\label{chap:abstract}
+
+%
+% Voorwoord
+%
+
+\chapter*{Voorwoord}
+\addcontentsline{toc}{chapter}{Voorwoord}
+\label{chap:voorwoord}
+
+
+%
+% Inhoudstafel
+%
+
+\setlength\cftpartnumwidth{2em}
+
+\newpage
+
+\label{chap:inhoudstafel}
+\tableofcontents
+
+\newpage
+
+\pagenumbering{arabic}
+
+
+%
+% Lijst met afbeeldingen
+%
+
+\listoffigures
+
+
+%
+% Lijst van afkortingen
+%
+
+\chapter*{Lijst van afkortingen}
+\addcontentsline{toc}{chapter}{Lijst met afkortingen}
+\label{chap:afkortingen}
+
+\begin{acronym}[WYSIWYG]	% langste afkorting
+
+\acro{upnp}[UPnP]{Universal Plug and Play}
+\acro{mdns}[mDNS]{Multicast DNS}
+\acro{dns}[DNS]{Domain Name System}
+\acro{ssdp}[SSDP]{Simple Service Discovery Protocol}
+\acro{dcp}[DCP]{Device Control Protocols}
+\acro{ssl}[SSL]{Secure Socket Layer}
+\acro{rpc}[RPC]{Remote Procedure Call}
+\acro{webdav}[WebDAV]{Web-based Distributed Authoring and Versioning}
+\acro{http}[HTTP]{Hypertext Transport Protocol}
+\acro{rmi}[RMI]{Remote Method Invocation}
+\acro{corba}[CORBA]{Common Object Request Broker Architecture}
+\acro{soap}[SOAP]{Simple Object Access Protocol}
+\acro{wysiwyg}[WYSIWYG]{What You See Is What You Get}
+\acro{html}[HTML]{Hypertext Markup Language}
+\acro{rest}[REST]{Representational State Transfer}
+
+\end{acronym}
+
+

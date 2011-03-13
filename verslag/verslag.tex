@@ -25,6 +25,9 @@
 % Navigeerbaarheid van hyperlinks in PDF
 \usepackage{hyperref}
 
+% Afkortingen intelligent gebruiken
+\usepackage[printonlyused,withpage]{acronym}
+
 % Extra functies
 \input{functies.tex}
 
@@ -48,12 +51,14 @@
 
 \begin{document}
 
-\input{1_algemeen.tex}
+\input{0_begin.tex}
 
-\input{2_introductie.tex}
-\input{3_ontwerp.tex}
-\input{4_server.tex}
-\input{5_kiosk.tex}
-\input{6_invoering.tex}
+\input{1_introductie.tex}
+\input{2_ontwerp.tex}
+\input{3_server.tex}
+\input{4_kiosk.tex}
+\input{5_invoering.tex}
+
+\input{0_einde.tex}
 
 \end{document}
