@@ -6,7 +6,7 @@
 %
 
 \chapter{Systeemmodel}
-\label{ontwerp:systeelmodel}
+\label{ontwerp:systeemmodel}
 
 De eerste stap van het ontwerp was de identificatie van de verschillende deelsystemen, en op welke toestellen die te vinden zijn. Hiertoe hebben we eerst gekeken naar de verschillende taken die het systeem als een geheel moet vervullen. Zo moet het systeem:
 \begin{itemize}
@@ -304,3 +304,56 @@ Net zoals we bij de serverapplicatie gekozen hebben voor een speciale logging bi
 
 \chapter{Hardware}
 \label{ontwerp:hardware}
+
+Gezien het beperkte budget is de zoektocht naar gepaste hardware best een uitdaging geweest.
+
+\section{Kiosk}
+\label{ontwerp:hardware:kiosk}
+
+Algemeen worden er enkele vrij zware eisen gesteld aan de kioskhardware:
+\begin{itemize}
+\item Goedkoop: zowel betreffende aankoopprijs, als energieconsumptie;
+\item Duurzaam: de hardware moet minstens 5 jaar meegaan;
+\item Performant: de applicatie moet vlot werken, alsook een designer toelaten rijke voorstellingen te ontwerpen;
+\item Stil.
+\end{itemize}
+
+\subsection{Type}
+
+Vooraleer op zoek te gaan naar een specifiek hardwaremodel, is het belangrijk te kiezen wat voor soort hardware we zullen aankopen. Er zijn immers verschillende pistes, elk met hun voor- en nadelen.
+
+\paragraph{Tweedehands thin clients}
+
+Een eerste richting die we verkend hebben, is die van hergebruik. Veel bedrijven hebben in het verleden gebruik gemaakt van thin clients, die wanneer het support-contract verloopt vaak voor een appel en een ei van de hand gedaan worden op populaire tweedehands-sites.
+
+Hoewel dergelijke aanbiedingen wel interessant lijken, biedt een tweedehands thin client te weinig garanties om te gebruiken als hardware voor de kiosken. Zeker betreffende levensduur, een thin client die al vele jaren in werking is kan het steeds na enkele maanden reeds laten afweten, en gezien er geen stabiele bron aan identieke thin clients bestaat vormt dit een reëel probleem. Ook is de hardware extreem beperkt, vaak komen thin clients maar met enkele megabytes flash, waardoor de flexibiliteit van het nieuw formaat van de voorstellingen snel ongedaan gemaakt zou zijn. Nieuwe thin clients, hoewel aantrekkelijker op hardware vlak, zijn al helemaal geen optie: de supportcontracten die er altijd mee gepaard gaan duwen de prijs tot onredelijke hoogten, volledig ongeschikt voor de toepassing binnen dit project.
+
+Daarom hebben we besloten om verder geen aandacht meer te besteden aan thin clients, zelfs al zijn die uit prijsoogpunt extreem aantrekkelijk.
+
+\paragraph{Embedded hardware}
+
+Embedded hardware is specifiek ontworpen voor toepassingen als deze. Hoewel vrij prijzig, biedt het daar veel in ruil voor: alle periferie is geïntegreerd op een enkele chip, vaak is er voorzien in specialistische acceleratie-chips, alsook zijn er vaak features te vinden die interessant zijn voor embedded developers (zoals on-board flash, of een SD-kaartslot).
+
+Ook de duurzaamheid is vaak indrukwekkend, mede door het feit dat er enkel solid-state componenten aanwezig zijn. Energieconsumptie is meestal ook een speerpunt voor dergelijke hardware, zo verbruikt de Beagleboard maximaal slechts 2.2 watt!
+
+\paragraph{Consument-georiënteerde hardware}
+
+Hoewel niet echt geschikt voor dit doel, hebben we ook gekeken naar populaire consument-georiënteerde hardware. In die hardwarecategorie zijn er sinds enkele jaren energie-efficiënte configuraties te vinden, meestal bedoeld voor \ac{nas} toestellen of low-powered computers. Voorbeelden hiervan zijn moederborden gebaseerd op de \makeurl{http://www.intel.com/technology/atom/}{Intel Atom}, of de recent geïntroduceerde \makeurl{http://sites.amd.com/us/fusion/apu/Pages/fusion.aspx}{AMD Fusion}. Dergelijke moederborden komen vaak met een geïntegreerde \ac{gpu} (in het geval van de AMD Fusion zit die zelf op de processorchip) en andere periferie, waardoor het moederbord een handig functioneel geheel vormt.
+
+Toch is er nood aan extra hardware, zoals \ac{ram} geheugen, een harde schijf, en een voeding. Dat is dan ook direct een nadeel van deze piste: doordat er nood is aan extra componenten verhoogt de kans op falen. Andere features die dan wel geïntegreerd zijn op het moederbord, zijn volledig nutteloos voor dit project (zoals een RAID controller, of 5.1 audio).
+
+Ondanks de nood aan die extra hardware blijft de prijs echter relatief aantrekkelijk. En voor die prijs wordt er meestal vrij veel pure performantie bekomen, wat het gemis aan interessante features deels tegemoet komt. Toch is dit, zeker gecombineerd met de teleurstellende duurzaamheid, niet voldoende om ons er voor te laten kiezen.
+
+\subsection{Model}
+
+Zoals uit de vorige paragraaf blijkt, is embedded hardware de meest geschikt keuze voor dit project. Maar hier eindigt het niet: er bestaan immers verschillende modellen, van verschillende fabrikanten. We zochten naar de volgende features:
+\begin{itemize}
+\item Aansluitingsmogelijkheden: USB en HDMI;
+\item Stereo audio;
+\item 100 Mb ethernet;
+\item Kaartslot;
+\item Flash geheugen (512 MB of meer);
+\item Voldoende performant.
+\end{itemize}
+
+Uiteindelijk is de keuze gevallen op de \makeurl{http://www.igep.es/index.php}{IGEPv2}, een zeer compacte en vrij performante computer, met al de benodigde features en maar weinig meer. De computer komt ook met een speciale \ac{dsp}, alsook een \ac{gpu} die door Qt te gebruiken valt om de performantie te verhogen.
