@@ -67,7 +67,7 @@ Een mogelijk probleem is de beperkte scheiding tussen design en logica: wanneer 
 
 \subsection{Repository}
 
-Zoals hierboven reeds vermeld, zullen de nieuwste voorstellingen zich niet direct op de relevante kiosken bevinden, maar op de centrale server. Dit maakt het gemakkelijk voor de administrator om wijzigingen door te voeren. Daartoe moeten we echter wel voorzien in een systeem dat toelaat om snel en efficiënt de nieuwe versie op te halen van de centrale server.
+Zoals hierboven reeds vermeld, zullen noch de nieuwste voorstellingen noch de configuratie zich op de relevante kiosken bevinden, maar op de centrale server. Dit maakt het gemakkelijk voor de administrator om wijzigingen door te voeren. Daartoe moeten we echter wel voorzien in een systeem dat toelaat om snel en efficiënt de nieuwe versie op te halen van de centrale server.
 
 Initieel zijn we op zoek gegaan naar een \textbf{database-systeem} om dit te implementeren. Hoewel dergelijke systemen vooral sterk zijn in het herbergen van structurele data, zou het perfect mogelijk zijn om er voorstellingen in op te slaan. Efficiënte overdracht wordt echter niet voorzien, alsook zou het vrij moeilijk zijn om een gebruiksvriendelijke interface te bouwen bovenop dit systeem.
 
@@ -87,7 +87,7 @@ Gezien de uiteindelijke keuze van het applicatieprotocol (zie onderdeel \ref{sec
 \item Te gebruiken over \ac{http}.
 \end{itemize}
 
-Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide selectie overlopen te hebben, blijkt enkel Subversion een geschikte keuze te zijn. Voor Subversion bestaan er tevens Java-bindings, te vinden in de \texttt{SVN-J} bibliotheek, waardoor de repository als 1 geheel zou kunnen geïntegreerd worden met de rest van de serverapplicatie. Jammer genoeg is de bibliotheek echter niet matuur genoeg voor integratie binnen het systeem, waardoor we zullen moeten gebruik maken van een overkoepelende webserver zoals Apache. Hierdoor wordt de binding tussen de applicatie en de repository iets minder sterk (wat bijvoorbeeld extra configuratie zal vereisen), maar het is de trade-off nodig om een realistisch systeem te bekomen.
+Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide selectie overlopen te hebben, blijkt enkel \ac{svn} een geschikte keuze te zijn. Voor \ac{svn} bestaan er tevens Java-bindings, te vinden in de \makeurl{http://code.google.com/p/svnj/}{SVN-J} bibliotheek, waardoor de repository als 1 geheel zou kunnen geïntegreerd worden met de rest van de serverapplicatie. Jammer genoeg is de bibliotheek echter niet matuur genoeg voor integratie binnen het systeem, waardoor we zullen moeten gebruik maken van een overkoepelende webserver zoals Apache. Hierdoor wordt de binding tussen de applicatie en de repository iets minder sterk (wat bijvoorbeeld extra configuratie zal vereisen), maar het is de trade-off nodig om een realistisch systeem te bekomen.
 
 \section{Applicatieprotocol}
 \label{sec:applicatieprotocol}
@@ -117,7 +117,7 @@ Opnieuw bestaan er verschillende technologieën die voorzien in deze elementaire
 
 Een veelgebruikt protocol voor service discovery, is het \ac{ssdp}, deel van het \textbf{\ac{upnp}} systeem. Dit door Microsoft-ontwikkeld systeem, biedt een heel uitgebreid en generisch raamwerk voor service discovery, waarbij die services volledig beschreven worden door \ac{dcp}. Het geheel steunt sterk op XML en SOAP, en is strikt beheerd door het \ac{upnp} Forum. Hoewel het protocol essentieel wel voldoet aan onze eisen, is het groot en log, en biedt het veel te veel mogelijkheden die we toch niet gaan gebruiken.
 
-Een compacter alternatief is \textbf{\ac{mdns}}, onderdeel van het door Apple ontwikkelde Zeroconf systeem. Zoals de naam doet vermoeden, is dit een multicast uitbreiding van het \textbf{\ac{dns}}, dat via \texttt{SRV} records toelaat om services te publiceren. Dit is een veel eleganter systeem, essentieel slechts een eenvoudige uitbreiding van een bestaande technologie, maar kent zo ook zijn tekortkomingen. Zo worden bijvoorbeeld de mogelijkheden van elke service gedetailleerd via een ongespecificeerd tekstveld. Dergelijke tekortkomingen zijn echter niet van belang in de context van dit systeem, waardoor we zullen kiezen voor dit systeem. Bovendien kent mDNS bindings voor zowel Java als Qt, de twee frameworks die we zullen gebruiken bij de effectieve realisatie van de deelsystemen (zie sectie \ref{sec:server} en \ref{sec:kiosk}).
+Een compacter alternatief is \textbf{\ac{mdns}}, onderdeel van het door Apple ontwikkelde Zeroconf systeem. Zoals de naam doet vermoeden, is dit een multicast uitbreiding van het \ac{dns}, dat via \texttt{SRV} records toelaat om services te publiceren. Dit is een veel eleganter systeem, essentieel slechts een eenvoudige uitbreiding van een bestaande technologie, maar kent zo ook zijn tekortkomingen. Zo worden bijvoorbeeld de mogelijkheden van elke service gedetailleerd via een ongespecificeerd tekstveld. Dergelijke tekortkomingen zijn echter niet van belang in de context van dit systeem, waardoor we zullen kiezen voor dit systeem. Bovendien kent mDNS bindings voor zowel Java als Qt, de twee frameworks die we zullen gebruiken bij de effectieve realisatie van de deelsystemen (zie sectie \ref{sec:server} en \ref{sec:kiosk}).
 
 \subsection{Remote procedure}
 
@@ -137,7 +137,7 @@ Daarom hebben we uiteindelijk gekozen voor \textbf{XML-RPC}, een zeer simplistis
 
 In eerste instantie was het niet de bedoeling gebruik te maken van een derde deelprotocol, maar om de data te versturen over het \ac{rpc} protocol. Na enig onderzoek bleek echter dat zowel het gebruik van een geïntegreerd datasysteem (zie \ref{sec:voorstellingen}), als het integreren van een versiebeheersysteem, niet zou lukken.
 
-Nu voorzien we echter in een apart versiebeheersysteem (Subversion), dat vaak gebruikt wordt in aaneenschakeling met een webserver. Hierbij wordt het de communicatie bekomen over het \ac{webdav} protocol, dat tevens over \ac{http} getransporteerd wordt. Dit laat ons opnieuw toe op eenvoudige wijze authenticatie toe te voegen, alsook ontlast het ons \ac{rpc} protocol van de effectieve dataoverdracht.
+Nu voorzien we echter in een apart versiebeheersysteem (\ac{svn}), dat vaak gebruikt wordt in aaneenschakeling met een webserver. Hierbij wordt het de communicatie bekomen over het \ac{webdav} protocol, dat tevens over \ac{http} getransporteerd wordt. Dit laat ons opnieuw toe op eenvoudige wijze authenticatie toe te voegen, alsook ontlast het ons \ac{rpc} protocol van de effectieve dataoverdracht.
 
 \section{Redundantie en robuustheid}
 \label{sec:redundantie}
@@ -152,7 +152,99 @@ Daarom hebben we gekozen voor een tweede piste, namelijk het gebruik van een \te
 \section{Server}
 \label{sec:server}
 
-\section{Raamwerk}
+Zoals reeds vermeld, is de centrale server van essentieel belang in het systeem. Zo verzorgt de server:
+\begin{itemize}
+\item Configuratie van de kiosken;
+\item Opslag en distributie van de voorstellingen.
+\end{itemize}
+
+Naast deze elementaire taken, vereenvoudigd de server tevens de werklast van een administrator. We zullen immers voorzien in een beheersinterface die niet alleen een overzicht van het systeem biedt, maar ook toelaat om acties te ondernemen om eventuele problemen te verhelpen.
+
+\section{Ontwikkelingsomgeving}
+
+De keuze van de ontwikkelingsomgeving (programmeertaal, framework, ...) waarin we de serverapplicatie zullen ontwikkelen, is van vrij groot belang. Een goede keuze vereenvoudigt en versnelt de ontwikkeling, terwijl een verkeerde keuze tevens de kwaliteit van het eindproduct nadelig kan beïnvloeden.
+
+Opnieuw bestaan er ongelooflijk veel mogelijke keuzes die ons essentieel de middelen aanbieden om deze applicatie te ontwikkelen. Om een beslissing te kunnen maken, hebben we ons gefocust op de meestgebruikte entiteiten in de wereld van serverapplicaties, namelijk .NET en Java. Hoewel beide kandidaten relatief evenwaardig zijn in de context van deze serverapplicatie, hebben we voor het gemak gekozen voor ontwikkeling in Java. Deze keuze is gemotiveerd door voorgaande ervaringen, maar ook door het feit dat we een voorkeur hebben voor Linux-gebaseerde platformsoftware en .NET daar niet goed met samenwerkt.
+
+\subsection{Applicatieprotocol}
+
+Configuratie van de kiosken houdt verschillende zaken in. Vooraleerst moet de server kunnen detecteren als er zich een kiosk aanmeldt. Deze berichten verlopen over \ac{mdns}, wat we in Java kunnen realiseren via de \makeurl{http://jmdns.sourceforge.net/}{JmDNS} bibliotheek. Deze volledig in Java geschreven bibliotheek biedt een volledig platform-onafhankelijke implementatie van het \ac{mdns} protocol, en biedt verschillende high-level mogelijkheden om om te gaan met \ac{mdns} berichten.
+Vervolgens gaan we over tot de effectieve configuratie van de kiosken, wat verloopt over het XML-RPC protocol. Dit is mogelijk via de \makeurl{http://ws.apache.org/xmlrpc/}{Apache ws-xmlrpc} bibliotheek, een zeer uitgebreid en doorontwikkelde bibliotheek voor XML-RPC communicatie.
+
+Opslag en distributie van de voorstellingen zal niet door de applicatie zelf verzorgd worden, maar door een \ac{webdav} toegangspunt die wijst naar een \ac{svn} repository. Hiervoor zijn geen extra voorzieningen in de applicatie vereist. Om de toegang tot zowel de serverapplicatie als de repository op een eenduidige manier te laten verlopen, overkoepelen we beide door een Apache webserver, waardoor de toegang (poortnummer, hostname) op dezelfde manier verloopt, alsook bepaalde instellingen (\ac{ssl}) kunnen weggewerkt worden naar dit bovenliggende niveau.
+
+Hoewel de effectieve dataoverdracht geen voorzieningen in de serverapplicatie vereist, moet er wel een mechanisme zijn dat wijzigingen detecteert en ze kan inladen, om vervolgens eventueel bepaalde kiosken te herconfigureren. Hiervoor hebben we nood aan een client-side \ac{svn} bibliotheek nodig, die ons toelaat gegevens vanuit de repository op te halen en in te laden. Ook moet het mogelijk zijn snel te kijken wat de laatste revisie van de repository is, en om vervolgens op te halen wat er veranderd is sinds de laatste bekende revisie. Met die informatie kan bepaald worden welke configuraties en/of presentaties opnieuw moeten opgehaald worden, om daarna die informatie door te sturen naar de relevante kiosken.
+Hoewel er opnieuw verschillende \ac{svn} bibliotheken bestaan, lijkt \makeurl{http://svnkit.com/}{SVNKit} de enige die nog doorontwikkeld wordt. Ook is de bibliotheek geschreven en pure Java, wat opnieuw het geheel platformonafhankelijk maakt.
+
+\subsection{Beheersinterface}
+
+Tenslotte moeten we ook voorzien in een beheersinterface. Hiervoor zullen we een servlet-engine gebruiken, zodat we bij het genereren van een webpagina tegelijk toegang hebben tot de hele applicatie. Binnen de Java wereld zijn er verschillende servlet engines, de bekendste wellicht Tomcat en Jetty. Aangezien onze applicatie niet draait rond de webapplicatie, maar dat slechts een deelcomponent is, zullen we niet gebruik kunnen maken van de standaard servlet environment. Door de servlet engine te \emph{embedden} binnen onze applicatie, is het eenvoudiger om tegelijk verschillende andere niet-webgeoriënteerde services actief te hebben (zoals de \ac{mdns} monitor. Zowel Tomcat als Jetty maken het mogelijk om zich te embedden, al is het bij de ene al makkelijker dan bij de andere. Er is echter een belangrijk verschil tussen beide: een embedded Tomcat deelt de \ac{jvm} van de applicatie, terwijl Jetty een nieuwe \ac{jvm} opstart. Aangezien we vanuit de servlets toegang willen hebben tot de rest van de applicatie, zonder daar een speciaal communicatieprotocol zoals \ac{rmi} voor te moeten gebruiken, kunnen we enkel Tomcat gebruiken.
+
+Nu de servlet engine vast ligt, moeten we nog bepalen op welke technologie we de servlets zullen bouwen. Om ons niet bezig te moeten houden met hoe de webpagina's gegenereerd worden, zijn we op zoek gegaan naar een widget-oriented framework voor moderne webapplicaties. Zo hebben we uiteindelijk gekozen voor \makeurl{http://vaadin.com/home}{vaadin}, een bibliotheek die toelaat om op een eenvoudige manier met enkel Java code een rijke user-interface te onwerpen. De manier van ontwikkelen leunt nauw aan bij hoe reguliere user-interfaces ontwikkeld worden: event- en widget gebaseerd, zonder zich te moeten bezig houden met het effectief genereren van de interface.
+
+\section{Repository layout}
+
+Hoewel het reeds vastligt dat we een bestandsgeoriënteerde \ac{svn}-repository zullen gebruiken, ligt de exacte layout van de bestanden daarin nog niet vast. Aangezien zowel de voorstellingen als de kioskconfiguratie erin zal moeten opgeslagen worden, is het belangrijk om op voorhand een eenduidige structuur vast te leggen die tevens toelaat om eenvoudig wijzigingen te detecteren.
+
+\begin{code}
+\begin{verbatim}
++-repository/
+  |
+  +-configurations/
+  | |
+  | +-hires.ini
+  | |
+  | +-nosound.ini
+  |
+  +-presentations/
+  | |
+  | +-presentation1/
+  |   |
+  |   +-config.ini
+  |   |
+  |   +-index.html
+  |
+  +-kiosks/
+    |
+    +-kiosk1.ini
+\end{verbatim}
+\caption{Voorbeeld van een repository layout.}
+\end{code}
+
+Op het hoogste niveau zal de repository bestaan uit drie mappen. In de \texttt{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen. Zo wordt er voorzien in configuratiesecties voor de weergave, voor het geluid, voor het netwerk, enzovoort. Ook kan een configuratie specificeren welke voorstelling moet weergegeven worden, maar die informatie zal zich meestal bevinden in de kiosk-specifieke configuratiebstanden in de \texttt{kiosks} map. Daarin bevindt er zich een configuratiebestand per kiosk, waarin opnieuw de kiosk volledig kan geconfigureerd worden. Elk configuratiebestand (hetzij in de \texttt{kiosks} map, hetzij in de \texttt{configurations} map) kan ook specificeren welke andere configuraties tegelijk moeten ingeladen worden, waardoor gemeenschappelijke instellingen kunnen geabstraheerd worden in een apart configuratiebestand.
+
+De \texttt{presentations} map tenslotte bevat de effectieve voorstellingen, elk in een aparte map. In die map bevinden zich de bestanden nodig om de voorstelling weer te geven, alsook een configuratiebestand dat nu enkel specifieke eigenschappen van de presentatie configureert.
+
+\begin{code}
+\begin{verbatim}
+[configuration]
+description=Configuration for kiosk1.
+load=nosound;hires
+
+[presentation]
+name=presentation1
+\end{verbatim}
+\caption{Voorbeeld van een kiosk configuratiebstand, \texttt{kiosks/kiosk1.ini}.}
+\end{code}
+
+\begin{code}
+\begin{verbatim}
+[configuration]
+description=Configuration for kiosks without sound.
+
+[sound]
+volume=0
+\end{verbatim}
+\caption{Voorbeeld van een gedeeld configuratiebestand, \texttt{configurations/nosound.ini}.}
+\end{code}
+
+\begin{code}
+\begin{verbatim}
+description=Sample presentation 1.
+landing_page=index.html
+\end{verbatim}
+\caption{Voorbeeld van een voorstelling configuratiebestand, \texttt{presentations/presentation1/config.ini}.}
+\end{code}
 
 \section{Structuur}
 
