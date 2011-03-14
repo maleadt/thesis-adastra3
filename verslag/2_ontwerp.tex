@@ -1,12 +1,12 @@
 \part{Ontwerp}
-\label{part:ontwerp}
+\label{ontwerp}
 
 %
 % Systeemmodel
 %
 
 \chapter{Systeemmodel}
-\label{chap:systeemmodel}
+\label{ontwerp:systeelmodel}
 
 De eerste stap van het ontwerp was de identificatie van de verschillende deelsystemen, en op welke toestellen die te vinden zijn. Hiertoe hebben we eerst gekeken naar de verschillende taken die het systeem als een geheel moet vervullen. Zo moet het systeem:
 \begin{itemize}
@@ -33,12 +33,12 @@ In de volgende hoofdstukken zullen we nu elk van deze deelsystemen, en al wat da
 %
 
 \chapter{Applicatie}
-\label{chap:applicatie}
+\label{ontwerp:applicatie}
 
 Het volgende hoofdstuk zal het ontwerp van de applicatie bespreken. Daarbij zullen we eerst de technologieën vastleggen die we zullen bespreken, en pas dan de effectieve componenten waarop de applicatie draait (namelijk het servergedeelte, en het kioskgedeelte). In realiteit was dit proces echter niet zo afgelijnd: vaak werd er op een keuze teruggekomen wegens het veranderen van een of andere voordien gemaakte keuze. Bij verschillende keuzes zal het dan ook voorkomen dat een specifieke eis uit het niets gegrepen lijkt, of bevooroordeeld lijkt. Toch is dit niet het geval, pas na afloop van het hoofdstuk zal het complexe plaatje duidelijk worden en zullen alle beslissingen mooi in hun voegen vallen.
 
 \section{Voorstellingen}
-\label{sec:voorstellingen}
+\label{ontwerp:applicatie:voorstellingen}
 
 \subsection{Formaat}
 
@@ -79,7 +79,7 @@ Maar er bestaan tientallen versiebeheersystemen, die we elk gepeild hebben aan o
 \item Efficiënte omgang met binaire bestanden.
 \end{itemize}
 
-Gezien de uiteindelijke keuze van het applicatieprotocol (zie onderdeel \ref{sec:applicatieprotocol}), komen hier nog twee eisen bij:
+Gezien de uiteindelijke keuze van het applicatieprotocol (zie onderdeel \ref{ontwerp:applicatie:applicatieprotocol}), komen hier nog twee eisen bij:
 \begin{itemize}
 \item Te beveiligen via \ac{ssl};
 \item Te gebruiken over \ac{http}.
@@ -152,7 +152,7 @@ landing_page=index.html
 \end{code}
 
 \section{Applicatieprotocol}
-\label{sec:applicatieprotocol}
+\label{ontwerp:applicatie:applicatieprotocol}
 
 Het applicatieprotocol staat in voor de communicatie tussen de verschillende componenten. Omdat dit protocol instaat voor verschillende taken, zullen we dan ook gebruik maken van verschillende protocollen, elk meest geschikt voor de taak die ze moeten realiseren.
 
@@ -179,7 +179,7 @@ Opnieuw bestaan er verschillende technologieën die voorzien in deze elementaire
 
 Een veelgebruikt protocol voor service discovery, is het \ac{ssdp}, deel van het \textbf{\ac{upnp}} systeem. Dit door Microsoft-ontwikkeld systeem, biedt een heel uitgebreid en generisch raamwerk voor service discovery, waarbij die services volledig beschreven worden door \ac{dcp}. Het geheel steunt sterk op XML en SOAP, en is strikt beheerd door het \ac{upnp} Forum. Hoewel het protocol essentieel wel voldoet aan onze eisen, is het groot en log, en biedt het veel te veel mogelijkheden die we toch niet gaan gebruiken.
 
-Een compacter alternatief is \textbf{\ac{mdns}}, onderdeel van het door Apple ontwikkelde Zeroconf systeem. Zoals de naam doet vermoeden, is dit een multicast uitbreiding van het \ac{dns}, dat via \texttt{SRV} records toelaat om services te publiceren. Dit is een veel eleganter systeem, essentieel slechts een eenvoudige uitbreiding van een bestaande technologie, maar kent zo ook zijn tekortkomingen. Zo worden bijvoorbeeld de mogelijkheden van elke service gedetailleerd via een ongespecificeerd tekstveld. Dergelijke tekortkomingen zijn echter niet van belang in de context van dit systeem, waardoor we zullen kiezen voor dit systeem. Bovendien kent mDNS bindings voor zowel Java als Qt, de twee frameworks die we zullen gebruiken bij de effectieve realisatie van de deelsystemen (zie sectie \ref{sec:server} en \ref{sec:kiosk}).
+Een compacter alternatief is \textbf{\ac{mdns}}, onderdeel van het door Apple ontwikkelde Zeroconf systeem. Zoals de naam doet vermoeden, is dit een multicast uitbreiding van het \ac{dns}, dat via \texttt{SRV} records toelaat om services te publiceren. Dit is een veel eleganter systeem, essentieel slechts een eenvoudige uitbreiding van een bestaande technologie, maar kent zo ook zijn tekortkomingen. Zo worden bijvoorbeeld de mogelijkheden van elke service gedetailleerd via een ongespecificeerd tekstveld. Dergelijke tekortkomingen zijn echter niet van belang in de context van dit systeem, waardoor we zullen kiezen voor dit systeem. Bovendien kent mDNS bindings voor zowel Java als Qt, de twee frameworks die we zullen gebruiken bij de effectieve realisatie van de deelsystemen (zie sectie \ref{ontwerp:applicatie:server} en \ref{ontwerp:applicatie:kiosk}).
 
 \subsection{Remote procedure}
 
@@ -197,14 +197,14 @@ Daarom hebben we uiteindelijk gekozen voor \textbf{XML-RPC}, een zeer simplistis
 
 \subsection{Data uitwisseling}
 
-In eerste instantie was het niet de bedoeling gebruik te maken van een derde deelprotocol, maar om de data te versturen over het \ac{rpc} protocol. Na enig onderzoek bleek echter dat zowel het gebruik van een geïntegreerd datasysteem (zie \ref{sec:voorstellingen}), als het integreren van een versiebeheersysteem, niet zou lukken.
+In eerste instantie was het niet de bedoeling gebruik te maken van een derde deelprotocol, maar om de data te versturen over het \ac{rpc} protocol. Na enig onderzoek bleek echter dat zowel het gebruik van een geïntegreerd datasysteem (zie \ref{ontwerp:applicatie:voorstellingen}), als het integreren van een versiebeheersysteem, niet zou lukken.
 
 Nu voorzien we echter in een apart versiebeheersysteem (\ac{svn}), dat vaak gebruikt wordt in aaneenschakeling met een webserver. Hierbij wordt het de communicatie bekomen over het \ac{webdav} protocol, dat tevens over \ac{http} getransporteerd wordt. Dit laat ons opnieuw toe op eenvoudige wijze authenticatie toe te voegen, alsook ontlast het ons \ac{rpc} protocol van de effectieve dataoverdracht.
 
 \section{Redundantie en robuustheid}
 \label{sec:redundantie}
 
-Een belangrijk aspect van het systeem is dat het robuust is, en dus voorziet in een bepaalde vorm van redundantie. Zoals het hardwareontwerp zal verduidelijken (zie hoofdstuk \ref{chap:hardware}), voorzien we reeds in hardwarematige redundantie onder de vorm van een RAID opstelling. Toch verhelpt dit het fundamentele probleem niet: de centrale server is een \emph{single point of failure}.
+Een belangrijk aspect van het systeem is dat het robuust is, en dus voorziet in een bepaalde vorm van redundantie. Zoals het hardwareontwerp zal verduidelijken (zie hoofdstuk \ref{ontwerp:hardware}), voorzien we reeds in hardwarematige redundantie onder de vorm van een RAID opstelling. Toch verhelpt dit het fundamentele probleem niet: de centrale server is een \emph{single point of failure}.
 
 Een eerste idee om dit te verhelpen was het voorzien van een \textbf{backup server}, die de centrale server continu zou monitoren. In geval van diens falen, zou de failover functionaliteit geactiveerd worden, waarbij de taken van de centrale server integraal overgenomen zouden worden. Gezien het configuratieloze aspect van de opstelling, en het feit dat elk initiatief steeds van de servers uit komt, zou dit totaal geen actie vereisen. Om ervoor te zorgen dat de backup server steeds over de meest recente informatie beschikt, activeert die tevens een (passieve) \ac{mdns} module, alsook registreert die zich bij de primaire server zodat updates aan de presentatie-repository steeds op beide servers aanwezig zijn.
 Hoewel deze configuratie zeer elegant lijkt (zeker indien de replicatie alsook promotie/degradatie van de server volledig autonoom verloopt), is ze niet realistisch op budgettair vlak. Het is niet alleen kostelijk om een tweede voldoende krachtige server samen te stellen, maar de aanwezigheid ervan betekent een extra continue energieconsumptie.
@@ -212,7 +212,7 @@ Hoewel deze configuratie zeer elegant lijkt (zeker indien de replicatie alsook p
 Daarom hebben we gekozen voor een tweede piste, namelijk het gebruik van een \textbf{backup-cache in de kiosken}. Aangezien embedded hardware vaak komt met een optie voor een kaartslot, is het voordeliger om voor elke kiosk een dergelijke geheugenkaart aan te kopen, en de applicatie te voorzien van de functionaliteit om bij het opvragen van de configuratie en voorstellingen die lokaal op te slaan. Wanneer vervolgens de centrale server onbereikbaar blijkt te zijn, kan steeds gebruik gemaakt worden van deze lokale cache om toch volwaardig te kunnen blijven functioneren.
 
 \section{Server}
-\label{sec:server}
+\label{ontwerp:applicatie:server}
 
 Zoals reeds vermeld, is de centrale server van essentieel belang in het systeem. Zo verzorgt de server:
 \begin{itemize}
@@ -261,7 +261,7 @@ Ook zullen we gebruik maken van het \makeurl{http://logging.apache.org/log4j/1.2
 \end{figure}
 
 \section{Kiosk}
-\label{sec:kiosk}
+\label{ontwerp:applicatie:kiosk}
 
 Naast de server vormen de kiosken het tweede type toestel in het systeem. Een kiosk staat in voor:
 \begin{itemize}
@@ -303,4 +303,4 @@ Net zoals we bij de serverapplicatie gekozen hebben voor een speciale logging bi
 %
 
 \chapter{Hardware}
-\label{chap:hardware}
+\label{ontwerp:hardware}

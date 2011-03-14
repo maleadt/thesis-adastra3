@@ -3,7 +3,6 @@
 %
 
 \maketitle
-\pagenumbering{roman}
 
 
 %
@@ -12,7 +11,9 @@
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-\label{chap:abstract}
+
+Hier komt een abstract.
+
 
 %
 % Voorwoord
@@ -20,7 +21,8 @@
 
 \chapter*{Voorwoord}
 \addcontentsline{toc}{chapter}{Voorwoord}
-\label{chap:voorwoord}
+
+Hier komt het voorwoord.
 
 
 %
@@ -30,13 +32,9 @@
 \setlength\cftpartnumwidth{2em}
 
 \newpage
-
-\label{chap:inhoudstafel}
 \tableofcontents
 
 \newpage
-
-\pagenumbering{arabic}
 
 
 %
@@ -51,8 +49,7 @@
 %
 
 \chapter*{Lijst van afkortingen}
-\addcontentsline{toc}{chapter}{Lijst met afkortingen}
-\label{chap:afkortingen}
+\addcontentsline{toc}{chapter}{Lijst van afkortingen}
 
 \begin{acronym}[WYSIWYG]	% langste afkorting
 
@@ -75,5 +72,3 @@
 \acro{svn}[SVN]{Subversion}
 
 \end{acronym}
-
-
