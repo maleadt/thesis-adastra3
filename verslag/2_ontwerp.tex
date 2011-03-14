@@ -55,10 +55,8 @@ Zoals reeds gezegd bevinden de oude voorstellingen zich op een Dvd-schijf, in vi
 Na verschillende formaten vergeleken te hebben, hebben we besloten gebruik te maken van een combinatie van \ac{html} en Javascript. Die combinatie wordt vaak op het web gebruikt voor de weergave van tekst en multimedia, en laat toe om heel dynamische voorstellingen te ontwerpen. Ook is het mogelijk om, zonder enige aanpassing aan het omliggende raamwerk, gebruik te maken van Javascript bibliotheken, waardoor de mogelijkheden onbegrensd zijn.
 
 Hoewel de mogelijkheden enorm zijn, zal de weergave van dergelijke voorstellingen nog relatief eenvoudig kunnen gerealiseerd worden. Dit omdat \ac{html} en Javascript al jarenlang weergegeven worden binnen webbrowsers. We zullen dus de vruchten kunnen plukken van decennia aan ontwikkeling, door gebruik te maken van de \emph{rendering engines} van verschillende browsers.
-\todo{Vermelden Gecko, WebKit?}
 
 Sinds de nieuwste versie van de \ac{html} standaard, versie 5, is er ook voorzien in een \texttt{<video>} tag, die toelaat om videofragmenten weer te geven. Hierdoor voldoen we ook aan de vereiste terugwaartse compatibiliteit, al is het met enige beperkingen. Momenteel is het immers nog niet duidelijk welke videostandaard algemeen zal ondersteund worden in de \texttt{<video>} tag, meer nog, er woedt een hele strijd tussen de verschillende fabrikanten en ontwikkelaars. Afhankelijk van welke versie van welke rendering engine we gebruiken, zullen we moeten kiezen uit een andere verzameling videostandaarden.
-\todo{Vermelden WebM,H264,Theora?}
 
 Ook efficiënte netwerktransmissie wordt bekomen door gebruik te maken van HTML en Javascript. Alle code wordt immers opgeslagen in tekstformaat, en de videostandaarden (los van welke we uiteindelijk zullen gebruiken) zijn steeds geselecteerd wegens hun nut in context van webpagina's, waar efficiënte compressie al even belangrijk is. Wanneer men een nieuwe voorstelling ontwerp kan men zelf door gebruik te maken van het volledige spectrum aan mogelijkheden die \ac{html} versie 5 biedt, de vertraging opgelopen door netwerktransmissie volledig verwaarlozen (vectorafbeeldingen in plaats van bitmaps, scripted animaties in plaats van videobestanden, ...).
 
@@ -88,6 +86,70 @@ Gezien de uiteindelijke keuze van het applicatieprotocol (zie onderdeel \ref{sec
 \end{itemize}
 
 Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide selectie overlopen te hebben, blijkt enkel \ac{svn} een geschikte keuze te zijn. Voor \ac{svn} bestaan er tevens Java-bindings, te vinden in de \makeurl{http://code.google.com/p/svnj/}{SVN-J} bibliotheek, waardoor de repository als 1 geheel zou kunnen geïntegreerd worden met de rest van de serverapplicatie. Jammer genoeg is de bibliotheek echter niet matuur genoeg voor integratie binnen het systeem, waardoor we zullen moeten gebruik maken van een overkoepelende webserver zoals Apache. Hierdoor wordt de binding tussen de applicatie en de repository iets minder sterk (wat bijvoorbeeld extra configuratie zal vereisen), maar het is de trade-off nodig om een realistisch systeem te bekomen.
+
+\subsection{Repository layout}
+
+Hoewel het nu vastligt dat we een bestandsgeoriënteerde \ac{svn}-repository zullen gebruiken, ligt de exacte layout van de bestanden daarin nog niet vast. Aangezien zowel de voorstellingen als de kioskconfiguratie erin zal moeten opgeslagen worden, is het belangrijk om op voorhand een eenduidige structuur vast te leggen die tevens toelaat om eenvoudig wijzigingen te detecteren.
+
+\begin{code}
+\begin{verbatim}
++-repository/
+  |
+  +-configurations/
+  | |
+  | +-hires.ini
+  | |
+  | +-nosound.ini
+  |
+  +-presentations/
+  | |
+  | +-presentation1/
+  |   |
+  |   +-config.ini
+  |   |
+  |   +-index.html
+  |
+  +-kiosks/
+    |
+    +-kiosk1.ini
+\end{verbatim}
+\caption{Voorbeeld van een repository layout.}
+\end{code}
+
+Op het hoogste niveau zal de repository bestaan uit drie mappen. In de \texttt{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen. Zo wordt er voorzien in configuratiesecties voor de weergave, voor het geluid, voor het netwerk, enzovoort. Ook kan een configuratie specificeren welke voorstelling moet weergegeven worden, maar die informatie zal zich meestal bevinden in de kiosk-specifieke configuratiebstanden in de \texttt{kiosks} map. Daarin bevindt er zich een configuratiebestand per kiosk, waarin opnieuw de kiosk volledig kan geconfigureerd worden. Elk configuratiebestand (hetzij in de \texttt{kiosks} map, hetzij in de \texttt{configurations} map) kan ook specificeren welke andere configuraties tegelijk moeten ingeladen worden, waardoor gemeenschappelijke instellingen kunnen geabstraheerd worden in een apart configuratiebestand.
+
+De \texttt{presentations} map tenslotte bevat de effectieve voorstellingen, elk in een aparte map. In die map bevinden zich de bestanden nodig om de voorstelling weer te geven, alsook een configuratiebestand dat nu enkel specifieke eigenschappen van de presentatie configureert.
+
+\begin{code}
+\begin{verbatim}
+[configuration]
+description=Configuration for kiosk1.
+load=nosound;hires
+
+[presentation]
+name=presentation1
+\end{verbatim}
+\caption{Voorbeeld van een kiosk configuratiebstand, \texttt{kiosks/kiosk1.ini}.}
+\end{code}
+
+\begin{code}
+\begin{verbatim}
+[configuration]
+description=Configuration for kiosks without sound.
+
+[sound]
+volume=0
+\end{verbatim}
+\caption{Voorbeeld van een gedeeld configuratiebestand, \texttt{configurations/nosound.ini}.}
+\end{code}
+
+\begin{code}
+\begin{verbatim}
+description=Sample presentation 1.
+landing_page=index.html
+\end{verbatim}
+\caption{Voorbeeld van een voorstelling configuratiebestand, \texttt{presentations/presentation1/config.ini}.}
+\end{code}
 
 \section{Applicatieprotocol}
 \label{sec:applicatieprotocol}
@@ -160,109 +222,80 @@ Zoals reeds vermeld, is de centrale server van essentieel belang in het systeem.
 
 Naast deze elementaire taken, vereenvoudigd de server tevens de werklast van een administrator. We zullen immers voorzien in een beheersinterface die niet alleen een overzicht van het systeem biedt, maar ook toelaat om acties te ondernemen om eventuele problemen te verhelpen.
 
-\section{Ontwikkelingsomgeving}
+\subsection{Ontwikkelplatform}
 
-De keuze van de ontwikkelingsomgeving (programmeertaal, framework, ...) waarin we de serverapplicatie zullen ontwikkelen, is van vrij groot belang. Een goede keuze vereenvoudigt en versnelt de ontwikkeling, terwijl een verkeerde keuze tevens de kwaliteit van het eindproduct nadelig kan beïnvloeden.
+De keuze van het ontwikkelplatform waarvoor we de serverapplicatie zullen ontwikkelen, is van vrij groot belang. Een goede keuze vereenvoudigt en versnelt de ontwikkeling, terwijl een verkeerde keuze tevens de kwaliteit van het eindproduct nadelig kan beïnvloeden.
 
-Opnieuw bestaan er ongelooflijk veel mogelijke keuzes die ons essentieel de middelen aanbieden om deze applicatie te ontwikkelen. Om een beslissing te kunnen maken, hebben we ons gefocust op de meestgebruikte entiteiten in de wereld van serverapplicaties, namelijk .NET en Java. Hoewel beide kandidaten relatief evenwaardig zijn in de context van deze serverapplicatie, hebben we voor het gemak gekozen voor ontwikkeling in Java. Deze keuze is gemotiveerd door voorgaande ervaringen, maar ook door het feit dat we een voorkeur hebben voor Linux-gebaseerde platformsoftware en .NET daar niet goed met samenwerkt.
+Opnieuw bestaan er verschillende mogelijkheden die ons essentieel de middelen aanbieden om deze applicatie te ontwikkelen. Om een beslissing te kunnen maken, hebben we ons gefocust op de meestgebruikte entiteiten in de wereld van serverapplicaties, namelijk .NET en Java. Hoewel beide kandidaten relatief evenwaardig zijn in de context van deze serverapplicatie, hebben we voor het gemak gekozen voor ontwikkeling in Java. Deze keuze is gemotiveerd door voorgaande ervaringen, maar ook door het feit dat we een voorkeur hebben voor een Linux-gebaseerde omgeving en .NET daar niet goed met samenwerkt.
 
-\subsection{Applicatieprotocol}
+\subsection{Hergebruik}
 
-Configuratie van de kiosken houdt verschillende zaken in. Vooraleerst moet de server kunnen detecteren als er zich een kiosk aanmeldt. Deze berichten verlopen over \ac{mdns}, wat we in Java kunnen realiseren via de \makeurl{http://jmdns.sourceforge.net/}{JmDNS} bibliotheek. Deze volledig in Java geschreven bibliotheek biedt een volledig platform-onafhankelijke implementatie van het \ac{mdns} protocol, en biedt verschillende high-level mogelijkheden om om te gaan met \ac{mdns} berichten.
-Vervolgens gaan we over tot de effectieve configuratie van de kiosken, wat verloopt over het XML-RPC protocol. Dit is mogelijk via de \makeurl{http://ws.apache.org/xmlrpc/}{Apache ws-xmlrpc} bibliotheek, een zeer uitgebreid en doorontwikkelde bibliotheek voor XML-RPC communicatie.
+\subsubsection{Applicatieprotocol}
 
-Opslag en distributie van de voorstellingen zal niet door de applicatie zelf verzorgd worden, maar door een \ac{webdav} toegangspunt die wijst naar een \ac{svn} repository. Hiervoor zijn geen extra voorzieningen in de applicatie vereist. Om de toegang tot zowel de serverapplicatie als de repository op een eenduidige manier te laten verlopen, overkoepelen we beide door een Apache webserver, waardoor de toegang (poortnummer, hostname) op dezelfde manier verloopt, alsook bepaalde instellingen (\ac{ssl}) kunnen weggewerkt worden naar dit bovenliggende niveau.
+Tijdens het ontwerp van het applicatieprotocol hebben we er speciaal op gelet om zoveel mogelijk bestaande technologieën te gebruiken, zodat we net steeds het wiel opnieuw uitvinden alsook tijdens de realisatie zouden gebruik kunnen maken van bestaande kwalitatieve codebibliotheken.
+
+\paragraph{Service discovery} Om de kiosken te kunnen configureren, moet de server kunnen registreren wanneer een nieuw toestel zich aanmeldt. Deze berichten verlopen over \ac{mdns}, wat we in Java kunnen realiseren via de \makeurl{http://jmdns.sourceforge.net/}{JmDNS} bibliotheek. Deze volledig in Java geschreven bibliotheek biedt een volledig platform-onafhankelijke implementatie van het \ac{mdns} protocol, en biedt verschillende high-level mogelijkheden om om te gaan met \ac{mdns} berichten.
+
+\paragraph{Remote procedure} De effectieve configuratie wordt gerealiseerd via functieaanroepen, die verlopen over het XML-RPC protocol. Dit is mogelijk via de \makeurl{http://ws.apache.org/xmlrpc/}{Apache ws-xmlrpc} bibliotheek, een zeer uitgebreid en doorontwikkelde bibliotheek voor XML-RPC communicatie.
+
+\paragraph{Data uitwisseling} Opslag en distributie van de voorstellingen zal niet door de applicatie zelf verzorgd worden, maar door een \ac{webdav} toegangspunt die wijst naar een \ac{svn} repository. Hiervoor zijn geen extra voorzieningen in de applicatie vereist. Om de toegang tot zowel de serverapplicatie als de repository op een eenduidige manier te laten verlopen, overkoepelen we beide door een Apache webserver, waardoor de toegang (poortnummer, hostname) op dezelfde manier verloopt, alsook bepaalde instellingen (\ac{ssl}) kunnen weggewerkt worden naar dit bovenliggende niveau.
 
 Hoewel de effectieve dataoverdracht geen voorzieningen in de serverapplicatie vereist, moet er wel een mechanisme zijn dat wijzigingen detecteert en ze kan inladen, om vervolgens eventueel bepaalde kiosken te herconfigureren. Hiervoor hebben we nood aan een client-side \ac{svn} bibliotheek nodig, die ons toelaat gegevens vanuit de repository op te halen en in te laden. Ook moet het mogelijk zijn snel te kijken wat de laatste revisie van de repository is, en om vervolgens op te halen wat er veranderd is sinds de laatste bekende revisie. Met die informatie kan bepaald worden welke configuraties en/of presentaties opnieuw moeten opgehaald worden, om daarna die informatie door te sturen naar de relevante kiosken.
 Hoewel er opnieuw verschillende \ac{svn} bibliotheken bestaan, lijkt \makeurl{http://svnkit.com/}{SVNKit} de enige die nog doorontwikkeld wordt. Ook is de bibliotheek geschreven en pure Java, wat opnieuw het geheel platformonafhankelijk maakt.
 
-\subsection{Beheersinterface}
+\subsubsection{Beheersinterface}
 
 Tenslotte moeten we ook voorzien in een beheersinterface. Hiervoor zullen we een servlet-engine gebruiken, zodat we bij het genereren van een webpagina tegelijk toegang hebben tot de hele applicatie. Binnen de Java wereld zijn er verschillende servlet engines, de bekendste wellicht Tomcat en Jetty. Aangezien onze applicatie niet draait rond de webapplicatie, maar dat slechts een deelcomponent is, zullen we niet gebruik kunnen maken van de standaard servlet environment. Door de servlet engine te \emph{embedden} binnen onze applicatie, is het eenvoudiger om tegelijk verschillende andere niet-webgeoriënteerde services actief te hebben (zoals de \ac{mdns} monitor. Zowel Tomcat als Jetty maken het mogelijk om zich te embedden, al is het bij de ene al makkelijker dan bij de andere. Er is echter een belangrijk verschil tussen beide: een embedded Tomcat deelt de \ac{jvm} van de applicatie, terwijl Jetty een nieuwe \ac{jvm} opstart. Aangezien we vanuit de servlets toegang willen hebben tot de rest van de applicatie, zonder daar een speciaal communicatieprotocol zoals \ac{rmi} voor te moeten gebruiken, kunnen we enkel Tomcat gebruiken.
 
 Nu de servlet engine vast ligt, moeten we nog bepalen op welke technologie we de servlets zullen bouwen. Om ons niet bezig te moeten houden met hoe de webpagina's gegenereerd worden, zijn we op zoek gegaan naar een widget-oriented framework voor moderne webapplicaties. Zo hebben we uiteindelijk gekozen voor \makeurl{http://vaadin.com/home}{vaadin}, een bibliotheek die toelaat om op een eenvoudige manier met enkel Java code een rijke user-interface te onwerpen. De manier van ontwikkelen leunt nauw aan bij hoe reguliere user-interfaces ontwikkeld worden: event- en widget gebaseerd, zonder zich te moeten bezig houden met het effectief genereren van de interface.
 
-\section{Repository layout}
+\subsubsection{Logging}
 
-Hoewel het reeds vastligt dat we een bestandsgeoriënteerde \ac{svn}-repository zullen gebruiken, ligt de exacte layout van de bestanden daarin nog niet vast. Aangezien zowel de voorstellingen als de kioskconfiguratie erin zal moeten opgeslagen worden, is het belangrijk om op voorhand een eenduidige structuur vast te leggen die tevens toelaat om eenvoudig wijzigingen te detecteren.
+Ook zullen we gebruik maken van het \makeurl{http://logging.apache.org/log4j/1.2/}{Apache log4j} project, om op een uniforme wijze loginformatie te publiceren. Het pakket laat toe om in een extern configuratiebestand te specificeren welke deelmodules hoe gedetailleerd moeten loggen, en wat er met die informatie gedaan moet worden. Zo kunnen we eenvoudig configureren dat kritieke fouten van over heel het systeem moeten doorgemaild worden naar een administrator, of dat een deelsysteem die nog niet perfect werk zoveel mogelijk informatie moet wegschrijven naar een debug bestand.
 
-\begin{code}
-\begin{verbatim}
-+-repository/
-  |
-  +-configurations/
-  | |
-  | +-hires.ini
-  | |
-  | +-nosound.ini
-  |
-  +-presentations/
-  | |
-  | +-presentation1/
-  |   |
-  |   +-config.ini
-  |   |
-  |   +-index.html
-  |
-  +-kiosks/
-    |
-    +-kiosk1.ini
-\end{verbatim}
-\caption{Voorbeeld van een repository layout.}
-\end{code}
-
-Op het hoogste niveau zal de repository bestaan uit drie mappen. In de \texttt{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen. Zo wordt er voorzien in configuratiesecties voor de weergave, voor het geluid, voor het netwerk, enzovoort. Ook kan een configuratie specificeren welke voorstelling moet weergegeven worden, maar die informatie zal zich meestal bevinden in de kiosk-specifieke configuratiebstanden in de \texttt{kiosks} map. Daarin bevindt er zich een configuratiebestand per kiosk, waarin opnieuw de kiosk volledig kan geconfigureerd worden. Elk configuratiebestand (hetzij in de \texttt{kiosks} map, hetzij in de \texttt{configurations} map) kan ook specificeren welke andere configuraties tegelijk moeten ingeladen worden, waardoor gemeenschappelijke instellingen kunnen geabstraheerd worden in een apart configuratiebestand.
-
-De \texttt{presentations} map tenslotte bevat de effectieve voorstellingen, elk in een aparte map. In die map bevinden zich de bestanden nodig om de voorstelling weer te geven, alsook een configuratiebestand dat nu enkel specifieke eigenschappen van de presentatie configureert.
-
-\begin{code}
-\begin{verbatim}
-[configuration]
-description=Configuration for kiosk1.
-load=nosound;hires
-
-[presentation]
-name=presentation1
-\end{verbatim}
-\caption{Voorbeeld van een kiosk configuratiebstand, \texttt{kiosks/kiosk1.ini}.}
-\end{code}
-
-\begin{code}
-\begin{verbatim}
-[configuration]
-description=Configuration for kiosks without sound.
-
-[sound]
-volume=0
-\end{verbatim}
-\caption{Voorbeeld van een gedeeld configuratiebestand, \texttt{configurations/nosound.ini}.}
-\end{code}
-
-\begin{code}
-\begin{verbatim}
-description=Sample presentation 1.
-landing_page=index.html
-\end{verbatim}
-\caption{Voorbeeld van een voorstelling configuratiebestand, \texttt{presentations/presentation1/config.ini}.}
-\end{code}
-
-\section{Structuur}
+\subsection{Structuur}
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{diagrammen/server_structuur}
-	\caption{Structuur van de serverapplicatie}
+	\caption{Structuur van de serverapplicatie.}
 \end{figure}
 
 \section{Kiosk}
 \label{sec:kiosk}
 
+Naast de server vormen de kiosken het tweede type toestel in het systeem. Een kiosk staat in voor:
+\begin{itemize}
+\item Weergave van voorstellingen;
+\item Verwerken van gebruikersinvoer.
+\end{itemize}
 
-%
-% Monitoring
-%
+\subsection{Ontwikkelplatform}
 
-\chapter{Monitoring}
-\label{chap:monitoring}
+De keuze van het ontwikkelplatform is eens te meer belangrijk voor het verloop van de ontwikkeling. Nu liggen de eisen echter anders: het platform moet low-level zijn, weinig afhankelijkheden hebben, en toelaten om performante applicaties te realiseren. Opnieuw beschouwen we enkel platformen die werken in combinatie met Linux-gebaseerde besturingssystemen, maar deze keer is de motivatie hierachter anders: de meeste embedded hardware ondersteunt enkel een Linux-distributie. Gezien we het aantal afhankelijkheden ook beperkt willen houden, is een geïnterpreteerde taal niet ideaal.
+
+Het ontwikkelplatform \makeurl{http://qt.nokia.com/}{Qt} voldoet vrijwel perfect aan dit eisenpakket. Het platform wordt gebruikt in combinatie met C++, een gecompileerde taal dat zeer performante code toelaat. Qt zorgt er echter voor dat ontwikkeling van high-level applicaties zoals deze niet te arbeidsintensief wordt in het relatief low-level C++. Zo komt Qt met een waaier aan interessante modules om snel een applicatie te realiseren, alsook breidt het C++ uit met enkele interessante syntactische mogelijkheden die het eenvoudig maken om bepaalde high-level technieken te realiseren. Bovendien is Qt inherent platform-onafhankelijk, waardoor het mogelijk wordt om de applicatie later eventueel te hergebruiken op een ander platform. Tenslotte biedt Qt ook een \emph{embedded mode}, waarin het zelf voorziet in een windowing system. Hierdoor worden enkele zware afhankelijkheden (zoals X11) vermeden.
+
+\subsection{Hergebruik}
+
+\subsubsection{Applicatieprotocol}
+
+Net zoals dit bij de serverapplicatie het geval was, kunnen we door de nauwgezette selectie van protocollen optimaal gebruik maken van bestaande bibliotheken.
+
+\paragraph{Service discovery} Om de kiosk zichzelf te laten aanmelden in het netwerk, zullen we de \makeurl{http://avahi.org/}{Avahi}-imlementatie van het \ac{mdns} protocol gebruiken. Deze relatief platform-onafhankelijke bibliotheek komt standaard met Qt4-bindings, die echter niet zo gebruiksvriendelijk zijn en sterk doet denken aan een C-stijl bibliotheek. Gelukkig hebben we als onderdeel van het \makeurl{http://gitorious.org/qtmediahub}{QtMediaHub} project een \makeurl{http://gitorious.org/qtmediahub/qtmediahub/trees/master/src/3rdparty/libqavahi}{wrapper} gevonden voor de standaard Avahi Qt4-bindings, die op zeer gebruiksvriendelijke manier, gebruik makende van typische Qt paradigma, toelaat om te interfacen met de Avahi bibliotheek.
+
+\paragraph{Remote procedure} Hiervoor moet de kiosk een XML-RPC server implementeren, gebruik makende van een \ac{http}-server. Hoewel het niet extreem veel werk zou zijn om dit zelf te implementeren (met dank aan de vele mogelijkheden die Qt biedt), kiezen we er voor om gebruik te maken van een bestaande bibliotheek. Die bibliotheek hebben we gevonden onder de vorm van \makeurl{http://code.google.com/p/qtxmlrpc/}{QtXmlRpc}, waarvan de codebase al verschillende jaren publiek is en dus vermoedelijk vrij goed getest zal zijn. De bibliotheek komt met een simpele \ac{http}-server, die toch ondersteuning biedt voor SSL communicatie.
+
+\paragraph{Data uitwisseling} De kiosk moet in staat zijn een \ac{svn} repository te klonen indien een \ac{webdav} locatie doorgespeeld wordt. Hoewel we dit best zouden kunnen oplossen door gebruik te maken van de \ac{svn} binary, is dit geen platform-onafhankelijke methode, die bovendien niet mooi te integreren valt binnen een applicatie. Daarom zijn we op zoek gegaan naar een C++ bibliotheek, liefst specifiek voor het Qt framework, die ons toelaat gegevens van een \ac{svn} repository binnen te halen zonder daarbij te berusten op lokaal geïnstalleerde applicaties. Zo zijn we terecht gekomen bij het \makeurl{http://kdesvn.alwins-world.de/}{KDESvn} project, een KDE frontend voor \ac{svn} repositories. We zijn natuurlijk niet geïnteresseerd in die applicatie, maar in de code die het gebruikt om toegang te krijgen tot \ac{svn} repositories. Daartoe heeft het KDESvn project een bibliotheek ontwikkeld, namelijk \makeurl{http://kdesvn.alwins-world.de/browser/trunk/src/svnqt}{svnqt}. De bibliotheek is vrijwel volledig losgekoppeld van het KDESvn project, wat integratie binnen andere applicaties eenvoudig maakt (zoals men gedaan heeft bij het \makeurl{http://www.anrichter.net/projects/qsvn}{QSvn} project).
+
+\subsubsection{Weergave voorstellingen}
+
+De voorstellingen zijn opgemaakt in een combinatie van \ac{html} en Javascript. Hierdoor kunnen we voor de weergave gebruik maken van de rendering engines ontwikkeld voor verschillende browsers. Zo is er de \makeurl{https://developer.mozilla.org/en/Gecko}{Gecko} rendering engine, ontwikkeld voor gebruik binnen de producten van Mozilla. Ondanks de recente port van Firefox naar het Qt platform, blijft de integratie van Gecko binnen Qt relatief moeilijk.
+
+Daarom zullen we eerder kiezen voor de \makeurl{http://www.webkit.org/}{WebKit} rendering engine, een doorontwikkeling van de KHTML rendering engine. WebKit is een interessantere keuze gezien zijn populaire port naar het Qt framework, \makeurl{http://trac.webkit.org/wiki/QtWebKit}{QtWebKit}. Deze port is een officieel onderdeel van het Qt framework, en wordt voor elke release dan ook onderworpen aan rigoureus getest.
+
+\subsubsection{Logging}
+
+Net zoals we bij de serverapplicatie gekozen hebben voor een speciale logging bibliotheek onder de vorm van log4j, maken we voor deze applicatie gebruik van het vergelijkbare \makeurl{http://log4qt.sourceforge.net/}{Log4Qt}. Dit is een onofficiële port van log4j naar het Qt platform, zodat het mogelijk is om op een vergelijkbare manier te voorzien van uniforme logging die nauwgezet kan geconfigureerd worden. Omdat het originele project echter al enige tijd inactief is, zullen we gebruik maken van een meer actief ontwikkelde \makeurl{http://gitorious.org/log4qt}{fork} van Log4Qt. De fork is een doorontwikkeling van het originele project, met enkele bijkomend features en bugfixes.
 
 
 %
