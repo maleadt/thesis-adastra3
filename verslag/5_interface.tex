@@ -1,9 +1,9 @@
 \part{Interface module}
 \label{interface}
 
-Zoals uit de doeken gedaan in deel \ref{ontwerp}, zullen we voor de interface gebruik maken van een AVR microcontroller met daarop de V-USB firmware om low speed datacommunicatie te verwezenlijken met minimale periferie.
-
 \chapter{Hardware}
+
+Zoals uit de doeken gedaan in deel \ref{ontwerp}, zullen we voor de interface gebruik maken van een AVR microcontroller met daarop de V-USB firmware om low speed datacommunicatie te verwezenlijken met minimale periferie.
 
 \section{Microcontroller}
 
@@ -17,9 +17,9 @@ Door het gebruik van de V-USB bibliotheek moeten we ons beperken tot AVR microco
 
 We willen echter ook een uitbreidbare module realiseren. Momenteel hebben we slechts 4 knoppen aan te sluiten, maar mogelijks worden dit er later meer. Daarom zullen we de ruimte laten voor drie extra knoppen, wat we eenvoudig kunnen realiseren met slechts 4 poorten door het signaal te multiplexen. Als we tenslotte overlappingen negeren, volstaat het zelfs om maar 3 poorten te gebruiken.
 
-Tenslotte zou het ook interessant zijn moest de microcontroller voorzien in een \ac{isp}, waardoor de firmware van de module achteraf nog kan vernieuwd worden zonder daarvoor de microcontroller te moeten verwijderen. Indien we het echter mogelijk willen maken om de chip te herprogrammeren via de \ac{isp}, kunnen we geen gebruik maken van \ac{hvsp} (waarvoor de chip fysiek moet geplaatst worden in een \ac{hvsp} programmer). \ac{hvsp} is een speciale methode om een microcontroller te programmeren, waarbij het mogelijk is om voordien ingestelde \emph{fuses} opnieuw in te stellen. Zo is er bijvoorbeeld de fuse die de RESET-poort (aanwezig op elke AVR microcontroller) configureert als een reguliere input/output poort. Deze fuse kan initieel wel ingesteld worden via een \ac{isp} programmer, maar heeft als consequentie dat de chip nadien niet meer kan geherprogrammeerd worden, tenzij door gebruik te maken van een \ac{hvsp} die in staat is om de fuse in kwestie opnieuw in te stellen. Hierdoor is het dus onmogelijk om de RESET-poort te gebruiken als reguliere poort.
+Tenslotte zou het ook interessant zijn moest de microcontroller voorzien in een \ac{isp}, waardoor de firmware van de module achteraf nog kan vernieuwd worden zonder daarvoor de microcontroller te moeten verwijderen. Indien we het echter mogelijk willen maken om de chip te herprogrammeren via de \ac{isp}, kunnen we geen gebruik maken van \ac{hvsp} (waarvoor de chip fysiek moet geplaatst worden in een \ac{hvsp} programmer). \ac{hvsp} is een speciale methode om een microcontroller te programmeren, waarbij het mogelijk is om voordien ingestelde \emph{fuses} opnieuw in te stellen. Zo is er bijvoorbeeld de fuse die de \code{RESET}-poort (aanwezig op elke AVR microcontroller) configureert als een reguliere input/output poort. Deze fuse kan initieel wel ingesteld worden via een \ac{isp} programmer, maar heeft als consequentie dat de chip nadien niet meer kan geherprogrammeerd worden, tenzij door gebruik te maken van een \ac{hvsp} die in staat is om de fuse in kwestie opnieuw in te stellen. Hierdoor is het dus onmogelijk om de \code{RESET}-poort te gebruiken als reguliere poort.
 
-Een microcontroller die voldoet aan deze eisen, is de \textbf{AtTiny45}. Deze heeft de volgende relevante specificaties:
+Een microcontroller die voldoet aan deze eisen, is de \strong{AtTiny45}. Deze heeft de volgende relevante specificaties:
 \begin{itemize}
 \item Flash: 4 kB;
 \item RAM: 256 bytes;
@@ -31,7 +31,7 @@ Een microcontroller die voldoet aan deze eisen, is de \textbf{AtTiny45}. Deze he
 
 Aangezien de benodigde kloksnelheid groter dan 10 MHz is, zullen we geen gebruik kunnen maken van de low-voltage versie. Meer nog: om een kloksnelheid groter dan 10 MHz te bekomen, zal de voedingsspanning zelfs tussen de 4.5 en 5.5 V moeten bedragen, wat een impact zal hebben bij de selectie van overige periferie.
 
-Om het aantal componenten te minimaliseren, zouden we de module graag realiseren zonder gebruik te maken van een externe oscillator. De interne oscillator is echter enkel gekalibreerd om op 8 MHz te werken, wat niet bruikbaar is in combinatie met V-USB. Om toch een bruikbare frequentie te bekomen, zullen we eerst de interne oscillator manueel kalibreren naar 8.25 MHz, door te vergelijken met binnenkomende \ac{usb} frames en binair te zoeken naar een optimale waarde voor OSCCAL oscillator calibratieregister. Hierdoor zal de \ac{pll} clock, steeds gelijk aan een achtvoudige versnelling van de interne oscillator, ingesteld worden op 66 MHz. Indien we tenslotte de CLKSEL fuse bij het programmeren instellen op 0001 zal de systeemklok gelijk ingesteld worden aan de \ac{pll} clock gedeeld door 4, wat overeen komt met exact 16.5 MHz.
+Om het aantal componenten te minimaliseren, zouden we de module graag realiseren zonder gebruik te maken van een externe oscillator. De interne oscillator is echter enkel gekalibreerd om op 8 MHz te werken, wat niet bruikbaar is in combinatie met V-USB. Om toch een bruikbare frequentie te bekomen, zullen we eerst de interne oscillator manueel kalibreren naar 8.25 MHz, door te vergelijken met binnenkomende \ac{usb} frames en binair te zoeken naar een optimale waarde voor \code{OSCCAL} oscillator calibratieregister. Hierdoor zal de \ac{pll} clock, steeds gelijk aan een achtvoudige versnelling van de interne oscillator, ingesteld worden op 66 MHz. Indien we tenslotte de \code{CLKSEL} fuse bij het programmeren instellen op $0001$ zal de systeemklok gelijk ingesteld worden aan de \ac{pll} clock gedeeld door 4, wat exact overeen komt met 16.5 MHz.
 
 \section{Aansluitingen schakelaars}
 

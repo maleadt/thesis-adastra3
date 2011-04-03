@@ -31,5 +31,11 @@
 % Float voor codefragmenten
 \usepackage{float}
 \floatstyle{ruled}
-\newfloat{code}{thp}{lop}
-\floatname{code}{Codefragment}
+\newfloat{codefragment}{thp}{lop}
+\floatname{codefragment}{Codefragment}
+
+% Semantische stijl
+\renewcommand\emph{\textit}
+\newcommand\code{\texttt}
+\newcommand\strong{\textbf}
+\newcommand\note{\marginpar}

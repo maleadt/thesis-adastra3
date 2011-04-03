@@ -65,11 +65,11 @@ Een mogelijk probleem is de beperkte scheiding tussen design en logica: wanneer 
 
 Zoals hierboven reeds vermeld, zullen noch de nieuwste voorstellingen noch de configuratie zich direct op de relevante kiosken bevinden, maar dynamisch van de centrale server gedownload worden. Indien voorzien wordt in een gebruiksvriendelijk systeem om de presentaties te wijzigen, maakt dit het leven van de administrator ook een pak gemakkelijker nu hij niet meer moet deployen naar elke kiosk apart.
 
-Initieel zijn we op zoek gegaan naar een \textbf{database-systeem} om dit te implementeren. Hoewel dergelijke systemen vooral sterk zijn in het herbergen van gestructureerde data, zou het perfect mogelijk zijn om er de eerder bestandsgeoriënteerde voorstellingen in op te slaan. Efficiënte overdracht wordt echter niet voorzien, alsook zou het vrij moeilijk zijn om een gebruiksvriendelijke interface te bouwen bovenop dit systeem.
+Initieel zijn we op zoek gegaan naar een \strong{database-systeem} om dit te implementeren. Hoewel dergelijke systemen vooral sterk zijn in het herbergen van gestructureerde data, zou het perfect mogelijk zijn om er de eerder bestandsgeoriënteerde voorstellingen in op te slaan. Efficiënte overdracht wordt echter niet voorzien, alsook zou het vrij moeilijk zijn om een gebruiksvriendelijke interface te bouwen bovenop dit systeem.
 
-Een andere verzameling technologieën die we overwogen hebben, waren de \textbf{Enterprise Content Management} systemen. Hierbij vinden we al vaker een geïntegreerde beheersinterface, alsook komt het frequent voor dat een reeds aanwezig versiebeheer-systeem zorgt voor efficiënte dataoverdracht. Toch voldeed deze oplossing niet, daar bij dergelijke systemen de nadruk vaak nog explicieter ligt op gestructureerde data, waardoor het niet praktisch zou zijn om er onze ongestructureerde voorstellingen in op te slaan.
+Een andere verzameling technologieën die we overwogen hebben, waren de \strong{Enterprise Content Management} systemen. Hierbij vinden we al vaker een geïntegreerde beheersinterface, alsook komt het frequent voor dat een reeds aanwezig versiebeheer-systeem zorgt voor efficiënte dataoverdracht. Toch voldeed deze oplossing niet, daar bij dergelijke systemen de nadruk vaak nog explicieter ligt op gestructureerde data, waardoor het niet praktisch zou zijn om er onze ongestructureerde voorstellingen in op te slaan.
 
-Daarom hebben we uiteindelijk te stap gemaakt naar gedediceerde \textbf{versiebeheer-systemen}. Hierbij is efficiënte overdracht van gegevens een basiseigenschap, alsook zorgt het bestandsgeoriënteerde aspect voor een relatief gebruiksvriendelijke interface. Zo kan een administrator heel gemakkelijk lokaal enkele wijzigingen doorvoeren aan een voorstelling, het resultaat testen in zijn browser, en indien gewenst zijn werk doorsturen naar de centrale server.
+Daarom hebben we uiteindelijk te stap gemaakt naar gedediceerde \strong{versiebeheer-systemen}. Hierbij is efficiënte overdracht van gegevens een basiseigenschap, alsook zorgt het bestandsgeoriënteerde aspect voor een relatief gebruiksvriendelijke interface. Zo kan een administrator heel gemakkelijk lokaal enkele wijzigingen doorvoeren aan een voorstelling, het resultaat testen in zijn browser, en indien gewenst zijn werk doorsturen naar de centrale server.
 
 Maar er bestaan tientallen versiebeheersystemen, die we elk gepeild hebben aan ons eisenpakket:
 \begin{itemize}
@@ -89,7 +89,7 @@ Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer n
 
 Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository zullen gebruiken, ligt de exacte layout van de bestanden daarin nog niet vast. Aangezien zowel de voorstellingen als de kioskconfiguratie erin zal moeten opgeslagen worden, is het belangrijk om op voorhand een eenduidige structuur vast te leggen die tevens toelaat om eenvoudig wijzigingen te detecteren.
 
-\begin{code}
+\begin{codefragment}
 \begin{verbatim}
 +-repository/
   |
@@ -112,13 +112,13 @@ Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository z
     +-kiosk1.ini
 \end{verbatim}
 \caption{Voorbeeld van een repository layout.}
-\end{code}
+\end{codefragment}
 
 Op het hoogste niveau zal de repository bestaan uit drie mappen. In de \texttt{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen. Zo wordt er voorzien in configuratiesecties voor de weergave, het geluid, het netwerk, enzovoort. Ook kan een configuratie specificeren welke voorstelling moet weergegeven worden, maar die informatie zal zich meestal bevinden in de kiosk-specifieke configuratiebstanden in de \texttt{kiosks} map. Daarin bevindt er zich een configuratiebestand per kiosk, waarin opnieuw de kiosk volledig kan geconfigureerd worden. Elk configuratiebestand (hetzij in de \texttt{kiosks} map, hetzij in de \texttt{configurations} map) kan ook specificeren welke andere configuraties tegelijk moeten ingeladen worden, waardoor gemeenschappelijke instellingen kunnen geabstraheerd worden.
 
 De \texttt{presentations} map tenslotte bevat de effectieve voorstellingen, elk in een aparte map. In die map bevinden zich de bestanden nodig om de voorstelling weer te geven, alsook een configuratiebestand dat nu enkel specifieke eigenschappen van de presentatie configureert.
 
-\begin{code}
+\begin{codefragment}
 \begin{verbatim}
 [configuration]
 description=Configuration for kiosk1.
@@ -128,9 +128,9 @@ load=nosound;hires
 name=presentation1
 \end{verbatim}
 \caption{Voorbeeld van een kiosk configuratiebstand, \texttt{kiosks/kiosk1.ini}.}
-\end{code}
+\end{codefragment}
 
-\begin{code}
+\begin{codefragment}
 \begin{verbatim}
 [configuration]
 description=Configuration for kiosks without sound.
@@ -139,22 +139,22 @@ description=Configuration for kiosks without sound.
 volume=0
 \end{verbatim}
 \caption{Voorbeeld van een gedeeld configuratiebestand, \texttt{configurations/nosound.ini}.}
-\end{code}
+\end{codefragment}
 
-\begin{code}
+\begin{codefragment}
 \begin{verbatim}
 description=Sample presentation 1.
 landing_page=index.html
 \end{verbatim}
 \caption{Voorbeeld van een voorstelling configuratiebestand, \texttt{presentations/presentation1/config.ini}.}
-\end{code}
+\end{codefragment}
 
 \section{Applicatieprotocol}
 \label{ontwerp:applicatie:applicatieprotocol}
 
 Het applicatieprotocol zorgt voor de communicatie tussen de verschillende componenten. Omdat dit protocol instaat voor verschillende taken, zullen we dan ook gebruik maken van verschillende protocollen, elk meest geschikt voor de taak die ze moeten realiseren.
 
-Omdat we er naar streven om geen configuratie te voorzien op de kiosken, zal een kiosk na aanmelding op 1 of andere manier moeten geconfigureerd worden. We kiezen ervoor om die configuratie uit te laten gaan van de server, die via een \textbf{remote procedure protocol} de nodige configuratiemethodes op de kiosk aanroept. Hiertoe moet bij aanmelding van een kiosk, de server een bericht krijgen, wat we kunnen realiseren met een \textbf{service discovery protocol}. Vervolgens moet de kiosk, na geconfigureerd te zijn, de data kunnen ophalen van de centrale server. De locatie van die data is doorgespeeld als onderdeel van de communicatie, en kan opgehaald worden via het \textbf{dataprotocol}.
+Omdat we er naar streven om geen configuratie te voorzien op de kiosken, zal een kiosk na aanmelding op 1 of andere manier moeten geconfigureerd worden. We kiezen ervoor om die configuratie uit te laten gaan van de server, die via een \strong{remote procedure protocol} de nodige configuratiemethodes op de kiosk aanroept. Hiertoe moet bij aanmelding van een kiosk, de server een bericht krijgen, wat we kunnen realiseren met een \textbf{service discovery protocol}. Vervolgens moet de kiosk, na geconfigureerd te zijn, de data kunnen ophalen van de centrale server. De locatie van die data is doorgespeeld als onderdeel van de communicatie, en kan opgehaald worden via het \textbf{dataprotocol}.
 
 \subsection{Beveiliging}
 
@@ -175,23 +175,23 @@ Opnieuw bestaan er verschillende technologieën die voorzien in deze elementaire
 \item Eenvoudig te gebruiken.
 \end{itemize}
 
-Een veelgebruikt protocol voor service discovery, is het  \textbf{\ac{ssdp}}, deel van het \ac{upnp} systeem. Dit door Microsoft-ontwikkeld systeem, biedt een heel uitgebreid en generisch raamwerk voor service discovery, waarbij die services volledig beschreven worden door het \ac{dcp}. Het geheel steunt sterk op XML en SOAP, en is strikt beheerd door het \ac{upnp} Forum. Hoewel het protocol essentieel wel voldoet aan onze eisen, is het groot en log, en biedt het veel te veel mogelijkheden die we toch niet gaan gebruiken.
+Een veelgebruikt protocol voor service discovery, is het  \strong{\ac{ssdp}}, deel van het \ac{upnp} systeem. Dit door Microsoft-ontwikkeld systeem, biedt een heel uitgebreid en generisch raamwerk voor service discovery, waarbij die services volledig beschreven worden door het \ac{dcp}. Het geheel steunt sterk op XML en SOAP, en is strikt beheerd door het \ac{upnp} Forum. Hoewel het protocol essentieel wel voldoet aan onze eisen, is het groot en log, en biedt het veel te veel mogelijkheden die we toch niet gaan gebruiken.
 
-Een compacter alternatief is \textbf{\ac{mdns}}, onderdeel van het door Apple ontwikkelde Zeroconf systeem. Zoals de naam doet vermoeden, is dit een multicast uitbreiding van het \ac{dns}, dat de \texttt{SRV} records gebruikt om services te publiceren. Dit is een veel eleganter systeem, essentieel slechts een eenvoudige uitbreiding van een bestaande technologie, maar kent zo ook zijn tekortkomingen. Zo worden bijvoorbeeld de mogelijkheden van elke service gedetailleerd via een verder niet gespecificeerd tekstveld. Dergelijke tekortkomingen zijn echter niet van belang in de context van dit systeem, waardoor we zullen kiezen voor dit systeem. Bovendien kent mDNS bindings voor zowel Java als Qt, de twee frameworks die we zullen gebruiken bij de effectieve realisatie van de deelsystemen (zie sectie \ref{ontwerp:applicatie:server} en \ref{ontwerp:applicatie:kiosk}).
+Een compacter alternatief is \strong{\ac{mdns}}, onderdeel van het door Apple ontwikkelde Zeroconf systeem. Zoals de naam doet vermoeden, is dit een multicast uitbreiding van het \ac{dns}, dat de \texttt{SRV} records gebruikt om services te publiceren. Dit is een veel eleganter systeem, essentieel slechts een eenvoudige uitbreiding van een bestaande technologie, maar kent zo ook zijn tekortkomingen. Zo worden bijvoorbeeld de mogelijkheden van elke service gedetailleerd via een verder niet gespecificeerd tekstveld. Dergelijke tekortkomingen zijn echter niet van belang in de context van dit systeem, waardoor we zullen kiezen voor dit systeem. Bovendien kent mDNS bindings voor zowel Java als Qt, de twee frameworks die we zullen gebruiken bij de effectieve realisatie van de deelsystemen (zie sectie \ref{ontwerp:applicatie:server} en \ref{ontwerp:applicatie:kiosk}).
 
 \subsection{Remote procedure}
 
 Van zodra de server weet heeft van een nieuwe kiosk, moet die overgaan tot de configuratie ervan. Ook moet het mogelijk zijn om acties teweeg te brengen, bijvoorbeeld ten gevolge van acties in de beheersinterface. Daarom zijn we niet op zoek gegaan naar specialistische configuratieprotocollen, maar eerder naar meer generieke \emph{remote procedure} protocollen.
 
-Opnieuw bestaan er vele verschillende remote procedure protocollen, elk met hun specifieke eigenschappen. Grotere enterprise-projecten geven vaak de voorkeur aan technologieën zoals \textbf{\ac{soap}} of \textbf{\ac{corba}}, enorme systemen die zeer uitgebreide mogelijkheden kennen. We zullen dergelijke technologieën echter om dezelfde reden vermijden als waarom we \ac{mdns} boven \ac{upnp} verkozen hebben: in de context van dit project is een compacter en eleganter protocol beter te controleren en dus interessanter dan een complex te configureren alleskunner waarbij de meerderheid van de mogelijkheden toch onbenut blijven.
+Opnieuw bestaan er vele verschillende remote procedure protocollen, elk met hun specifieke eigenschappen. Grotere enterprise-projecten geven vaak de voorkeur aan technologieën zoals \strong{\ac{soap}} of \textbf{\ac{corba}}, enorme systemen die zeer uitgebreide mogelijkheden kennen. We zullen dergelijke technologieën echter om dezelfde reden vermijden als waarom we \ac{mdns} boven \ac{upnp} verkozen hebben: in de context van dit project is een compacter en eleganter protocol beter te controleren en dus interessanter dan een complex te configureren alleskunner waarbij de meerderheid van de mogelijkheden toch onbenut blijven.
 
-In de categorie van compactere RPC-protocollen vinden we zo bijvoorbeeld \textbf{\ac{rest}}. Hoewel dit lichtgewicht, \ac{http}-gebaseerd, en ook veelgebruikt protocol op het eerste zicht aan onze eisen voldoet, kent het zijn mindere kanten. Zo kent het geen eenduidige manier om fouten terug te geven, alsook is het formaat waarin data verstuurd wordt niet gestandaardiseerd. Omdat de implementatie daarvan nog vrij veel werk zou vereisen, besteden we verder geen aandacht aan dit protocol.
+In de categorie van compactere RPC-protocollen vinden we zo bijvoorbeeld \strong{\ac{rest}}. Hoewel dit lichtgewicht, \ac{http}-gebaseerd, en ook veelgebruikt protocol op het eerste zicht aan onze eisen voldoet, kent het zijn mindere kanten. Zo kent het geen eenduidige manier om fouten terug te geven, alsook is het formaat waarin data verstuurd wordt niet gestandaardiseerd. Omdat de implementatie daarvan nog vrij veel werk zou vereisen, besteden we verder geen aandacht aan dit protocol.
 
-De meest courante ontwikkelframeworks zoals .NET en Java kennen meestal ook hun eigen \ac{rpc}-protocol, zoals \textbf{.NET Remoting} en \textbf{\ac{rmi}}. Hoewel deze protocollen meestal goed doorontwikkeld en veelzijdig zijn, kunnen ze vaak maar op een enkel platform gebruikt worden en zijn ze al zeker niet cross-language.
+De meest courante ontwikkelframeworks zoals .NET en Java kennen meestal ook hun eigen \ac{rpc}-protocol, zoals \strong{.NET Remoting} en \textbf{\ac{rmi}}. Hoewel deze protocollen meestal goed doorontwikkeld en veelzijdig zijn, kunnen ze vaak maar op een enkel platform gebruikt worden en zijn ze al zeker niet cross-language.
 
-Ook hebben we meer moderne \ac{rpc}-frameworks overwogen zoals \textbf{Apache Etch}, of \textbf{Apache Thrift}. Deze vrij nieuwe en tevens veelbelovende systemen bleken echter enkele kritieke eisen mis te lopen. Zo kent Apache Etch slechts weinig language bindings, en kent geen van beide een authenticatiemechanisme. Omdat beide verlopen over een eigen protocol, vallen ze ook niet te overkoepelen door een SSL webserver.
+Ook hebben we meer moderne \ac{rpc}-frameworks overwogen zoals \strong{Apache Etch}, of \textbf{Apache Thrift}. Deze vrij nieuwe en tevens veelbelovende systemen bleken echter enkele kritieke eisen mis te lopen. Zo kent Apache Etch slechts weinig language bindings, en kent geen van beide een authenticatiemechanisme. Omdat beide verlopen over een eigen protocol, vallen ze ook niet te overkoepelen door een SSL webserver.
 
-Daarom hebben we uiteindelijk gekozen voor \textbf{XML-RPC}, een zeer simplistisch \ac{rpc}-protocol dat XML-geformatteerde berichten verstuurd over \ac{http}. Hierdoor wordt het mogelijk om op een transparante manier een vorm van authenticatiecontrole toe te voegen. Toch kent XML-RPC enkele fundamentele problemen, zoals het inefficiënte berichtformaat. Omdat we echter berusten op een apart dataprotocol, is dit geen groot probleem. Ook is de specificatie, om het zacht uit te drukken, vrij beperkt. Dit kan echter een voordeel zijn: de ermee geïmplementeerde interface wordt er compact mee gehouden, en valt eenvoudig te gebruiken vanuit verschillende talen. Dit wordt verder vereenvoudigd door het groot aantal implementaties, voor de meeste talen zijn er verschillende te vinden.
+Daarom hebben we uiteindelijk gekozen voor \strong{XML-RPC}, een zeer simplistisch \ac{rpc}-protocol dat XML-geformatteerde berichten verstuurd over \ac{http}. Hierdoor wordt het mogelijk om op een transparante manier een vorm van authenticatiecontrole toe te voegen. Toch kent XML-RPC enkele fundamentele problemen, zoals het inefficiënte berichtformaat. Omdat we echter berusten op een apart dataprotocol, is dit geen groot probleem. Ook is de specificatie, om het zacht uit te drukken, vrij beperkt. Dit kan echter een voordeel zijn: de ermee geïmplementeerde interface wordt er compact mee gehouden, en valt eenvoudig te gebruiken vanuit verschillende talen. Dit wordt verder vereenvoudigd door het groot aantal implementaties, voor de meeste talen zijn er verschillende te vinden.
 
 \subsection{Data uitwisseling}
 
@@ -204,10 +204,10 @@ Nu voorzien we echter in een apart versiebeheersysteem (\ac{svn}), dat vaak gebr
 
 Een belangrijk aspect van het systeem is dat het robuust is, en dus voorziet in een bepaalde vorm van redundantie. Zoals het hardwareontwerp zal verduidelijken (zie hoofdstuk \ref{ontwerp:hardware}), voorzien we reeds in hardwarematige redundantie onder de vorm van een RAID configuratie. Toch verhelpt dit het fundamentele probleem niet: de centrale server is een \emph{single point of failure}.
 
-Een eerste idee om dit te verhelpen was het voorzien van een \textbf{backup server}, die de centrale server continu zou monitoren. In geval van diens falen, zou de failover functionaliteit geactiveerd worden, waarbij de taken van de centrale server integraal overgenomen zouden worden. Gezien het configuratieloze aspect van de opstelling, en het feit dat elk initiatief steeds van de servers uit komt, zou dit totaal geen actie vereisen. Om ervoor te zorgen dat de backup server steeds over de meest recente informatie beschikt, activeert die tevens een (passieve) \ac{mdns} module, alsook registreert die zich bij de primaire server zodat updates aan de presentatie-repository steeds op beide servers aanwezig zijn.
+Een eerste idee om dit te verhelpen was het voorzien van een \strong{backup server}, die de centrale server continu zou monitoren. In geval van diens falen, zou de failover functionaliteit geactiveerd worden, waarbij de taken van de centrale server integraal overgenomen zouden worden. Gezien het configuratieloze aspect van de opstelling, en het feit dat elk initiatief steeds van de servers uit komt, zou dit totaal geen actie vereisen. Om ervoor te zorgen dat de backup server steeds over de meest recente informatie beschikt, activeert die tevens een (passieve) \ac{mdns} module, alsook registreert die zich bij de primaire server zodat updates aan de presentatie-repository steeds op beide servers aanwezig zijn.
 Hoewel deze configuratie zeer elegant lijkt (zeker indien de replicatie alsook promotie/degradatie van de server volledig autonoom verloopt), is ze niet realistisch op budgettair vlak. Het is niet alleen kostelijk om een tweede voldoende krachtige server samen te stellen, maar de aanwezigheid ervan betekent een extra continue energieconsumptie.
 
-Daarom hebben we gekozen voor een tweede piste, namelijk het gebruik van een \textbf{backup-cache in de kiosken}. Aangezien embedded hardware vaak komt met een optie voor een kaartslot, is het voordeliger om voor elke kiosk een dergelijke geheugenkaart aan te kopen, en de applicatie te voorzien van de functionaliteit om bij het opvragen van de configuratie en voorstellingen die lokaal op te slaan. Wanneer vervolgens de centrale server onbereikbaar blijkt te zijn, kan steeds gebruik gemaakt worden van deze lokale cache om toch volwaardig te kunnen blijven functioneren.
+Daarom hebben we gekozen voor een tweede piste, namelijk het gebruik van een \strong{backup-cache in de kiosken}. Aangezien embedded hardware vaak komt met een optie voor een kaartslot, is het voordeliger om voor elke kiosk een dergelijke geheugenkaart aan te kopen, en de applicatie te voorzien van de functionaliteit om bij het opvragen van de configuratie en voorstellingen die lokaal op te slaan. Wanneer vervolgens de centrale server onbereikbaar blijkt te zijn, kan steeds gebruik gemaakt worden van deze lokale cache om toch volwaardig te kunnen blijven functioneren.
 
 \section{Server}
 \label{ontwerp:applicatie:server}
@@ -356,16 +356,16 @@ Zoals uit de vorige paragraaf blijkt, is embedded hardware de meest geschikte ke
 \item Voldoende performant.
 \end{itemize}
 
-Zo hebben we gekeken naar de populaire \textbf{\makeurl{http://beagleboard.org/}{BeagleBoard}}, een compacte en vrij performante computer, met al de benodigde features en maar weinig meer. De computer komt ook met een speciale \ac{dsp}, alsook een \ac{gpu} die door Qt te gebruiken valt om de performantie te verhogen. Na echter contact opgenomen te hebben met de fabrikant, was die niet geïnteresseerd in de oplage die we zouden bestellen. Het bleek immers dat de BeagleBoard niet bedoeld is voor bedrijven, maar voor beginnende hardware-developers die voor weinig geld willen experimenteren met embedded development.
+Zo hebben we gekeken naar de populaire \strong{\makeurl{http://beagleboard.org/}{BeagleBoard}}, een compacte en vrij performante computer, met al de benodigde features en maar weinig meer. De computer komt ook met een speciale \ac{dsp}, alsook een \ac{gpu} die door Qt te gebruiken valt om de performantie te verhogen. Na echter contact opgenomen te hebben met de fabrikant, was die niet geïnteresseerd in de oplage die we zouden bestellen. Het bleek immers dat de BeagleBoard niet bedoeld is voor bedrijven, maar voor beginnende hardware-developers die voor weinig geld willen experimenteren met embedded development.
 
-Daarom zijn we van de BeagleBoard afgestapt, om gelukkig een iets duurder geprijsd maar voor de rest vergelijkbaar product te vinden: de \textbf{\makeurl{http://www.igep.es/index.php}{IGEPv2}}. Lange tijd hebben we dan ook gedacht dat dit de uiteindelijke keuze zou worden \textit{(op moment van schrijven is het nog steeds niet helemaal zeker)}. Maar gezien dat iets hogere kostenplaatje, en het feit dat alle extra toebehoren (zoals een voeding, HDMI kabel, omhulsel) nog los moeten aangekocht worden, zijn we toch blijven uitkijken naar een alternatief.
+Daarom zijn we van de BeagleBoard afgestapt, om gelukkig een iets duurder geprijsd maar voor de rest vergelijkbaar product te vinden: de \strong{\makeurl{http://www.igep.es/index.php}{IGEPv2}}. Lange tijd hebben we dan ook gedacht dat dit de uiteindelijke keuze zou worden \textit{(op moment van schrijven is het nog steeds niet helemaal zeker)}. Maar gezien dat iets hogere kostenplaatje, en het feit dat alle extra toebehoren (zoals een voeding, HDMI kabel, omhulsel) nog los moeten aangekocht worden, zijn we toch blijven uitkijken naar een alternatief.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/IGEPv2}
 	\caption{IGEPv2}
 \end{figure}
 
-Dat hebben we gevonden in de vorm van de \textbf{\makeurl{http://www.globalscaletechnologies.com/t-guruplugdisplaydetails.aspx}{GuruPlug Display}}. Deze computer is misschien minder krachtig (vooral acceleratiemogelijkheden zijn een prominente afwezige), maar wordt geleverd als een sluitend geheel, waarbij het standaardpakket tevens voorziet van alle nodige kabels.
+Dat hebben we gevonden in de vorm van de \strong{\makeurl{http://www.globalscaletechnologies.com/t-guruplugdisplaydetails.aspx}{GuruPlug Display}}. Deze computer is misschien minder krachtig (vooral acceleratiemogelijkheden zijn een prominente afwezige), maar wordt geleverd als een sluitend geheel, waarbij het standaardpakket tevens voorziet van alle nodige kabels.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/GuruPlug_Display}
@@ -394,7 +394,7 @@ Nu we echter de DVD-spelers gaan vervangen door een computer, zullen we ook voor
 
 \subsection{Aansluiting}
 
-Het grootste ontwerpprobleem hierbij is de manier van aansluiting die we zullen gebruiken om de module in verbinding te brengen met de rest van de kioskhardware. De meeste eenvoudige keuze zou die zijn van de \textbf{parallelle poort}, waarbij we de pinnen van de poort vrijwel direct zouden kunnen verbinden met de knoppen. Jammer genoeg zijn parallelle poorten steeds schaarser, en komt die vrijwel nooit meer voor op embedded hardware. Een andere toegankelijke optie is de \textbf{seriële poort}. Hierbij zou dan extra periferie benodigd zijn om in te staan voor de serializatie van de signalen, toch als we de poort op een platform-onafhankelijke manier willen uitlezen. Indien we echter platform-specifieke code toelaten, kunnen we de stuursignalen van de poort op een parallelle manier misbruiken zodat ook die periferie geëlimineerd wordt. Toch voldoet ook deze oplossing niet: ook de seriële poort wordt steeds schaarser, en alhoewel ze momenteel nog te vinden is op de meeste embedded-hardware, kan dat binnen enkele jaren het geval niet meer zijn.
+Het grootste ontwerpprobleem hierbij is de manier van aansluiting die we zullen gebruiken om de module in verbinding te brengen met de rest van de kioskhardware. De meeste eenvoudige keuze zou die zijn van de \strong{parallelle poort}, waarbij we de pinnen van de poort vrijwel direct zouden kunnen verbinden met de knoppen. Jammer genoeg zijn parallelle poorten steeds schaarser, en komt die vrijwel nooit meer voor op embedded hardware. Een andere toegankelijke optie is de \textbf{seriële poort}. Hierbij zou dan extra periferie benodigd zijn om in te staan voor de serializatie van de signalen, toch als we de poort op een platform-onafhankelijke manier willen uitlezen. Indien we echter platform-specifieke code toelaten, kunnen we de stuursignalen van de poort op een parallelle manier misbruiken zodat ook die periferie geëlimineerd wordt. Toch voldoet ook deze oplossing niet: ook de seriële poort wordt steeds schaarser, en alhoewel ze momenteel nog te vinden is op de meeste embedded-hardware, kan dat binnen enkele jaren het geval niet meer zijn.
 
 Daarom hebben we uiteindelijk gekozen voor een poort die we normaal gezien wel nog enkele jaren zullen terugvinden op de meest courante hardware: de \ac{usb} poort. Deze veelzijdige poort laat ons doe om de interface module te laten communiceren met een computer, en is ook relatief toekomstgericht (de recent geïntroduceerde \ac{usb} versie 3 is nog steeds terugwaarts compatibel met \ac{usb} versie 1 toestellen). Maar het gebruik van \ac{usb} kent ook een nadeel. Het protocol is immers pakket-georiënteerd, waardoor extra periferie een noodzaak is. Ook is de configuratie complexer, zeker indien we een toestel willen dat zonder extra stuurprogramma's werkt op verschillende besturingssystemen.
 
@@ -402,8 +402,8 @@ Daarom hebben we uiteindelijk gekozen voor een poort die we normaal gezien wel n
 
 Aangezien \ac{usb} een pakket-georiënteerd protocol is, hebben we steeds extra periferie nodig om de gebruikersinvoer door te sturen. Om geen speciale software te vereisen, moet onze module een apparaat uit de \ac{usb} \ac{hid} klasse implementeren. Het voordeel van deze klasse is immers dat het mogelijk is om een toestel te realiseren dat geen extra stuurprogramma's nodig heeft. Dit geldt echter enkel voor bepaalde subcategorieën van deze klasse, zoals toetsenborden, muizen, \dots Daarom zullen we onze module zichzelf laten identificeren als een toetsenbord, waarbij we dan in de Javascript code van de voorstellingen gepast kunnen reageren op dergelijke toetsaanslagen.
 
-Om een \ac{usb} toetsenbord te realiseren, zijn we in eerste instantie op zoek gegaan naar \textbf{\ac{usb} keyboard encoders}. In de huidige opzet hebben we echter maar nood aan 4 knoppen, terwijl de meeste keyboard encoders veel meer toetsen toelaten. Daarom is de prijs meestal ook een pak hoger, zo kost de \makeurl{http://www.ultimarc.com/ipacve.html}{I-Pac VE} keyboard encoder, die 32 toetsen toelaat, reeds \$35!
+Om een \ac{usb} toetsenbord te realiseren, zijn we in eerste instantie op zoek gegaan naar \strong{\ac{usb} keyboard encoders}. In de huidige opzet hebben we echter maar nood aan 4 knoppen, terwijl de meeste keyboard encoders veel meer toetsen toelaten. Daarom is de prijs meestal ook een pak hoger, zo kost de \makeurl{http://www.ultimarc.com/ipacve.html}{I-Pac VE} keyboard encoder, die 32 toetsen toelaat, reeds \$35!
 
-Daarom lijkt het interessanter om zelf te voorzien in de conversie naar \ac{usb}-pakketten, door gebruik te maken van een \textbf{microcontroller met \ac{usb} hardware}. Dergelijke microcontrollers voorzien in on-chip \ac{usb} communicatiemogelijkheden, net zoals de meeste reguliere microcontrollers toelaten om gegevens over \ac{uart} te verzenden. Om vervolgens de \ac{usb} hardware op een toegankelijke manier te gebruiken, bestaan er verschillende bibliotheken zoals de officiële \ac{usb} bibliotheek van Atmel, of het open-source \makeurl{http://www.fourwalledcubicle.com/LUFA.php}{\ac{lufa}}. Het nadeel van deze piste is echter de meerkost vande \ac{usb} hardware, die eigenlijk onnodig is daar we enkel gebruik zullen maken van de \emph{low speed} overdrachtsmodus.
+Daarom lijkt het interessanter om zelf te voorzien in de conversie naar \ac{usb}-pakketten, door gebruik te maken van een \strong{microcontroller met \ac{usb} hardware}. Dergelijke microcontrollers voorzien in on-chip \ac{usb} communicatiemogelijkheden, net zoals de meeste reguliere microcontrollers toelaten om gegevens over een seriële \ac{uart} te transporteren. Om vervolgens de \ac{usb} hardware op een toegankelijke manier te gebruiken, bestaan er verschillende bibliotheken zoals de officiële \ac{usb} bibliotheek van Atmel, of het open-source \makeurl{http://www.fourwalledcubicle.com/LUFA.php}{\ac{lufa}}. Het nadeel van deze piste is echter de meerkost van de \ac{usb} hardware, die eigenlijk onnodig is daar we enkel gebruik zullen maken van de \emph{low speed} overdrachtsmodus.
 
-Een derde optie is om gebruik te maken van een \textbf{microcontroller met \ac{usb} software}. Hierbij hebben we geen speciale hardware nodig, enkel een microcontroller die krachtig genoeg is om de \ac{usb} software uit te voeren. Het grote nadeel hieraan is dat het met de huidige microcontrollers enkel mogelijk is om gebruik te maken van \emph{low speed} \ac{ac}, maar voor onze toepassing is dit geen probleem. Opnieuw zijn er verschillende mogelijkheden om dit te realiseren, waaronder een \makeurl{http://www.atmel.com/dyn/resources/prod\_documents/doc2556.pdf}{application note} van Atmel. Deze application note gebruikt relatief weinig hardware om elementaire \ac{usb} communicatie te realiseren, maar zoals later zal blijken zijn er nog efficiëntere configuraties mogelijk. Ook is de software geschreven in AVR assembler, waardoor het geheel niet zo overdraagbaar is. Daarom zullen we gebruik maken van een open-source alternatief: de \makeurl{http://www.obdev.at/products/vusb/index.html}{V-USB} bibliotheek. Deze in C-geschreven bibliotheek biedt een eenvoudigere interface, alsook verschillende voorbeeldprojecten om het gebruik ervan te illustreren.
+Een derde optie is om gebruik te maken van een \strong{microcontroller met \ac{usb} software}. Hierbij hebben we geen speciale hardware nodig, enkel een microcontroller die krachtig genoeg is om de \ac{usb} software uit te voeren. Het grote nadeel hieraan is dat het met de huidige microcontrollers enkel mogelijk is om gebruik te maken van \emph{low speed} \ac{usb}, maar voor onze toepassing is dit geen probleem. Opnieuw zijn er verschillende mogelijkheden om dit te realiseren, waaronder een \makeurl{http://www.atmel.com/dyn/resources/prod\_documents/doc2556.pdf}{application note} van Atmel. Deze application note gebruikt relatief weinig hardware om elementaire \ac{usb} communicatie te realiseren, maar zoals later zal blijken zijn er nog efficiëntere configuraties mogelijk. Ook is de software geschreven in AVR assembler, waardoor het geheel niet zo overdraagbaar is. Daarom zullen we gebruik maken van een open-source alternatief: de \makeurl{http://www.obdev.at/products/vusb/index.html}{V-USB} bibliotheek. Deze in C-geschreven bibliotheek biedt een eenvoudigere interface, alsook verschillende voorbeeldprojecten om het gebruik ervan te illustreren.
