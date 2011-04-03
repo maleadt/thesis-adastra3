@@ -371,3 +371,39 @@ Dat hebben we gevonden in de vorm van de \textbf{\makeurl{http://www.globalscale
 	\includegraphics[width=\textwidth]{afbeeldingen/GuruPlug_Display}
 	\caption{GuruPlug Display}
 \end{figure}
+
+
+\section{Interface module}
+\label{ontwerp:hardware:interface}
+
+De gebruikersinterface wordt gerealiseerd door 4 grote drukknoppen ingebouwd in de kast van elke kiosk. Momenteel worden deze knoppen intern doorverbonden met een afstandsbediening, waardoor de gebruiker via het indrukken van de knoppen indirect de DVD-speler kan besturen om zo een fragment te selecteren.
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{afbeeldingen/kiosk_knoppen}
+	\caption{Huidige aansluitingsmethode knoppen}
+\end{figure}
+
+Nu we echter de DVD-spelers gaan vervangen door een computer, zullen we ook voor deze interface module een compatibel alternatief moeten vinden. Aan deze module worden enkele specifieke eisen gesteld:
+\begin{itemize}
+\item Goedkoop: de module moet zo goedkoop mogelijk te produceren zijn, alsook mag het niet teveel energie verbruiken;
+\item Toekomstgericht: aansluitmogelijkheden mogen geen gebruik maken van oude protocollen;
+\item Gebruiksvriendelijk: installatie van de module moet eenvoudig zijn;
+\item Snel: de tijd tussen het indrukken van een toets en registratie van het signaal, moet minimaal zijn;
+\item Uitbreidbaar: het moet mogelijk zijn om later extra toetsen toe te voegen aan de module.
+\end{itemize}
+
+\subsection{Aansluiting}
+
+Het grootste ontwerpprobleem hierbij is de manier van aansluiting die we zullen gebruiken om de module in verbinding te brengen met de rest van de kioskhardware. De meeste eenvoudige keuze zou die zijn van de \textbf{parallelle poort}, waarbij we de pinnen van de poort vrijwel direct zouden kunnen verbinden met de knoppen. Jammer genoeg zijn parallelle poorten steeds schaarser, en komt die vrijwel nooit meer voor op embedded hardware. Een andere toegankelijke optie is de \textbf{seriële poort}. Hierbij zou dan extra periferie benodigd zijn om in te staan voor de serializatie van de signalen, toch als we de poort op een platform-onafhankelijke manier willen uitlezen. Indien we echter platform-specifieke code toelaten, kunnen we de stuursignalen van de poort op een parallelle manier misbruiken zodat ook die periferie geëlimineerd wordt. Toch voldoet ook deze oplossing niet: ook de seriële poort wordt steeds schaarser, en alhoewel ze momenteel nog te vinden is op de meeste embedded-hardware, kan dat binnen enkele jaren het geval niet meer zijn.
+
+Daarom hebben we uiteindelijk gekozen voor een poort die we normaal gezien wel nog enkele jaren zullen terugvinden op de meest courante hardware: de \ac{usb} poort. Deze veelzijdige poort laat ons doe om de interface module te laten communiceren met een computer, en is ook relatief toekomstgericht (de recent geïntroduceerde \ac{usb} versie 3 is nog steeds terugwaarts compatibel met \ac{usb} versie 1 toestellen). Maar het gebruik van \ac{usb} kent ook een nadeel. Het protocol is immers pakket-georiënteerd, waardoor extra periferie een noodzaak is. Ook is de configuratie complexer, zeker indien we een toestel willen dat zonder extra stuurprogramma's werkt op verschillende besturingssystemen.
+
+\subsection{Implementatie \ac{usb}}
+
+Aangezien \ac{usb} een pakket-georiënteerd protocol is, hebben we steeds extra periferie nodig om de gebruikersinvoer door te sturen. Om geen speciale software te vereisen, moet onze module een apparaat uit de \ac{usb} \ac{hid} klasse implementeren. Het voordeel van deze klasse is immers dat het mogelijk is om een toestel te realiseren dat geen extra stuurprogramma's nodig heeft. Dit geldt echter enkel voor bepaalde subcategorieën van deze klasse, zoals toetsenborden, muizen, \dots Daarom zullen we onze module zichzelf laten identificeren als een toetsenbord, waarbij we dan in de Javascript code van de voorstellingen gepast kunnen reageren op dergelijke toetsaanslagen.
+
+Om een \ac{usb} toetsenbord te realiseren, zijn we in eerste instantie op zoek gegaan naar \textbf{\ac{usb} keyboard encoders}. In de huidige opzet hebben we echter maar nood aan 4 knoppen, terwijl de meeste keyboard encoders veel meer toetsen toelaten. Daarom is de prijs meestal ook een pak hoger, zo kost de \makeurl{http://www.ultimarc.com/ipacve.html}{I-Pac VE} keyboard encoder, die 32 toetsen toelaat, reeds \$35!
+
+Daarom lijkt het interessanter om zelf te voorzien in de conversie naar \ac{usb}-pakketten, door gebruik te maken van een \textbf{microcontroller met \ac{usb} hardware}. Dergelijke microcontrollers voorzien in on-chip \ac{usb} communicatiemogelijkheden, net zoals de meeste reguliere microcontrollers toelaten om gegevens over \ac{uart} te verzenden. Om vervolgens de \ac{usb} hardware op een toegankelijke manier te gebruiken, bestaan er verschillende bibliotheken zoals de officiële \ac{usb} bibliotheek van Atmel, of het open-source \makeurl{http://www.fourwalledcubicle.com/LUFA.php}{\ac{lufa}}. Het nadeel van deze piste is echter de meerkost vande \ac{usb} hardware, die eigenlijk onnodig is daar we enkel gebruik zullen maken van de \emph{low speed} overdrachtsmodus.
+
+Een derde optie is om gebruik te maken van een \textbf{microcontroller met \ac{usb} software}. Hierbij hebben we geen speciale hardware nodig, enkel een microcontroller die krachtig genoeg is om de \ac{usb} software uit te voeren. Het grote nadeel hieraan is dat het met de huidige microcontrollers enkel mogelijk is om gebruik te maken van \emph{low speed} \ac{ac}, maar voor onze toepassing is dit geen probleem. Opnieuw zijn er verschillende mogelijkheden om dit te realiseren, waaronder een \makeurl{http://www.atmel.com/dyn/resources/prod\_documents/doc2556.pdf}{application note} van Atmel. Deze application note gebruikt relatief weinig hardware om elementaire \ac{usb} communicatie te realiseren, maar zoals later zal blijken zijn er nog efficiëntere configuraties mogelijk. Ook is de software geschreven in AVR assembler, waardoor het geheel niet zo overdraagbaar is. Daarom zullen we gebruik maken van een open-source alternatief: de \makeurl{http://www.obdev.at/products/vusb/index.html}{V-USB} bibliotheek. Deze in C-geschreven bibliotheek biedt een eenvoudigere interface, alsook verschillende voorbeeldprojecten om het gebruik ervan te illustreren.
