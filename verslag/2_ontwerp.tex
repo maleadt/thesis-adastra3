@@ -398,7 +398,7 @@ Het grootste ontwerpprobleem hierbij is de manier van aansluiting die we zullen 
 
 Daarom hebben we uiteindelijk gekozen voor een poort die we normaal gezien wel nog enkele jaren zullen terugvinden op de meest courante hardware: de \ac{usb} poort. Deze veelzijdige poort laat ons doe om de interface module te laten communiceren met een computer, en is ook relatief toekomstgericht (de recent geïntroduceerde \ac{usb} versie 3 is nog steeds terugwaarts compatibel met \ac{usb} versie 1 toestellen). Maar het gebruik van \ac{usb} kent ook een nadeel. Het protocol is immers pakket-georiënteerd, waardoor extra periferie een noodzaak is. Ook is de configuratie complexer, zeker indien we een toestel willen dat zonder extra stuurprogramma's werkt op verschillende besturingssystemen.
 
-\subsection{Implementatie \ac{usb}}
+\subsection{Realisatie \ac{usb}-communicatie}
 
 Aangezien \ac{usb} een pakket-georiënteerd protocol is, hebben we steeds extra periferie nodig om de gebruikersinvoer door te sturen. Om geen speciale software te vereisen, moet onze module een apparaat uit de \ac{usb} \ac{hid} klasse implementeren. Het voordeel van deze klasse is immers dat het mogelijk is om een toestel te realiseren dat geen extra stuurprogramma's nodig heeft. Dit geldt echter enkel voor bepaalde subcategorieën van deze klasse, zoals toetsenborden, muizen, \dots Daarom zullen we onze module zichzelf laten identificeren als een toetsenbord, waarbij we dan in de Javascript code van de voorstellingen gepast kunnen reageren op dergelijke toetsaanslagen.
 
