@@ -1,5 +1,0 @@
-upnp zou ook een mogelijke kandidaat zijn voor het service-discovery en remote-
-procedure systeem, aangezien upnp voorziet in beide. het probleem is echter dat
-upnp relatief zwaar is om te implementeren, alsook het niet voorziet in
-een mogelijkheid tot authenticatie. ook wordt dan het gestroomlijne model (zowel
-rpc als data protocol mooi bovenop SSL) ongedaan gemaakt.
