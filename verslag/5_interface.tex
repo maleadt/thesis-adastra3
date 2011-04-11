@@ -98,33 +98,15 @@ TODO: referentie verkeerd?
 	\caption{Circuit en connector voor schakelaars zonder dioden, en aanduiding van voorbeeldstromen daarbij}
 \end{figure}
 
-We kunnen echter niet zomaar dioden op de signaallijnen plaatsen. Als we dit wel zouden doen, zou de het volledige spanningsverschil tussen de elektrische grond en de poortpin (wat $5$ volt bedraagt, dankzij de interne pull-up) over de diode geplaatst worden, waardoor die beschadigd zou worden. Om de diodes te beschermen tegen deze schadelijke voorwaartse spanningsval, zullen we bij elk van de drie poortpinnen een extra weerstand plaatsen. Hierdoor zal de overmatige spanning over deze weerstand komen te staan, waardoor de diodes slechts het spanningsverschil zullen moeten verwerken waarvoor ze gemaakt zijn ($0.5$ volt, zoals hierboven bepaald). De keuze van deze weerstand is echter niet zo eenvoudig als het op het eerste zicht zou lijken: we moeten immers zorgen dat het spanningsniveau aan het hoogimpedant meetcircuit binnen de microcontroller zich in alle gevallen binnen het gebied bevindt dat overeen komt met een laag signaal.
+We kunnen wel niet zomaar dioden op de signaallijnen plaatsen. Als we dit wel zouden doen, zou de het volledige spanningsverschil tussen de elektrische grond en de poortpin (wat $5$ volt bedraagt, dankzij de interne pull-up) over de diode geplaatst worden, waardoor die beschadigd zou worden. Dit zou opgelost kunnen worden door bij elk van de drie poortpinnen een extra beschermingsweerstand te plaatsen, waardoor de overmatige spanning over deze weerstand zou komen te staan en de dioden slechts het spanningsverschil waarvoor ze gemaakt zijn zouden moeten verwerken. Het berekenen van de waarde van deze weerstand zou wel enig werk vereisen, daar we moeten zorgen dat de spanning die aan het hoogimpedant meetcircuit aangelegd wordt zich binnen het bereik van een laag signaal bevindt. De datasheet van de microcontroller stelt zo dat een laag signaal gedetecteerd wordt tussen $0$ volt en $0.6$ keer de bronspanning. Aangezien de microcontroller zich rechtstreeks voedt met de USB bronspanning, dewelke $5$ volt bedraagt, moet de spanning aan het meetcircuit vallen tussen $0$ en $3$ volt.
 
-De datasheet van de microcontroller stelt dat een laag signaal gedetecteerd wordt tussen $0$ volt en $0.6$ keer de bronspanning. Aangezien de microcontroller zich rechtstreeks voedt met de USB bronspanning, dewelke $5$ volt bedraagt, moet de spanning aan het meetcircuit vallen tussen $0$ en $3$ volt. Indien we deze waarden combineren met de worst-case waarde voor de interne pull-up weerstand, zijnde $20$ kilo-ohm (dit aangezien de interne pull-up zich samen met onze beschermingsweerstand gedraagt zoals een spanningsdeler, waardoor een lagere waarde voor de pull-up weerstand resulteert in een hogere spanning over de beschermingsweerstand en dus aan het meetcircuit), kunnen we de mogelijke waarden voor onze beschermingsweerstand perfect berekenen. We behandelen hierbij opnieuw het worst-case geval waarbij zich het maximale aantal dioden bevindt tussen de elektrische grond en de beschermingsweerstand, omdat die steeds een inbreng hebben van een extra $0.5$ volt die niet te reduceren valt door de beschermingsweerstand te veranderen.
-\begin{equation}
-\begin{split}
-V_{cc} &= 5 V \\
-R_{pullup} &= 20 kΩ \\
-V_{dioden} &= 3 . 0.5 V \\
-           &= 1.5 V \\ 
-V_{spanningsdeler} &= V_{cc} - V_{dioden} \\
-                   &= 3.5 V
-\end{split}
-\end{equation}
-\begin{equation}
-\begin{split}
-V_{bescherming} &= \frac{V_{spanningsdeler}}{R_{pullup} + R_{bescherming}} . R_{bescherming} \\
-                &= \frac{3.5 V}{20 kΩ + R_{bescherming}} . R_{bescherming} \\
-\end{split}
-\end{equation}
-\begin{equation}
-\begin{split}
-V_{bescherming} + V_{dioden} &< 3 V \\
-\frac{3.5 V}{20 kΩ + R_{bescherming}} . R_{bescherming} + 1.5 V &< 3 V \\
-\frac{3.5 V}{20 kΩ + R_{bescherming}} . R_{bescherming} &< 1.5 V \\
-R_{bescherming} &< 15 kΩ \\
-\end{split}
-\end{equation}
+Als we echter nauwkeuriger kijken naar de werking van de interne pull-up (figuur \ref{fig:avr_pullup}), zien we dat deze reeds op zichzelf functioneert als een beschermingsweerstand. In het slechtste geval bijvoorbeeld, waarbij er zich na de pull-up nog drie dioden met elk een spanningsval van $0.5$ volt bevinden, zal er zich zo slechts $1.5$ volt op de signaallijn bevinden, wat ruim binnen de grenzen voor detectie van een laag signaal bevindt. Aangezien de weerstand tevens voldoende groot is, moeten we niet zorgen voor een extra stroomreductie en verdwijnt elk nut van een extra beschermingsweerstand.
+
+\begin{figure}
+	\label{fig:avr_pullup}
+	\includegraphics[width=\textwidth]{afbeeldingen/avr_pullup}
+	\caption{Pull-up weerstand binnenin een AVR microcontroller}
+\end{figure}
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/circuit_schakelaars}
