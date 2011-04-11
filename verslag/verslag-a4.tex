@@ -11,6 +11,7 @@
 % UTF8 gebruiken voor gebruik van alle symbolen
 \usepackage[utf8]{inputenc}
 \usepackage{eurosym}
+\DeclareUnicodeCharacter{03A9}{\Omega}
 
 % Noot: je kan het graphicxpakket een optie dvips of pdftex doorgeven
 % in dat geval moet je ze ook aan iiiscriptie doorgeven, dus bijvoorbeeld
@@ -27,6 +28,9 @@
 
 % Afkortingen intelligent gebruiken
 \usepackage[printonlyused,withpage]{acronym}
+
+% Math support
+\usepackage{amssymb,amsmath}
 
 % Extra functies
 \input{functies.tex}
