@@ -1,3 +1,6 @@
+\documentclass[verslag.tex]{subfiles} 
+\begin{document}
+
 \part{Interface module}
 \label{interface}
 
@@ -90,12 +93,10 @@ Er is echter een bijkomend probleem: we hebben maar 3 poortpinnen tot onze besch
 
 De realisatie van een dergelijke multiplexer lijkt eenvoudig, maar er is een belangrijk detail dat we moeten opmerken. Aangezien de verschillende poortpinnen verbonden zijn met verschillende knoppen, kan er bij het indrukken van een enkele schakelaar stroom terugvloeien via de contactpunten van diens signaallijnen met andere knoppen van een totaal ongerelateerde poortpin, zoals te zien is op figuur \ref{fig:circuit_schakelaars_foutief}. Om dit te vermijden moeten we overal waar er twee signaallijnen met elkaar verbonden zijn, een diode plaatsen zodat er geen stroom kan terugvloeien naar een vorig verbindingspunt. Hiervoor hebben we een reguliere diode nodig, waarbij geen speciale eisen gesteld worden. Daarom kiezen we voor de 1N4148, een populaire diode die vaak gebruikt wordt voor het schakelen van digitale signalen. Zoals we kunnen opzoeken in het stroom-spanningsdiagram van deze diode, zorgt ze bij een stroom tussen $0.1$ en $0.25$ milliampères (gegenereerd door de pull-up weerstand binnen de microcontroller) voor een spanningsval van $0.5$ volt.
 
-TODO: referentie verkeerd?
-
 \begin{figure}
-	\label{fig:circuit_schakelaars_foutief}
 	\includegraphics[width=\textwidth]{afbeeldingen/circuit_schakelaars_foutief}
 	\caption{Circuit en connector voor schakelaars zonder dioden, en aanduiding van voorbeeldstromen daarbij}
+	\label{fig:circuit_schakelaars_foutief}
 \end{figure}
 
 We kunnen wel niet zomaar dioden op de signaallijnen plaatsen. Als we dit wel zouden doen, zou de het volledige spanningsverschil tussen de elektrische grond en de poortpin (wat $5$ volt bedraagt, dankzij de interne pull-up) over de diode geplaatst worden, waardoor die beschadigd zou worden. Dit zou opgelost kunnen worden door bij elk van de drie poortpinnen een extra beschermingsweerstand te plaatsen, waardoor de overmatige spanning over deze weerstand zou komen te staan en de dioden slechts het spanningsverschil waarvoor ze gemaakt zijn zouden moeten verwerken. Het berekenen van de waarde van deze weerstand zou wel enig werk vereisen, daar we moeten zorgen dat de spanning die aan het hoogimpedant meetcircuit aangelegd wordt zich binnen het bereik van een laag signaal bevindt. De datasheet van de microcontroller stelt zo dat een laag signaal gedetecteerd wordt tussen $0$ volt en $0.6$ keer de bronspanning. Aangezien de microcontroller zich rechtstreeks voedt met de USB bronspanning, dewelke $5$ volt bedraagt, moet de spanning aan het meetcircuit vallen tussen $0$ en $3$ volt.
@@ -103,9 +104,9 @@ We kunnen wel niet zomaar dioden op de signaallijnen plaatsen. Als we dit wel zo
 Als we echter nauwkeuriger kijken naar de werking van de interne pull-up (figuur \ref{fig:avr_pullup}), zien we dat deze reeds op zichzelf functioneert als een beschermingsweerstand. In het slechtste geval bijvoorbeeld, waarbij er zich na de pull-up nog drie dioden met elk een spanningsval van $0.5$ volt bevinden, zal er zich zo slechts $1.5$ volt op de signaallijn bevinden, wat ruim binnen de grenzen voor detectie van een laag signaal bevindt. Aangezien de weerstand tevens voldoende groot is, moeten we niet zorgen voor een extra stroomreductie en verdwijnt elk nut van een extra beschermingsweerstand.
 
 \begin{figure}
-	\label{fig:avr_pullup}
 	\includegraphics[width=\textwidth]{afbeeldingen/avr_pullup}
 	\caption{Pull-up weerstand binnenin een AVR microcontroller}
+	\label{fig:avr_pullup}
 \end{figure}
 
 \begin{figure}
@@ -121,3 +122,6 @@ Als we echter nauwkeuriger kijken naar de werking van de interne pull-up (figuur
 \end{figure}
 
 \chapter{Firmware}
+
+\end{document}
+
