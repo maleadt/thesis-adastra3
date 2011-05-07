@@ -21,12 +21,7 @@ De eerste stap van het ontwerp was de identificatie van de verschillende deelsys
 
 Hiermee konden we de verschillende deelsystemen identificeren. Zo zijn er natuurlijk de kiosken, die instaan voor de weergave van de voorstellingen, en de verwerking van gebruikersinvoer. Om het systeem flexibel te houden, zullen we de kiosken zo inrichten dat zowel de configuratie als de weer te geven voorstellingen zich niet op voorhand op de kiosk bevinden, maar van een centrale server gehaald worden. Diezelfde centrale server kan dan ook voorzien in een beheersinterface, waarbij de status van de verschillende kiosken gevisualiseerd wordt, en de administrator eventueel bepaalde acties kan ondernemen. Al deze functionaliteit zullen we bundelen binnen het specifiek hiervoor ontworpen applicatie-raamwerk, waarvoor we ook een communicatieprotocol zullen moeten definiëren.
 
-\begin{figure}
-	\includegraphics[width=\textwidth]{diagrammen/ontplooiingsdiagram}
-	\caption{Ontplooiingsdiagram}
-\end{figure}
-
-In de volgende hoofdstukken zullen we nu elk van deze deelsystemen, en al wat daar bij hoort, tot in details uitwerken. Zo zullen we ook frequent bestaande technologieën hergebruiken, of net een gerichte keuze maken zodat hergebruik mogelijk wordt. Daarbij gaan we meestal uit van een initiële selectie aan technologieën die gebruikt kan worden om een specifiek doel te bekomen, waarna de selectie uitgedund wordt tot er slechts 1 mogelijkheid overblijft. Het valt op te merken dat we bij dergelijke selectieprocedures steeds een impliciete doch sterke voorkeur zullen stellen voor open technologieën, waarvoor er een gratis, cross-platform en open-source implementatie bestaat. Dat we kiezen voor technologieën met een kosteloze implementatie, vloeit voort uit het beperkte budget dat toegekend is door de MIRA vzw. Het cross-platform aspect is belangrijk omdat op termijn de applicatie misschien op een ander systeem zal moeten draaien, alsook zal het in geval van een succesvol eindproduct de openstelling voor andere bedrijven bevorderen. Het open-source kenmerk tenslotte kent zijn oorsprong weliswaar deels in idealistische gronden, maar blijkt in de praktijk ook zeer praktisch te zijn. Zo is het tijdens de realisatie van het project verschillende keren extreem nuttig gebleken om vrije toegang te hebben tot de broncode van de bibliotheek.
+In de volgende hoofdstukken gaan we elk van deze deelsystemen, en al wat daar bij hoort, tot in details uitwerken. Zo zullen we ook frequent bestaande technologieën hergebruiken, of net een gerichte keuze maken zodat hergebruik mogelijk wordt. Daarbij gaan we meestal uit van een initiële selectie aan technologieën die gebruikt kan worden om een specifiek doel te bekomen, waarna de selectie uitgedund wordt tot er slechts 1 mogelijkheid overblijft. Het valt op te merken dat we bij dergelijke selectieprocedures steeds een impliciete doch sterke voorkeur stellen voor open technologieën, waarvoor er een gratis, cross-platform en open-source implementatie bestaat. Dat we kiezen voor technologieën met een kosteloze implementatie, vloeit voort uit het beperkte budget dat toegekend is door de MIRA vzw. Het cross-platform aspect is belangrijk omdat op termijn de applicatie misschien op een ander systeem zal moeten draaien, alsook zal het in geval van een succesvol eindproduct de openstelling voor andere bedrijven bevorderen. Het open-source kenmerk tenslotte kent zijn oorsprong weliswaar deels in idealistische gronden, maar blijkt in de praktijk ook zeer praktisch te zijn. Zo is het tijdens de realisatie van het project verschillende keren extreem nuttig gebleken om vrije toegang te hebben tot de broncode van de bibliotheek.
 
 
 %
@@ -36,7 +31,7 @@ In de volgende hoofdstukken zullen we nu elk van deze deelsystemen, en al wat da
 \chapter{Applicatie}
 \label{ontwerp:applicatie}
 
-Het volgende hoofdstuk zal het ontwerp van de applicatie bespreken. Daarbij zullen we eerst de technologieën vastleggen, om vervolgens het exacte gebruik ervan te documenteren. Hiertoe hebben we vaak gebruik gemaakt van prototypes: kleine applicaties die gebruik maken van de technologie of bibliotheek in kwestie, om zo op voorhand reeds zicht te hebben op de kwaliteit ervan.
+In volgende hoofdstuk bespreken we het ontwerp van de applicatie. Daarbij zullen we eerst de technologieën vastleggen, om vervolgens het exacte gebruik ervan te documenteren. Hiertoe hebben we vaak gebruik gemaakt van prototypes: kleine applicaties die gebruik maken van de technologie of bibliotheek in kwestie, om zo op voorhand reeds zicht te hebben op de kwaliteit ervan.
 
 In realiteit was dit proces echter niet zo afgelijnd: vaak leidde een bepaalde beslissing tot het terugkomen op een voorheen gemaakte keuze. In meerdere gevallen zal het dan ook voorkomen dat een specifieke eis uit het niets gegrepen lijkt, of bevooroordeeld schijnt te zijn. Toch is dit niet het geval, pas na afloop van het hoofdstuk zal het totale plaatje duidelijk worden, nadat alle beslissingen mooi in de plooi gevallen zijn.
 
@@ -47,28 +42,51 @@ In realiteit was dit proces echter niet zo afgelijnd: vaak leidde een bepaalde b
 
 Aan het formaat van de voorstellingen worden een aantal specifieke eisen gesteld:
 \begin{itemize}
+\item Terugwaarts compatibel met de huidige voorstellingen;
 \item Efficiënt te distribueren over het netwerk;
 \item Flexibel en toekomstgericht;
-\item Terugwaarts compatibel met de huidige voorstellingen;
+\item Eenvoudig weer te geven;
 \item Laagdrempelig.
 \end{itemize}
 
-Zoals reeds gezegd bevinden de oude voorstellingen zich op een Dvd-schijf, in videoformaat. Het nieuwe formaat moet dus in staat zijn om video's weer te geven, eventueel na bepaalde conversies.
+Zoals reeds gezegd bevinden de oude voorstellingen zich op een Dvd-schijf, in videoformaat. Het nieuwe formaat moet dus in staat zijn om video's weer te geven, eventueel na bepaalde conversies (herwerken van alle bestaande media is immers niet haalbaar).
 
-Na verschillende formaten vergeleken te hebben, hebben we besloten gebruik te maken van een combinatie van \ac{html} en Javascript. Die combinatie wordt vaak op het web gebruikt voor het maken van websites, en laat toe om heel dynamische voorstellingen te ontwerpen. Ook is het mogelijk om, zonder enige aanpassing aan het omliggende raamwerk, gebruik te maken van extra Javascript bibliotheken, waardoor de mogelijkheden onbegrensd zijn.
+Het eerste idee was dan ook om de reeds digitale \textbf{Dvd-bronbestanden te streamen} naar de kiosken. Een eerste probleem met deze opzet is de grootte van de bronbestanden (gemiddeld $3 GB$ per Dvd), wat enerzijds voldoende opslagcapaciteit vereist aan de kant van de server, en het anderzijds moeilijk maakt om het geheel te cachen aan de kant van de kiosk waardoor zowel de server als het netwerk aan een continue belasting zullen onderworpen worden. Die netwerkbelasting is tevens niet van de minste: de Dvd-standaard beschrijft dat de videobestanden een piekbitrate van maar liefst $10 Mb/s$ kunnen hebben, waardoor de server alsook de infrastructuur zouden moeten voorzien in hardware die tot $1 Gb/s$ moet kunnen verwerken.
 
-Hoewel de complexiteit enorm lijkt, zal de weergave van dergelijke voorstellingen nog relatief eenvoudig kunnen gerealiseerd worden, dit omdat \ac{html} en Javascript al jarenlang weergegeven worden binnen webbrowsers. We zullen dus de vruchten kunnen plukken van decennia aan ontwikkeling, door gebruik te maken van de \emph{rendering engines} uit verschillende browsers.
+Om deze problemen op te lossen hebben we gedacht aan het \textbf{streamen van gecomprimeerde videobestanden}. Indien we bijvoorbeeld de video comprimeren met de moderne \texttt{H264} compressiestandaard (getest met de \texttt{x264} encoder en diens standaard compressieparameters), reduceren we de piekbitrate tot $2.5 Mb/s$ zonder daarbij te moeten inboeten aan kwaliteit. Toch kunnen we dit nog steeds niet efficiënt noemen, vooral omdat eerder statische of zelfs puur tekstuele gegevens nog steeds voorgesteld worden door videogegevens. Ook is het systeem niet flexibel: complexe logica of interactieve voorstellingen kunnen niet of maar heel omslachtig gerealiseerd worden.
 
-Sinds de nieuwste versie van de \ac{html} standaard, versie 5, is er ook voorzien in een \texttt{<video>} tag, die toelaat om videofragmenten weer te geven. Hierdoor voldoen we ook aan de vereiste terugwaartse compatibiliteit, al is het met enige beperkingen. Momenteel is het immers nog niet duidelijk welke videostandaard algemeen zal ondersteund worden in de \texttt{<video>} tag, meer nog, er woedt een hele strijd tussen de verschillende fabrikanten en ontwikkelaars. Afhankelijk van welke versie van welke rendering engine we gebruiken, zullen we moeten kiezen uit een andere verzameling videostandaarden.
+Daarom hebben we het over een andere boeg gegooid en gekeken naar \textbf{specialistische presentatieformaten}, zoals die van \texttt{Powerpoint} of \texttt{OpenDocument Presentation} bestanden. Hierbij is het veel eenvoudiger om complexe en interactieve voorstellingen te realiseren, alsook worden die gegevens efficiënt en flexibel opgeslagen. Ook kunnen we de bestaande videobestanden gebruiken binnen de voorstellingen, afhankelijk van het presentatieformaat door ze erin te verwerken of door te verwijzen naar een extern bestand. Maar ook dit systeem is niet ideaal: weergeven van de bestanden buiten de applicatie waarvoor ze ontwikkeld is om, is niet eenvoudig. Ook is het vervelend dat het eindresultaat bestaat uit een binair bestand, waardoor het bijvoorbeeld niet mogelijk wordt om wijzigingen aan de voorstellingen efficiënt door te sturen.
 
-Ook efficiënte netwerktransmissie wordt bekomen door gebruik te maken van HTML en Javascript. Alle code wordt immers opgeslagen in tekstformaat, en de videostandaarden (los van welke we uiteindelijk zullen gebruiken) zijn steeds geselecteerd wegens hun nut in context van webpagina's, waar efficiënte compressie al even belangrijk is. Wanneer men een nieuwe voorstelling ontwerpt, kan men door gebruik te maken van de vele mogelijkheden die \ac{html} versie 5 biedt, de netwerkbelasting helemaal minimaliseren. Hiertoe kunnen bijvoorbeeld binaire afbeeldingen vervangen worden door vectorafbeeldingen\footnote{Via het \code{<svg>} element.}, en scripted animaties verkozen worden boven ordinaire videofragmenten\footnote{Mogelijk met zowel de \code{<svg>} als \code{<canvas>} elementen.}.
+Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze implementeren met \textbf{\ac{html} en Javascript}, een veelgebruikte combinatie bij het maken van moderne websites. Hierbij is het nog steeds mogelijk om complexe voorstellingen te realiseren, en worden die efficiënt opgeslagen. Alle code wordt immers opgeslagen in tekstformaat, en de ondersteunde video- en audiostandaarden zijn steeds gekozen wegens hun efficiënte netwerkoverdracht. Verder kunnen ook afbeeldingen en video's efficiënt gemaakt worden door ze te realiseren in een vectorformaat\footnote{Afbeeldingen via het \code{<svg>} element, en video's via \code{<canvas>} en Javascript code.}. Ook biedt \ac{html} sinds versie 5 de mogelijkheid om bestaande multimediabestanden weer te geven (via de \texttt{<video>} en \texttt{<audio>} tags), waardoor we de terugwaartse compatibiliteit met het huidige systeem bekomen. Ook bestaan er enorm veel Javascript codebibliotheken, waardoor het via hergebruik daarvan mogelijk wordt om zeer dynamische voorstellingen te realiseren. Tenslotte is het ook eenvoudig om dergelijke bestanden weer te geven in een externe applicatie, door gebruik te maken van bestaande rendering engines. Een minpunt is wel de manier waarop de logica geïmplementeerd is: de designer moet steeds een notie van Javascript hebben. Het is wellicht mogelijk om zoveel mogelijk te abstraheren in een externe Javascript bibliotheek, maar toch blijft de scheiding tussen design en code vager dan het is bij de andere systemen. Ook bestaan er nog geen bruikbare \ac{wysiwyg} editors, waardoor het steeds nodig is om \ac{html} code, hoe laagdrempelig die ook is, te bewerken.
 
-Tenslotte is dit formaat voor de voorstellingen ook vrij laagdrempelig. Veel mensen hebben een basiskennis over HTML, en indien ze dit niet hebben is het eenvoudig te leren via de overvloed aan tutorials die er beschikbaar zijn. Ook is er geen nood aan een speciale \emph{toolchain}: zowel \ac{html} als Javascript bronbestanden kunnen gewijzigd worden in elke tekstverwerker, het resultaat kan eenvoudig gecontroleerd worden in een lokaal geïnstalleerde browser, en compilatie is al helemaal overbodig.
-Een mogelijk probleem is de beperkte scheiding tussen design en logica: wanneer dynamiek vereist is, moet de ontwerper nogal snel enige kennis hebben van Javascript. Toch kan dit verholpen worden door gebruik te maken van \ac{wysiwyg} editors, al moet het gezegd worden dat die anno 2011 nog niet zo goed gebruik maken van alle mogelijkheden die deze nieuwe standaard biedt.
+\begin{table}[h!]
+  \begin{center}
+    \begin{tabular}{p{3cm} p{4cm} p{4cm}}
+    & Dvd-bronbestanden & Compressie\\
+    \hline
+    Compatibiliteit & Volledig compatibel & Mits conversie \\
+    Efficiëntie & Inefficiënt & Inefficiënt \\
+    Flexibiliteit & Zeer omslachtig & Zeer omslachtig \\
+    Externe weergave & Eenvoudig & Eenvoudig \\
+    Moeilijkheid & Relatief eenvoudig & Relatief eenvoudig \\
+    \\    
+    & Presentatieformaten & \ac{html} en Javascript \\
+    \hline
+    Compatibiliteit & Embedden & Embedden na conversie \\
+    Efficiëntie & Efficiënt & Zeer efficiënt \\
+    Flexibiliteit & Flexibel & Extreem flexibel \\
+    Externe weergave & Moeilijk & Relatief eenvoudig \\
+    Moeilijkheid & Zeer eenvoudig & Relatief moeilijk \\
+    \end{tabular}
+  \end{center}
+  \caption{Vergelijking van verschillende formaten.}
+\end{table}
+
+Na zorgvuldig afwegen van de voor- en nadelen hebben we gekozen voor de combinatie van \ac{html} en Javascript, aangezien het als enigste systeem voldoet aan alle functionele eisen. Het grote minpunt, de moeilijkheid om voorstellingen te wijzigen wegens de mindere duidelijke scheiding tussen design en code, zal immers verbeteren na verloop van tijd. Zo zullen er wellicht Javascript-bibliotheken ontwikkeld worden om presentatielogica te abstraheren, en kan het best zijn dat er binnenkort betere \ac{wysiwyg}-editors voor moderne \ac{html} boven water komen.
 
 \subsection{Repository}
 
-Zoals hierboven reeds vermeld, zullen noch de nieuwste voorstellingen noch de configuratie zich direct op de relevante kiosken bevinden, maar dynamisch van de centrale server gedownload worden. Indien voorzien wordt in een gebruiksvriendelijk systeem om de presentaties te wijzigen, maakt dit het leven van de administrator ook een pak gemakkelijker nu hij niet meer moet deployen naar elke kiosk apart.
+Zoals hierboven reeds vermeld, zullen noch de nieuwste voorstellingen noch de configuratie zich direct op de relevante kiosken bevinden, maar dynamisch van de centrale server gedownload worden. Indien voorzien wordt in een gebruiksvriendelijk systeem om de media te wijzigen, maakt dit het leven van de administrator ook een pak gemakkelijker nu hij niet meer moet deployen naar elke kiosk apart.
 
 Initieel zijn we op zoek gegaan naar een \strong{database-systeem} om dit te implementeren. Hoewel dergelijke systemen vooral sterk zijn in het herbergen van gestructureerde data, zou het perfect mogelijk zijn om er de eerder bestandsgeoriënteerde voorstellingen in op te slaan. Efficiënte overdracht wordt echter niet voorzien, en bovendien zou het vrij moeilijk zijn om een gebruiksvriendelijke interface te bouwen bovenop dit systeem.
 
@@ -121,7 +139,7 @@ Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository z
 
 Op het hoogste niveau zal de repository bestaan uit drie mappen. In de \texttt{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen. Zo wordt er voorzien in configuratiesecties voor de weergave, het geluid, het netwerk, enzovoort. Ook kan een configuratie specificeren welke voorstelling moet weergegeven worden, maar die informatie zal zich meestal bevinden in de kiosk-specifieke configuratiebestanden in de \texttt{kiosks} map. Daarin bevindt zich één configuratiebestand per kiosk, waarin opnieuw de kiosk volledig kan geconfigureerd worden. Elk configuratiebestand (hetzij in de \texttt{kiosks} map, hetzij in de \texttt{configurations} map) kan ook specificeren welke andere configuraties tegelijk moeten ingeladen worden, waardoor gemeenschappelijke instellingen kunnen geabstraheerd worden.
 
-De \texttt{presentations} map tenslotte bevat de effectieve voorstellingen, elk in een aparte map. In die map bevinden zich de bestanden nodig om de voorstelling weer te geven, alsook een configuratiebestand dat nu enkel specifieke eigenschappen van de presentatie configureert.
+De \texttt{presentations} map tenslotte bevat de effectieve voorstellingen, elk in een aparte map. In die map bevinden zich de bestanden nodig om de voorstelling weer te geven, alsook een configuratiebestand dat nu enkel specifieke eigenschappen van de voorstelling configureert.
 
 \begin{codefragment}
 \begin{verbatim}
@@ -243,7 +261,7 @@ Tijdens het ontwerp van het applicatieprotocol hebben we er speciaal op gelet om
 
 \paragraph{Data uitwisseling} Opslag en distributie van de voorstellingen zal niet door de applicatie zelf verzorgd worden, maar door een \ac{webdav} toegangspunt dat wijst naar een \ac{svn} repository. Hiervoor zijn geen extra voorzieningen in de applicatie vereist. Om de toegang tot zowel de serverapplicatie als de repository op een eenduidige manier te laten verlopen, overkoepelen we beide door een Apache webserver, waardoor de toegang (poortnummer, hostname) op dezelfde manier verloopt, en bepaalde instellingen (\ac{ssl}) kunnen weggewerkt worden naar dit hoger niveau.
 
-Hoewel de effectieve dataoverdracht geen voorzieningen in de serverapplicatie vereist, moet er wel een mechanisme zijn dat wijzigingen detecteert en ze kan inladen, om vervolgens eventueel bepaalde kiosken te herconfigureren. Hiervoor hebben we nood aan een client-side \ac{svn} bibliotheek, die ons toelaat gegevens vanuit de repository op te halen en in te laden. Ook moet het mogelijk zijn snel te kijken wat de laatste revisie van de repository is, en om vervolgens op te halen wat er veranderd is sinds de laatst bekende revisie. Met die informatie kan bepaald worden welke configuraties en/of presentaties opnieuw moeten opgehaald worden, om daarna die informatie door te sturen naar de relevante kiosken.
+Hoewel de effectieve dataoverdracht geen voorzieningen in de serverapplicatie vereist, moet er wel een mechanisme zijn dat wijzigingen detecteert en ze kan inladen, om vervolgens eventueel bepaalde kiosken te herconfigureren. Hiervoor hebben we nood aan een client-side \ac{svn} bibliotheek, die ons toelaat gegevens vanuit de repository op te halen en in te laden. Ook moet het mogelijk zijn snel te kijken wat de laatste revisie van de repository is, en om vervolgens op te halen wat er veranderd is sinds de laatst bekende revisie. Met die informatie kan bepaald worden welke configuraties en/of voorstellingen opnieuw moeten opgehaald worden, om daarna die informatie door te sturen naar de relevante kiosken.
 Hoewel er opnieuw verschillende \ac{svn} bibliotheken bestaan, lijkt \makeurl{http://svnkit.com/}{SVNKit} de enige die nog doorontwikkeld wordt. Ook is de bibliotheek geschreven in pure Java, wat opnieuw het geheel platformonafhankelijk maakt.
 
 \subsubsection{Beheersinterface}
