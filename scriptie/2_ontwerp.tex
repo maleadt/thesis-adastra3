@@ -118,58 +118,48 @@ Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository z
   |
   +-configurations/
   | |
-  | +-hires.ini
+  | +-hires.xml
   | |
-  | +-nosound.ini
+  | +-nosound.xml
   |
   +-presentations/
   | |
   | +-presentation1/
   |   |
-  |   +-config.ini
-  |   |
   |   +-index.html
   |
-  +-kiosks/
-    |
-    +-kiosk1.ini
+  +-interfaces/
+  | |
+  | +-interface1/
+  |   |
+  |   +-index.html
 \end{verbatim}
 \caption{Voorbeeld van een repository layout.}
 \end{codefragment}
 
-Op het hoogste niveau zal de repository bestaan uit drie mappen. In de \code{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen. Zo wordt er voorzien in configuratiesecties voor de weergave, het geluid, het netwerk, enzovoort. Ook kan een configuratie specificeren welke voorstelling moet weergegeven worden, maar die informatie zal zich meestal bevinden in de kiosk-specifieke configuratiebestanden in de \code{kiosks} map. Daarin bevindt zich één configuratiebestand per kiosk, waarin opnieuw de kiosk volledig kan geconfigureerd worden. Elk configuratiebestand (hetzij in de \code{kiosks} map, hetzij in de \code{configurations} map) kan ook specificeren welke andere configuraties tegelijk moeten ingeladen worden, waardoor gemeenschappelijke instellingen kunnen geabstraheerd worden.
+Op het hoogste niveau zal de repository bestaan uit drie mappen. In de \code{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen, zoals welke media ingeladen moet worden of hoe sterk het volume moet staan. Om de implementatie eenvoudig te houden hebben we ervoor gekozen om een een configuratie eenduidig te laten overeenkomen met een enkele kiosk, en niet te voorzien in functionaliteit om gedeelde instellingen weg te abstraheren. Natuurlijk laat het formaat toe om dit in een later stadium toe te voegen.
 
-De \code{presentations} map tenslotte bevat de effectieve voorstellingen, elk in een aparte map. In die map bevinden zich de bestanden nodig om de voorstelling weer te geven, alsook een configuratiebestand dat nu enkel specifieke eigenschappen van de voorstelling configureert.
+De \code{presentations} map bevat de effectieve voorstellingen, elk in een aparte subfolder. Hierin staan de bestanden nodig om de voorstelling weer te geven, waarbij slechts 1 bestand vereist is: \code{index.html}. Dit bestand is de entrypoint in de voorstelling, en zal door de client ingeladen worden wanneer de presentatie moet weergegeven worden. Het zou natuurlijk mogelijk zijn om dit op een flexibelere manier op te lossen, bijvoorbeeld via een extra configuratie bestand, maar opnieuw kiezen we ervoor om initieel een eenvoudig maar compleet raamwerk te voorzien en pas in een later stadium eventueel te voorzien in hulpfunctionaliteit.
 
-\begin{codefragment}
-\begin{verbatim}
-[configuration]
-description=Configuration for kiosk1.
-load=nosound;hires
-
-[presentation]
-name=presentation1
-\end{verbatim}
-\caption{Voorbeeld van een kiosk configuratiebstand, \code{kiosks/kiosk1.ini}.}
-\end{codefragment}
+Binnen de \code{interfaces} map tenslotte plaatsen we de bestanden die een interface typeren. Aangezien de opmaak van de interfaces gelijk is aan de manier waarop we de presentaties beschreven hebben, is ook de invulling van de relevante mappen binnen de repository vrijwel identiek.
+% todo: interface enzo documenteren
 
 \begin{codefragment}
 \begin{verbatim}
-[configuration]
-description=Configuration for kiosks without sound.
-
-[sound]
-volume=0
+<?xml version="1.0"?>
+<kiosk xmlns="http://www.mira.be">
+	<target>0026b900-926f-1000-8000-000000000000</target>
+	<device>
+		<sound>
+			<volume>255</volume>
+		</sound>
+	</device>
+	<application>
+		<media id="manen" />
+	</application>
+</kiosk>
 \end{verbatim}
-\caption{Voorbeeld van een gedeeld configuratiebestand, \code{configurations/nosound.ini}.}
-\end{codefragment}
-
-\begin{codefragment}
-\begin{verbatim}
-description=Sample presentation 1.
-landing_page=index.html
-\end{verbatim}
-\caption{Voorbeeld van een voorstelling configuratiebestand, \code{presentations/presentation1/config.ini}.}
+\caption{Voorbeeld van een kiosk configuratiebstand, \code{configurations/kiosk1.xml}.}
 \end{codefragment}
 
 \section{Netwerk}
@@ -178,7 +168,7 @@ landing_page=index.html
 De verschillende onderdelen van het systeem zullen niet enkel lokaal werken, maar ook met elkaar communiceren over het netwerk. Zo zullen de voorstellingen, waarvan we het formaat en reeds vastgelegd hebben, via het netwerk naar de kiosken overgedragen worden. Maar ook het beheer zal over het netwerk verlopen: via een centrale beheersapplicatie kan een werknemer de status van de kiosken te bekijken, en eventueel bepaalde acties te ondernemen. Die acties worden daarbij niet beperkt tot louter beheerstaken: om het geheel eenvoudig te houden zal hetzelfde mechanisme ook gebruikt worden om essentiële applicatiefunctionaliteit (zoals het inladen van een voorstelling, of het doorvoeren van de instellingen die de ingeladen configuratie vereist) te realiseren.
 
 \subsection{Dataoverdracht}
-
+&
 Aangezien we gebruik maken van een losstaand versiebeheersysteem (zie \ref{ontwerp:applicatie:voorstellingen}), namelijk \ac{svn}, zullen we ook gebruik maken van diens dataoverdrachtmogelijkheden.
 
 \subsection{Netwerkconfiguratie}
@@ -216,7 +206,10 @@ Ook hebben we meer moderne \ac{rpc}-frameworks overwogen zoals \strong{Apache Et
 
 Vervolgens hebben we de nodige aandacht besteed aan \strong{XML-RPC}, een zeer simplistisch \ac{rpc}-protocol dat XML-geformatteerde berichten verstuurt over \ac{http}. Jammer genoeg kent XML-RPC enkele fundamentele problemen, zoals het inefficiënte berichtformaat. Ook is de specificatie, om het zacht uit te drukken, vrij beperkt. Dit kan echter een voordeel zijn: de ermee geïmplementeerde interface wordt er compact mee gehouden, en valt eenvoudig te gebruiken vanuit verschillende talen. Dit wordt verder vereenvoudigd door het groot aantal implementaties, voor de meeste talen zijn er verschillende te vinden.
 
-Van zodra we echter het service discovery mechanisme overgezet hebben naar \ac{ssdp}, hebben we besloten om ook voor de acties gebruik te maken van \strong{\ac{upnp}}, dat de mogelijkheid biedt om bij het adverteren van een toestel te voorzien in verschillende \emph{services} en een exacte beschrijving van de verschillende acties die via die service kunnen ondernomen worden.
+Van zodra we echter het service discovery mechanisme overgezet hebben naar \ac{ssdp}, hebben we besloten om ook voor de acties gebruik te maken van \strong{\ac{upnp}}, dat de mogelijkheid biedt om bij het adverteren van een toestel te voorzien in verschillende \emph{services} en een exacte beschrijving van de verschillende acties die via die service kunnen ondernomen worden.	
+
+\paragraph{SSDP}
+% todo	
 
 \section{Redundantie en robuustheid}
 \label{sec:redundantie}
@@ -251,9 +244,7 @@ Opnieuw bestaan er verschillende mogelijkheden die ons essentieel de middelen aa
 
 Tijdens het ontwerp van het applicatieprotocol hebben we er speciaal op gelet om zoveel mogelijk bestaande technologieën te gebruiken, zodat we enerzijds niet steeds het wiel opnieuw uitvinden en anderzijds ook tijdens de realisatie gebruik zouden kunnen maken van bestaande hoogwaardige codebibliotheken.
 
-\paragraph{Service discovery} Om de kiosken te kunnen configureren, moet de server kunnen registreren wanneer een nieuw toestel zich aanmeldt. Deze berichten verlopen over \ac{mdns}, wat we in Java kunnen realiseren via de \makeurl{http://jmdns.sourceforge.net/}{JmDNS} bibliotheek. Deze volledig in Java geschreven bibliotheek biedt een volledig platform-onafhankelijke implementatie van het \ac{mdns} protocol, alsook verschillende high-level mogelijkheden om om te gaan met \ac{mdns} berichten.
-
-\paragraph{Remote procedure} De effectieve configuratie wordt gerealiseerd via functieaanroepen, die verlopen over het XML-RPC protocol. Dit is mogelijk via de \makeurl{http://ws.apache.org/xmlrpc/}{Apache ws-xmlrpc} bibliotheek, een zeer uitgebreide en doorontwikkelde bibliotheek voor XML-RPC communicatie.
+\paragraph{Configuratie en invocatie} Zoals vermeld verloopt zowel het gros van de netwerkconfiguratie alsook het uitvoeren van acties via \ac{upnp}, wat we uit Java kunnen gebruiken door middel van de \makeurl{http://teleal.org/projects/cling/}{Cling} bibliotheek. Dit is een vrij volledige \ac{upnp} stack die de nadruk legt op strikte conformiteit en een duidelijke API. Hoewel er nog andere \ac{upnp} bibliotheken bestaan, zijn die vaak niet doorontwikkeld, proprietair of niet uitgebreid genoeg, waardoor Cling uiteindelijk de beste keus leek.
 
 \paragraph{Data uitwisseling} Opslag en distributie van de voorstellingen zal niet door de applicatie zelf verzorgd worden, maar door een \ac{webdav} toegangspunt dat wijst naar een \ac{svn} repository. Hiervoor zijn geen extra voorzieningen in de applicatie vereist. Om de toegang tot zowel de serverapplicatie als de repository op een eenduidige manier te laten verlopen, overkoepelen we beide door een Apache webserver, waardoor de toegang (poortnummer, hostname) op dezelfde manier verloopt, en bepaalde instellingen (\ac{ssl}) kunnen weggewerkt worden naar dit hoger niveau.
 
@@ -291,9 +282,11 @@ Het ontwikkelplatform \makeurl{http://qt.nokia.com/}{Qt} voldoet vrijwel perfect
 
 Net zoals dit bij de serverapplicatie het geval was, kunnen we door de nauwgezette selectie van protocollen optimaal gebruik maken van bestaande bibliotheken.
 
-\paragraph{Service discovery} Om de kiosk zichzelf te laten aanmelden in het netwerk, zullen we de \makeurl{http://avahi.org/}{Avahi} imlementatie van het \ac{mdns} protocol gebruiken. Deze relatief platform-onafhankelijke bibliotheek komt standaard met Qt4-bindings, die echter niet zo gebruiksvriendelijk zijn en sterk lijken op de oorspronkelijke C-bibliotheek. Gelukkig hebben we als onderdeel van het \makeurl{http://gitorious.org/qtmediahub}{QtMediaHub} project een \makeurl{http://gitorious.org/qtmediahub/qtmediahub/trees/master/src/3rdparty/libqavahi}{wrapper} voor de standaard Avahi Qt4-bindings gevonden, die op zeer gebruiksvriendelijke manier (gebruik makende van typische Qt paradigma) toelaat om te interfacen met de Avahi bibliotheek.
+\paragraph{Configuratie en invocatie} Om een \ac{upnp} bibliotheek te vinden voor C++ moeten we niet lang zoeken. Toch zouden we met een "normale" C++ bibliotheek geen maximale integratie bekomen met de rest van de applicatie. Daarom zijn we specifiek op zoek gegaan naar een \ac{upnp} bibliotheek voor C++, die ook integreert met het Qt framework. Een eerste kandidaat hiervoor is de \makeurl{http://gitorious.org/qupnp}{Qt UPnP} bibliotheek, dewelke poogt een compacte en duidelijke UPnP implementatie te realiseren. Jammer genoeg blijkt dat project nog helemaal niet afgewerkt te zijn, meer nog, verschillende kritieke componenten ontbreken.
 
-\paragraph{Remote procedure} Hiervoor moet de kiosk een XML-RPC server implementeren, waarvoor op zijn beurt een \ac{http}-server nodig is. Hoewel het niet veel werk zou zijn om zelf een eenvoudige server te implementeren (met dank aan de vele hulpmiddelen die Qt biedt), kiezen we er voor om gebruik te maken van een bestaande bibliotheek: \makeurl{http://code.google.com/p/qtxmlrpc/}{QtXmlRpc}. Deze bibliotheek, waarvan de code al vrij goed getest is, komt met een simpele \ac{http}-server die toch ondersteuning biedt voor SSL communicatie.
+Een volgende kandidaat is de \makeurl{http://www.herqq.org/}{Herqq} bibliotheek, opnieuw een Qt-specifieke \ac{upnp} implementatie. De bibliotheek claimt een compacte implementatie conform de specificatie, en een eerste test ervan bleek ook zeer positief te zijn. Initieel zijn we dan ook begonnen met deze bibliotheek, maar hebben we na enkele weken ontwikkeling toch moeten opperen voor een bibliotheek. Het probleem was immers dat niet alleen de \ac{ssdp} configuraties, maar ook de devicegegevens statisch in een \ac{xml} bestand moesten doorgespeeld worden. Hierdoor zou het onmogelijk worden om \emph{at-runtime} een unieke identifier door te geven, waardoor we voor elke kiosk een speciaal configuratiebestand zouden moeten aanreiken. Omdat we uiteindelijk de code volledig generiek willen maken, is dit natuurlijk onaanvaardbaar.
+
+Daarom hebben er uiteindelijk voor gekozen op de C++ \ac{upnp} bibliotheek van het \makeurl{http://brisa.garage.maemo.org/}{BRisa project} te gebruiken. Hoewel het in eerste instantie misschien minder duidelijk was wat de sterktes zijn van deze bibliotheek, maakte een eerste test al snel duidelijk dat ze niet moest onderdoen voor de Herqq \ac{upnp} bibliotheek. Omdat het bij deze bibliotheek wél mogelijk was om dynamisch devicegegevens door te spelen hebben we ervoor gekozen om het te gebruiken binnen de uiteindelijke applicatie.
 
 \paragraph{Data uitwisseling} De kiosk moet in staat zijn een \ac{svn} repository te klonen indien de \ac{webdav} locatie ervan doorgespeeld geweest is. Hoewel we dit best zouden kunnen oplossen door gebruik te maken van de \ac{svn} binary, is dit geen platform-onafhankelijke oplossing, die bovendien niet mooi te integreren valt binnen een applicatie. Daarom zijn we op zoek gegaan naar een C++ bibliotheek, liefst specifiek voor het Qt framework, die ons toelaat gegevens van een \ac{svn} repository binnen te halen zonder daarbij te berusten op een lokaal geïnstalleerde \ac{svn} applicatie. Zo zijn we terecht gekomen bij het \makeurl{http://kdesvn.alwins-world.de/}{KDESvn} project, een KDE frontend voor \ac{svn} repositories. We zijn natuurlijk niet geïnteresseerd in die applicatie, maar in de code die het gebruikt om toegang te krijgen tot \ac{svn} repositories. Daartoe heeft het KDESvn project een bibliotheek ontwikkeld, namelijk \makeurl{http://kdesvn.alwins-world.de/browser/trunk/src/svnqt}{svnqt}. Die bibliotheek is vrijwel volledig losgekoppeld van de KDESvn code, wat integratie binnen andere applicaties eenvoudig maakt (hiervan getuige bijvoorbeeld het \makeurl{http://www.anrichter.net/projects/qsvn}{QSvn} project).
 
@@ -302,6 +295,8 @@ Net zoals dit bij de serverapplicatie het geval was, kunnen we door de nauwgezet
 De voorstellingen zijn opgemaakt in een combinatie van \ac{html} en Javascript. Hierdoor kunnen we voor de weergave gebruik maken van de rendering engines ontwikkeld voor verschillende browsers. Zo is er de \makeurl{https://developer.mozilla.org/en/Gecko}{Gecko} rendering engine, ontwikkeld voor gebruik binnen de producten van Mozilla. Ondanks de recente port van Firefox naar het Qt platform, blijft de integratie van Gecko binnen Qt relatief moeilijk.
 
 Daarom zullen we eerder kiezen voor de \makeurl{http://www.webkit.org/}{WebKit} rendering engine, een doorontwikkeling van de KHTML rendering engine. WebKit is een interessantere keuze gezien zijn populaire port naar het Qt framework, \makeurl{http://trac.webkit.org/wiki/QtWebKit}{QtWebKit}. Deze port is een officieel onderdeel van het Qt framework, waardoor het een goedgedocumenteerd en kwalitatief product is.
+
+% todo: interface
 
 \subsubsection{Logging}
 
