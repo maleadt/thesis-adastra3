@@ -46,7 +46,7 @@ Aangezien de kloksnelheid waarop onze microcontroller zal draaien, 16.5 MHz, gro
 Natuurlijk zullen we ook de voedingsspanning ontkoppelen, en dit op twee vlakken. Om de hoogfrequente schakelpieken van de digitale microcontroller af te vlakken, plaatsen we een 100 nanofarad condensator tussen de voedingslijn en de grondplaat. Het valt op te merken dat we die condensator zo dicht mogelijk tegen de voedingspin van de microcontroller willen plaatsen, dit om parasitaire capaciteiten te vermijden. Vervolgens willen we ook eventuele ongerelmatigheden afvlakken (hetzij van de spanningsbron uit, hetzij veroorzaakt door een plotse toename in verbruik), waarvoor we een 10 microfarad condensator plaatsen aan de kant van de \ac{usb} connector. De waarde van 10 microfarad is niet uit de lucht gegrepen: ze is relatief hoog om de typisch laagfrequentere pieken die een spanningsbron genereert af te vlakken, en tegelijk is het ook het maximum dat de \ac{usb} specificatie \makeurl{http://www.beyondlogic.org/usbnutshell/usb2.shtml}{toelaat}.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/circuit_voeding}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_voeding}
 	\caption{Voedingscircuit}
 \end{figure}
 
@@ -66,7 +66,7 @@ Een alternatief bestaat eruit om het \textbf{spanningsniveau van de signaalpinne
 Tenslotte moeten we nog voorzien in een \emph{setting weerstand} die een spanning plaatst op de negatieve signaaldrager. Deze pull-up weerstand maakt aan de \ac{usb} host duidelijk te maken dat er een \ac{usb} 1.1 toestel aangesloten is (weliswaar actief in \emph{low speed} modus). Voor een 5 volt lijn kan dit gerealiseerd worden met een 1k8 of 2k2 ohm weerstand.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/circuit_signaal}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_signaal}
 	\caption{Signaalconversie}
 \end{figure}
 
@@ -77,7 +77,7 @@ Het invoegen van een \ac{isp} header is niet veel werk: we dienen gewoon te voor
 TODO: programmeren als systeem actief is?
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/circuit_isp}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_isp}
 	\caption{\acs{isp} connector}
 \end{figure}
 
@@ -91,12 +91,12 @@ Om de aansluitingen op de printplaat eenvoudig te houden, zullen we werken met e
 
 Er is echter een bijkomend probleem: we hebben maar 3 poortpinnen tot onze beschikking, waardoor het niet mogelijk is elke knop door te verbinden met een eigen poortpin. De eenvoudige oplossing hierbij is het gebruik van een multiplexer: 2 select-lijnen en 1 datalijn maakt het mogelijk om 4 schakelaars uit te lezen. We willen echter meer knoppen kunnen aansluiten, zonder daarbij extra poortpinnen nodig te hebben. Daarom zullen we zelf het signaal multiplexen, waarbij we meer schakelaars kunnen toelaten door geen gebruik te maken van een selectiemechanisme, maar de signalen direct door te linken naar de poortpinnen. Het nadeel aan deze opzet is dat de signalen kunnen overlappen, zo zullen we bij het indrukken van meerdere knoppen tegelijkertijd niet kunnen uitmaken welke knoppen juist ingedrukt zijn.
 
-De realisatie van een dergelijke multiplexer lijkt eenvoudig, maar er is een belangrijk detail dat we moeten opmerken. Aangezien de verschillende poortpinnen verbonden zijn met verschillende knoppen, kan er bij het indrukken van een enkele schakelaar stroom terugvloeien via de contactpunten van diens signaallijnen met andere knoppen van een totaal ongerelateerde poortpin, zoals te zien is op figuur \ref{fig:circuit_schakelaars_foutief}. Om dit te vermijden moeten we overal waar er twee signaallijnen met elkaar verbonden zijn, een diode plaatsen zodat er geen stroom kan terugvloeien naar een vorig verbindingspunt. Hiervoor hebben we een reguliere diode nodig, waarbij geen speciale eisen gesteld worden. Daarom kiezen we voor de 1N4148, een populaire diode die vaak gebruikt wordt voor het schakelen van digitale signalen. Zoals we kunnen opzoeken in het stroom-spanningsdiagram van deze diode, zorgt ze bij een stroom tussen $0.1$ en $0.25$ milliampères (gegenereerd door de pull-up weerstand binnen de microcontroller) voor een spanningsval van $0.5$ volt.
+De realisatie van een dergelijke multiplexer lijkt eenvoudig, maar er is een belangrijk detail dat we moeten opmerken. Aangezien de verschillende poortpinnen verbonden zijn met verschillende knoppen, kan er bij het indrukken van een enkele schakelaar stroom terugvloeien via de contactpunten van diens signaallijnen met andere knoppen van een totaal ongerelateerde poortpin, zoals te zien is op figuur \ref{fig:inputmodule_schakelaars_foutief}. Om dit te vermijden moeten we overal waar er twee signaallijnen met elkaar verbonden zijn, een diode plaatsen zodat er geen stroom kan terugvloeien naar een vorig verbindingspunt. Hiervoor hebben we een reguliere diode nodig, waarbij geen speciale eisen gesteld worden. Daarom kiezen we voor de 1N4148, een populaire diode die vaak gebruikt wordt voor het schakelen van digitale signalen. Zoals we kunnen opzoeken in het stroom-spanningsdiagram van deze diode, zorgt ze bij een stroom tussen $0.1$ en $0.25$ milliampères (gegenereerd door de pull-up weerstand binnen de microcontroller) voor een spanningsval van $0.5$ volt.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/circuit_schakelaars_foutief}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_schakelaars_foutief}
 	\caption{Circuit en connector voor schakelaars zonder dioden, en aanduiding van voorbeeldstromen daarbij}
-	\label{fig:circuit_schakelaars_foutief}
+	\label{fig:inputmodule_schakelaars_foutief}
 \end{figure}
 
 We kunnen wel niet zomaar dioden op de signaallijnen plaatsen. Als we dit wel zouden doen, zou de het volledige spanningsverschil tussen de elektrische grond en de poortpin (wat $5$ volt bedraagt, dankzij de interne pull-up) over de diode geplaatst worden, waardoor die beschadigd zou worden. Dit zou opgelost kunnen worden door bij elk van de drie poortpinnen een extra beschermingsweerstand te plaatsen, waardoor de overmatige spanning over deze weerstand zou komen te staan en de dioden slechts het spanningsverschil waarvoor ze gemaakt zijn zouden moeten verwerken. Het berekenen van de waarde van deze weerstand zou wel enig werk vereisen, daar we moeten zorgen dat de spanning die aan het hoogimpedant meetcircuit aangelegd wordt zich binnen het bereik van een laag signaal bevindt. De datasheet van de microcontroller stelt zo dat een laag signaal gedetecteerd wordt tussen $0$ volt en $0.6$ keer de bronspanning. Aangezien de microcontroller zich rechtstreeks voedt met de USB bronspanning, dewelke $5$ volt bedraagt, moet de spanning aan het meetcircuit vallen tussen $0$ en $3$ volt.
@@ -110,7 +110,7 @@ Als we echter nauwkeuriger kijken naar de werking van de interne pull-up (figuur
 \end{figure}
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/circuit_schakelaars}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_schakelaars}
 	\caption{Circuit en connector voor schakelaars}
 \end{figure}
 
@@ -138,12 +138,12 @@ Om een printplaat of printplaat te ontwerpen hebben we natuurlijk gepaste softwa
 Nu we alle nodige specificaties vergaard hebben en een softwarepakket geselecteerd hebben, kunnen we beginnen aan het produceren van de fysieke layout. Hierbij hebben we ervoor gekozen om een printplaat te maken die bestaat uit twee lagen, namelijk de boven en onderkant. Deze optie is niet veel duurder dan een 1-laags printplaat, en het geeft ons de nodige flexibiliteit om de componenten goed te kunnen plaatsen. Moesten we gekozen hebben voor een 1-laags printplaat dan zou de kost misschien zelfs hoger kunnen liggen door soms onnatuurlijke plaatsing om toch de nodige verbindingen te kunnen realiseren.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/circuit_pcb}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_pcb}
 	\caption{Finale versie van de printplaat}
 \end{figure}
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/circuit_pcbrender}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_pcbrender}
 	\caption{3D-render van de printplaat}
 \end{figure}
 
