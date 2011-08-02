@@ -386,8 +386,8 @@ Daarom zijn we op zoek gegaan naar een vergelijkbare plug-computer (zodat we nie
 	\caption{Genesis EFIKA MX}
 \end{figure}
 
-\section{Interface module}
-\label{ontwerp:hardware:interface}
+\section{Input module}
+\label{ontwerp:hardware:input}
 
 De gebruikersinterface wordt gerealiseerd door 4 grote drukknoppen ingebouwd in de kast van elke kiosk. Momenteel worden deze knoppen intern doorverbonden met een afstandsbediening, waardoor de gebruiker via het indrukken van de knoppen indirect de DVD-speler kan besturen om zo een fragment te selecteren.
 
@@ -396,7 +396,7 @@ De gebruikersinterface wordt gerealiseerd door 4 grote drukknoppen ingebouwd in 
 	\caption{Huidige aansluitingsmethode knoppen}
 \end{figure}
 
-Nu we echter de DVD-spelers gaan vervangen door een computer, zullen we ook voor deze interface module een compatibel alternatief moeten vinden. Aan deze module worden enkele specifieke eisen gesteld:
+Nu we echter de DVD-spelers gaan vervangen door een computer, zullen we ook voor deze input module een compatibel alternatief moeten vinden. Aan deze module worden enkele specifieke eisen gesteld:
 \begin{itemize}
 \item Goedkoop: de module moet zo goedkoop mogelijk te produceren zijn, alsook mag het niet teveel energie verbruiken;
 \item Toekomstgericht: aansluitmogelijkheden mogen geen gebruik maken van oude protocollen;
@@ -409,7 +409,7 @@ Nu we echter de DVD-spelers gaan vervangen door een computer, zullen we ook voor
 
 Het grootste ontwerpprobleem hierbij is de manier van aansluiting die we zullen gebruiken om de module in verbinding te brengen met de rest van de kioskhardware. De meeste eenvoudige keuze zou die zijn van de \strong{parallelle poort}, waarbij we de pinnen van de poort vrijwel direct zouden kunnen verbinden met de knoppen. Jammer genoeg zijn parallelle poorten steeds schaarser, en komt die vrijwel nooit meer voor op embedded hardware. Een andere toegankelijke optie is de \strong{seriële poort}. Hierbij zou dan extra periferie benodigd zijn om in te staan voor de serialisatie van de signalen. Indien we echter platform-specifieke code toelaten, kunnen we de stuursignalen van de poort op een parallelle manier misbruiken zodat ook die periferie geëlimineerd wordt. Toch voldoet ook deze oplossing niet: ook de seriële poort wordt steeds schaarser, en alhoewel ze momenteel nog te vinden is op de meeste embedded-hardware bestaat de mogelijkheid dat dit binnen geringe tijd niet meer zo is.
 
-Daarom hebben we uiteindelijk gekozen voor een poort die we normaal gezien wel nog enkele jaren zullen terugvinden op de meest courante hardware: de \ac{usb} poort. Deze veelzijdige poort laat ons doe om de interface module te laten communiceren met een computer, en is ook relatief toekomstgericht (de recent geïntroduceerde \ac{usb} versie 3 is nog steeds volledig terugwaarts compatibel met \ac{usb} versie 1 toestellen). Maar het gebruik van \ac{usb} kent ook een nadeel: het protocol is immers pakket-georiënteerd, waardoor extra periferie een noodzaak is. Ook is de configuratie complexer, zeker indien we een toestel willen dat zonder speciale stuurprogramma's werkt op verschillende besturingssystemen.
+Daarom hebben we uiteindelijk gekozen voor een poort die we normaal gezien wel nog enkele jaren zullen terugvinden op de meest courante hardware: de \ac{usb} poort. Deze veelzijdige poort laat ons doe om de input module te laten communiceren met een computer, en is ook relatief toekomstgericht (de recent geïntroduceerde \ac{usb} versie 3 is nog steeds volledig terugwaarts compatibel met \ac{usb} versie 1 toestellen). Maar het gebruik van \ac{usb} kent ook een nadeel: het protocol is immers pakket-georiënteerd, waardoor extra periferie een noodzaak is. Ook is de configuratie complexer, zeker indien we een toestel willen dat zonder speciale stuurprogramma's werkt op verschillende besturingssystemen.
 
 \subsection{Realisatie \acs{usb}-communicatie}
 
