@@ -54,7 +54,7 @@ Om deze problemen op te lossen hebben we gedacht aan het \strong{streamen van ge
 
 Daarom hebben we het over een andere boeg gegooid en gekeken naar \strong{specialistische presentatieformaten}, zoals die van \code{Powerpoint} of \code{OpenDocument Presentation} bestanden. Hierbij is het veel eenvoudiger om complexe en interactieve voorstellingen te realiseren, alsook worden die gegevens efficiënt en flexibel opgeslagen. Ook kunnen we de bestaande videobestanden gebruiken binnen de voorstellingen, afhankelijk van het presentatieformaat door ze erin te verwerken of door te verwijzen naar een extern bestand. Maar ook dit systeem is niet ideaal: weergeven van de bestanden buiten de applicatie waarvoor ze ontwikkeld is om, is niet eenvoudig. Ook is het vervelend dat het eindresultaat bestaat uit een binair bestand, waardoor het bijvoorbeeld niet mogelijk wordt om wijzigingen aan de voorstellingen efficiënt door te sturen.
 
-Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze implementeren met \strong{\ac{html} en Javascript}, een veelgebruikte combinatie bij het maken van moderne websites. Hierbij is het nog steeds mogelijk om complexe voorstellingen te realiseren, en worden die efficiënt opgeslagen. Alle code wordt immers opgeslagen in tekstformaat, en de ondersteunde video- en audiostandaarden zijn steeds gekozen wegens hun efficiënte netwerkoverdracht. Verder kunnen ook afbeeldingen en video's efficiënt gemaakt worden door ze te realiseren in een vectorformaat\footnote{Afbeeldingen via het \code{<svg>} element, en video's via \code{<canvas>} en Javascript code.}. Ook biedt \ac{html} sinds versie 5 de mogelijkheid om bestaande multimediabestanden weer te geven (via de \code{<video>} en \code{<audio>} tags), waardoor we de terugwaartse compatibiliteit met het huidige systeem bekomen. Ook bestaan er enorm veel Javascript codebibliotheken, waardoor het via hergebruik daarvan mogelijk wordt om zeer dynamische voorstellingen te realiseren. Tenslotte is het ook eenvoudig om dergelijke bestanden weer te geven in een externe applicatie, door gebruik te maken van bestaande rendering engines. Een minpunt is wel de manier waarop de logica geïmplementeerd is: de designer moet steeds een notie van Javascript hebben. Het is wellicht mogelijk om zoveel mogelijk te abstraheren in een externe Javascript bibliotheek, maar toch blijft de scheiding tussen design en code vager dan het is bij de andere systemen. Ook bestaan er nog geen bruikbare \ac{wysiwyg} editors, waardoor het steeds nodig is om \ac{html} code, hoe laagdrempelig die ook is, te bewerken.
+Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze implementeren met \strong{\ac{html} en Javascript}, een veelgebruikte combinatie bij het maken van moderne websites. Hierbij is het nog steeds mogelijk om complexe voorstellingen te realiseren, en worden die efficiënt opgeslagen. Alle code wordt immers opgeslagen in tekstformaat, en de ondersteunde video- en audiostandaarden zijn steeds gekozen wegens hun efficiënte netwerkoverdracht. Verder kunnen ook afbeeldingen en video's efficiënt gemaakt worden door ze te realiseren in een vectorformaat\footnote{Afbeeldingen via het \code{<svg>} element, en video's via \code{<canvas>} en Javascript code.}. Ook biedt \ac{html} sinds versie 5 de mogelijkheid om bestaande multimediabestanden weer te geven (via de \code{<video>} en \code{<audio>} tags), waardoor we de terugwaartse compatibiliteit met het huidige systeem bekomen. Ook bestaan er enorm veel Javascript codebibliotheken, waardoor het via hergebruik daarvan mogelijk wordt om zeer dynamische voorstellingen te realiseren. Tenslotte is het ook eenvoudig om dergelijke bestanden weer te geven in een externe applicatie, door gebruik te maken van bestaande rendering engines. Een minpunt is wel de manier waarop de logica geïmplementeerd is: de designer moet steeds een notie van Javascript hebben. Het is wellicht mogelijk om zoveel mogelijk te abstraheren in een externe Javascript bibliotheek, maar toch blijft de scheiding tussen design en code vager dan het is bij de andere systemen. Ook bestaan er (nog) geen bruikbare \ac{wysiwyg} editors, waardoor het steeds nodig is om \ac{html} code, hoe laagdrempelig die ook is, te bewerken.
 
 \begin{table}[h!]
   \begin{center}
@@ -65,7 +65,7 @@ Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze 
     Efficiëntie & Inefficiënt & Inefficiënt \\
     Flexibiliteit & Zeer omslachtig & Zeer omslachtig \\
     Externe weergave & Eenvoudig & Eenvoudig \\
-    Moeilijkheid & Relatief eenvoudig & Relatief eenvoudig \\
+    Complexiteit & Relatief eenvoudig & Relatief eenvoudig \\
     \\    
     & Presentatieformaten & \ac{html} en Javascript \\
     \hline
@@ -73,7 +73,7 @@ Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze 
     Efficiëntie & Efficiënt & Zeer efficiënt \\
     Flexibiliteit & Flexibel & Extreem flexibel \\
     Externe weergave & Moeilijk & Relatief eenvoudig \\
-    Moeilijkheid & Zeer eenvoudig & Relatief moeilijk \\
+    Complexiteit & Zeer eenvoudig & Relatief moeilijk \\
     \end{tabular}
   \end{center}
   \caption{Vergelijking van verschillende formaten.}
@@ -94,10 +94,12 @@ Daarom hebben we uiteindelijk te stap gemaakt naar speciale \strong{versiebeheer
 Maar er bestaan tientallen versiebeheersystemen, die we elk gepeild hebben aan ons eisenpakket:
 \begin{itemize}
 \item Client-server georiënteerd;
+\item Client-side aspect efficiënt te gebruiken vanuit een applicatie;
+\item Server-side aspect liefst ook te integreren binnen een andere applicatie;
 \item Efficiënte omgang met binaire bestanden.
 \end{itemize}
 
-Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide vergelijking, blijkt enkel \ac{svn} een geschikte keuze te zijn. Voor \ac{svn} bestaan er tevens Java-bindings, te vinden in de \makeurl{http://code.google.com/p/svnj/}{SVN-J} bibliotheek, waardoor de repository als 1 geheel zou kunnen geïntegreerd worden met de rest van de serverapplicatie. Jammer genoeg is de bibliotheek echter niet matuur genoeg, waardoor we zullen moeten gebruik maken van een overkoepelende webserver zoals Apache. Hierdoor wordt de binding tussen de applicatie en de repository iets minder sterk (wat bijvoorbeeld extra configuratie zal vereisen), maar het is de trade-off nodig om een realistisch systeem te bekomen.
+Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide vergelijking, blijkt enkel \ac{svn} een geschikte keuze te zijn. Dit ondertussen ruim 10 jaar oud project biedt ons een zeer goed ontwikkeld en stabiel versiebeheersysteem om onze repository mee te realiseren. Ook voorziet het project in een uitgebreide library die toelaat om de repository direct te manipuleren vanuit een externe applicatie.
 
 \subsection{Repository layout}
 
@@ -109,31 +111,35 @@ Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository z
   |
   +-configurations/
   | |
-  | +-hires.xml
+  | +-kiosk1.xml
   | |
-  | +-nosound.xml
+  | +-kiosk2.xml
   |
-  +-presentations/
+  +-media/
   | |
   | +-presentation1/
-  |   |
-  |   +-index.html
-  |
-  +-interfaces/
-  | |
-  | +-interface1/
   |   |
   |   +-index.html
 \end{verbatim}
 \caption{Voorbeeld van een repository layout.}
 \end{codefragment}
 
-Op het hoogste niveau zal de repository bestaan uit drie mappen. In de \code{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen, zoals welke media ingeladen moet worden of hoe sterk het volume moet staan. Om de implementatie eenvoudig te houden hebben we ervoor gekozen om een een configuratie eenduidig te laten overeenkomen met een enkele kiosk, en niet te voorzien in functionaliteit om gedeelde instellingen weg te abstraheren. Natuurlijk laat het formaat toe om dit in een later stadium toe te voegen.
+Op het hoogste niveau zal de repository bestaan uit twee mappen. In de \code{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen, zoals welke media ingeladen moet worden of hoe sterk het volume moet staan. Om de implementatie eenvoudig te houden hebben we ervoor gekozen om een een configuratie eenduidig te laten overeenkomen met een enkele kiosk, en niet te voorzien in functionaliteit om gedeelde instellingen weg te abstraheren. Natuurlijk laat het formaat toe om dit in een later stadium toe te voegen.
 
-De \code{presentations} map bevat de effectieve voorstellingen, elk in een aparte subfolder. Hierin staan de bestanden nodig om de voorstelling weer te geven, waarbij slechts 1 bestand vereist is: \code{index.html}. Dit bestand is de entrypoint in de voorstelling, en zal door de client ingeladen worden wanneer de presentatie moet weergegeven worden. Het zou natuurlijk mogelijk zijn om dit op een flexibelere manier op te lossen, bijvoorbeeld via een extra configuratie bestand, maar opnieuw kiezen we ervoor om initieel een eenvoudig maar compleet raamwerk te voorzien en pas in een later stadium eventueel te voorzien in hulpfunctionaliteit.
+De \code{media} map bevat de effectieve voorstellingen, elk in een aparte subfolder. Hierin staan de bestanden nodig om de voorstelling weer te geven, waarbij slechts 1 bestand echt vereist is: \code{index.html}. Dit bestand is de entrypoint in de voorstelling, en zal door de client ingeladen worden wanneer de presentatie moet weergegeven worden. Het zou natuurlijk mogelijk zijn om dit op een flexibelere manier op te lossen, bijvoorbeeld via een extra configuratie bestand, maar opnieuw kiezen we ervoor om initieel een eenvoudig maar compleet raamwerk te voorzien en pas in een later stadium eventueel te voorzien in extra features.
 
-Binnen de \code{interfaces} map tenslotte plaatsen we de bestanden die een interface typeren. Aangezien de opmaak van de interfaces gelijk is aan de manier waarop we de presentaties beschreven hebben, is ook de invulling van de relevante mappen binnen de repository vrijwel identiek.
-% todo: interface enzo documenteren
+\paragraph{Bestandsformaat}
+
+Bij de voorstellingen is het reeds duidelijk welk formaat de bestanden moeten hebben, namelijk geldige HTML code. Bij de configuratiebestanden daarentegen moeten we zelf nog op zoek gaan naar een gepast formaat om de informatie in op te slaan. Hierbij zullen we opnieuw eerst bepalen wat onze eisen zijn:
+\begin{itemize}
+  \item Eenvoudig te bewerken;
+  \item In te laden vanuit een externe applicatie, zonder daarbij al te veel werk te moeten verrichten;
+  \item Correctheid moet te verifiëren vallen.
+\end{itemize}
+
+Als eerste kandidaat hebben we gekeken naar het \strong{INI formaat}, een populair \code{key=value} formaat dat zijn origines kent binnen oudere Windows versies. Hoewel dit eigenlijk helemaal geen krachtig en zeker geen eenvoudig te verwerken formaat is, leek het interessant omdat het eenvoudig te bewerken en relatief intuïtief is. Ook zijn er veel bibliotheken beschikbaar om dergelijke bestanden in te lezen, al moet het gezegd zijn dat het voor zo een eenvoudig formaat eigenlijk helemaal niet nodig is om op zoek te gaan naar een gedediceerde biblitoheek.
+
+Van zodra we echter begonnen aan de effectieve implementatie van de applicaties, bleek het formaat niet voldoende voor onze toepassing. Zo hadden we op een gegeven moment nood aan een hierarchische datastructuur, wat bij een ini-bestand onmogelijk is. Ook hebben we een tijdje last gehad van een bug die veroorzaakt werd door een typfout in een configuratiebestand, iets dat de parser niet merktte bij gebrek aan verificatiemogelijkheden. Daarom hebben we besloten om op zoek te gaan naar een alternatief, dat we gevonden hebben onder de vorm van \strong{\ac{xml} bestanden}. Dit formaat kent enkele duidelijke voordelen: zo is het enerzijds mogelijk om hierarchische datastructuren te modelleren, en bestaan er verschillende mechanismen om de bestanden te verifiëren vooraleer ze effectief in te laden. Voor dat laatste zullen we kiezen voor \ac{xml} schema, waartoe we eerst een \ac{xsd} bestand zullen moeten maken dat het exacte formaat van de configuratiebestanden formeel beschrijft. Ook bestaan er talloze bibliotheken om de bestanden in code in te laden. Toch kent het formaat een belangrijk nadeel: het is nu niet meer zo gebruiksvriendelijk om het met de hand te bewerken. Daartoe zullen we in de toekomst misschien een kleine applicatie ontwerpen die een administrator toelaat om een kiosk te configureren via een gebruiksvriendelijke wizard, waarbij deze applicatie handig gebruik zal kunnen maken van het \ac{xsd} bestand. 
 
 \begin{codefragment}
 \begin{verbatim}
