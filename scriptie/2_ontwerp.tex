@@ -138,7 +138,7 @@ Als eerste kandidaat hebben we gekeken naar het \strong{INI formaat}, een popula
 
 Van zodra we echter begonnen aan de effectieve implementatie van de applicaties, bleek het formaat niet voldoende voor onze toepassing. Zo hadden we op een gegeven moment nood aan een hierarchische datastructuur, wat bij een ini-bestand onmogelijk is. Ook hebben we een tijdje last gehad van een bug die veroorzaakt werd door een typfout in een configuratiebestand, iets dat de parser niet merktte bij gebrek aan verificatiemogelijkheden. Daarom hebben we besloten om op zoek te gaan naar een alternatief, dat we gevonden hebben onder de vorm van \strong{\ac{xml} bestanden}. Dit formaat kent enkele duidelijke voordelen: zo is het enerzijds mogelijk om hierarchische datastructuren te modelleren, en bestaan er verschillende mechanismen om de bestanden te verifiëren vooraleer ze effectief in te laden. Voor dat laatste zullen we kiezen voor \ac{xml} schema, waartoe we eerst een \ac{xsd} bestand zullen moeten maken dat het exacte formaat van de configuratiebestanden formeel beschrijft. Ook bestaan er talloze bibliotheken om de bestanden in code in te laden. Toch kent het formaat een belangrijk nadeel: het is nu niet meer zo gebruiksvriendelijk om het met de hand te bewerken. Daartoe zullen we in de toekomst misschien een kleine applicatie ontwerpen die een administrator toelaat om een kiosk te configureren via een gebruiksvriendelijke wizard, waarbij deze applicatie handig gebruik zal kunnen maken van het \ac{xsd} bestand. 
 
-\begin{lstlisting}[language=XML, float, caption=Voorbeeld van een kiosk configuratiebstand, label=code:kioskconfiguratie]
+\begin{lstlisting}[language=XML, float, caption=Voorbeeld van een kiosk configuratiebstand.]
 <?xml version="1.0"?>
 <kiosk xmlns="http://www.mira.be">
   <target>
@@ -285,7 +285,7 @@ Om een overvloed aan functies binnen een enkele service te vermijden, hebben we 
 
 Zoals reeds gezegd zijn dit \ac{xml} bestanden die elk een service tot in alle details beschrijven. De exacte velden in deze bestanden worden opgelegd door de \ac{upnp} standaard, waardoor we ons soms in vreemde moeten wringen om toch een volledig compatibele service te bekomen. Strikte compatibiliteit is hierbij een vereiste omdat een van de libraries die we zullen gebruiken erop staat dat elk toestel volledig voldoet aan de \ac{upnp} specificatie. Een consequentie hiervan is bijvoorbeeld dat elke parameter van een functie moet overeen komen met een \code{state variable}, ook al heeft dat soms niet echt een praktisch nut.
 
-\begin{lstlisting}[language=XML, float, caption=Voorbeeld van een service descriptor]
+\begin{lstlisting}[language=XML, float, caption=Voorbeeld van een service descriptor.]
 <?xml version="1.0"?>
 <scpd xmlns="urn:schemas-upnp-org:service-1-0">
   <specVersion>
@@ -486,14 +486,14 @@ Daarom zijn we van de BeagleBoard afgestapt, om gelukkig een vergelijkbaar maar 
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/IGEPv2}
-	\caption{IGEPv2}
+	\caption{IGEPv2 embedded computer.}
 \end{figure}
 
 Dat hebben we gevonden in de vorm van de \strong{\makeurl{http://www.globalscaletechnologies.com/t-guruplugdisplaydetails.aspx}{GuruPlug Display}}. Deze computer is misschien minder krachtig (vooral acceleratiemogelijkheden zijn een prominente afwezige), maar wordt geleverd als een sluitend geheel waarbij het standaardpakket tevens voorziet van alle nodige kabels.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/GuruPlug_Display}
-	\caption{GuruPlug Display}
+	\caption{GuruPlug Display.}
 \end{figure}
 
 Verschillende maanden hebben we dan ook gedacht dat we de GuruPlug Display zouden gebruiken, meer nog: we waren reeds begonnen met de ontwikkeling van een besturingssysteem voor deze hardware. Er doken echter problemen op toen we tot aankoop van de hardware wouden overgaan. Vooreerst werd bij aankoop van een enkel device ter ontwikkeling van het besturingssysteem meer dan \euro 40 aan portkosten aangerekend, wat een significante meerkost betekende. Vervolgens liet het bedrijf achter de GuruPlugs weten dat er geen Europese modellen zouden gemaakt worden, waardoor we tevens een conversiestekker zouden moeten aankopen. Aangezien de hardware reeds niet al te performant was, hebben we wegens deze twee meerkosten besloten om opnieuw uit te gaan kijken naar een alternatieve oplossing, ondanks het feit dat we al begonnen waren met de effectieve implementatie.
@@ -502,7 +502,7 @@ Daarom zijn we op zoek gegaan naar een vergelijkbare plug-computer (zodat we nie
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/EFIKA_MX}
-	\caption{Genesis EFIKA MX}
+	\caption{Genesis EFIKA MX.}
 \end{figure}
 
 \section{Input module}
@@ -512,7 +512,7 @@ De gebruikersinterface wordt gerealiseerd door 4 grote drukknoppen ingebouwd in 
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/kiosk_knoppen}
-	\caption{Huidige aansluitingsmethode knoppen}
+	\caption{Huidige aansluitingsmethode knoppen.}
 \end{figure}
 
 Nu we echter de DVD-spelers gaan vervangen door een computer, zullen we ook voor deze input module een compatibel alternatief moeten vinden. Aan deze module worden enkele specifieke eisen gesteld:

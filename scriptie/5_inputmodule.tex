@@ -44,7 +44,7 @@ Natuurlijk zullen we ook de voedingsspanning ontkoppelen, en dit op twee vlakken
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_voeding}
-	\caption{Voedingscircuit}
+	\caption{Voedingscircuit.}
 \end{figure}
 
 \subsection{Signalen}
@@ -64,18 +64,16 @@ Tenslotte moeten we nog voorzien in een \emph{setting weerstand} die een spannin
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_signaal}
-	\caption{Signaalconversie}
+	\caption{Signaalconversie.}
 \end{figure}
 
 \subsection{\acs{isp}}
 
 Het invoegen van een \ac{isp} header is niet veel werk: we dienen gewoon te voorzien in een connector, en de pinnen ervan correct doorverbinden met de juiste pinnen van de microcontroller.
 
-TODO: programmeren als systeem actief is?
-
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_isp}
-	\caption{\acs{isp} connector}
+	\caption{\acs{isp} connector.}
 \end{figure}
 
 \section{Schakelaars}
@@ -88,12 +86,11 @@ Om de aansluitingen op de printplaat eenvoudig te houden, zullen we werken met e
 
 Er is echter een bijkomend probleem: we hebben maar 3 poortpinnen tot onze beschikking, waardoor het niet mogelijk is elke knop door te verbinden met een eigen poortpin. De eenvoudige oplossing hierbij is het gebruik van een multiplexer: 2 select-lijnen en 1 datalijn maakt het mogelijk om 4 schakelaars uit te lezen. We willen echter meer knoppen kunnen aansluiten, zonder daarbij extra poortpinnen nodig te hebben. Daarom zullen we zelf het signaal multiplexen, waarbij we meer schakelaars kunnen toelaten door geen gebruik te maken van een selectiemechanisme, maar de signalen direct door te linken naar de poortpinnen. Het nadeel aan deze opzet is dat de signalen kunnen overlappen, zo zullen we bij het indrukken van meerdere knoppen tegelijkertijd niet kunnen uitmaken welke knoppen juist ingedrukt zijn.
 
-De realisatie van een dergelijke multiplexer lijkt eenvoudig, maar er is een belangrijk detail dat we moeten opmerken. Aangezien de verschillende poortpinnen verbonden zijn met verschillende knoppen, kan er bij het indrukken van een enkele schakelaar stroom terugvloeien via de contactpunten van diens signaallijnen met andere knoppen van een totaal ongerelateerde poortpin, zoals te zien is op figuur \ref{fig:inputmodule_schakelaars_foutief}. Om dit te vermijden moeten we overal waar er twee signaallijnen met elkaar verbonden zijn, een diode plaatsen zodat er geen stroom kan terugvloeien naar een vorig verbindingspunt. Hiervoor hebben we een reguliere diode nodig, waarbij geen speciale eisen gesteld worden. Daarom kiezen we voor de 1N4148, een populaire diode die vaak gebruikt wordt voor het schakelen van digitale signalen. Zoals we kunnen opzoeken in het stroom-spanningsdiagram van deze diode, zorgt ze bij een stroom tussen $0.1$ en $0.25$ milliampères (gegenereerd door de pull-up weerstand binnen de microcontroller) voor een spanningsval van $0.5$ volt.
+De realisatie van een dergelijke multiplexer lijkt eenvoudig, maar er is een belangrijk detail dat we moeten opmerken. Aangezien de verschillende poortpinnen verbonden zijn met verschillende knoppen, kan er bij het indrukken van een enkele schakelaar stroom terugvloeien via de contactpunten van diens signaallijnen met andere knoppen van een totaal ongerelateerde poortpin. Om dit te vermijden moeten we overal waar er twee signaallijnen met elkaar verbonden zijn, een diode plaatsen zodat er geen stroom kan terugvloeien naar een vorig verbindingspunt. Hiervoor hebben we een reguliere diode nodig, waarbij geen speciale eisen gesteld worden. Daarom kiezen we voor de 1N4148, een populaire diode die vaak gebruikt wordt voor het schakelen van digitale signalen. Zoals we kunnen opzoeken in het stroom-spanningsdiagram van deze diode, zorgt ze bij een stroom tussen $0.1$ en $0.25$ milliampères (gegenereerd door de pull-up weerstand binnen de microcontroller) voor een spanningsval van $0.5$ volt.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_schakelaars_foutief}
-	\caption{Circuit en connector voor schakelaars zonder dioden, en aanduiding van voorbeeldstromen daarbij}
-	\label{fig:inputmodule_schakelaars_foutief}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_schakelaars}
+	\caption{Circuit en connector voor schakelaars.}
 \end{figure}
 
 We kunnen wel niet zomaar dioden op de signaallijnen plaatsen. Als we dit wel zouden doen, zou de het volledige spanningsverschil tussen de elektrische grond en de poortpin (wat $5$ volt bedraagt, dankzij de interne pull-up) over de diode geplaatst worden, waardoor die beschadigd zou worden. Dit zou opgelost kunnen worden door bij elk van de drie poortpinnen een extra beschermingsweerstand te plaatsen, waardoor de overmatige spanning over deze weerstand zou komen te staan en de dioden slechts het spanningsverschil waarvoor ze gemaakt zijn zouden moeten verwerken. Het berekenen van de waarde van deze weerstand zou wel enig werk vereisen, daar we moeten zorgen dat de spanning die aan het hoogimpedant meetcircuit aangelegd wordt zich binnen het bereik van een laag signaal bevindt. De datasheet van de microcontroller stelt zo dat een laag signaal gedetecteerd wordt tussen $0$ volt en $0.6$ keer de bronspanning. Aangezien de microcontroller zich rechtstreeks voedt met de USB bronspanning, dewelke $5$ volt bedraagt, moet de spanning aan het meetcircuit vallen tussen $0$ en $3$ volt.
@@ -101,19 +98,23 @@ We kunnen wel niet zomaar dioden op de signaallijnen plaatsen. Als we dit wel zo
 Als we echter nauwkeuriger kijken naar de werking van de interne pull-up (figuur \ref{fig:avr_pullup}), zien we dat deze reeds op zichzelf functioneert als een beschermingsweerstand. In het slechtste geval bijvoorbeeld, waarbij er zich na de pull-up nog drie dioden met elk een spanningsval van $0.5$ volt bevinden, zal er zich zo slechts $1.5$ volt op de signaallijn bevinden, wat ruim binnen de grenzen voor detectie van een laag signaal bevindt. Aangezien de weerstand tevens voldoende groot is, moeten we niet zorgen voor een extra stroomreductie en verdwijnt elk nut van een extra beschermingsweerstand.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/avr_pullup}
-	\caption{Pull-up weerstand binnenin een AVR microcontroller}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_pullup}
+	\caption{Pull-up weerstand binnenin een AVR microcontroller.}
 	\label{fig:avr_pullup}
 \end{figure}
 
+De finale versie van het circuit is te vinden in figuur \ref{fig:circuit}. Vooraleer echter over te gaan tot de productie van de module, hebben we een prototype gemaakt om het circuit op te testen. Dit hebben we gedaan op een breadboard, een bordje met signaalpinnen waar kabels kunnen ingestoken worden en eenvoudig weer losgemaakt worden. Met behulp van een dergelijk breadboard hebben we de werking van het circuit kunnen verifiëren, zoals te zien valt op figuur \label{fig:breadboard}.
+
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_schakelaars}
-	\caption{Circuit en connector voor schakelaars}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_circuit}
+	\caption{Uiteindelijk circuit.}
+	\label{fig:circuit}
 \end{figure}
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/circuit}
-	\caption{Uiteindelijk circuit}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_breadboard}
+	\caption{Breadboard prototype.}
+	\label{fig:breadboard}
 \end{figure}
 
 \section{Productie}
@@ -132,16 +133,32 @@ Om de overige eisen, denk maar aan de minimale afstand tussen boorgaten of de mi
 
 Om een printplaat of printplaat te ontwerpen hebben we natuurlijk gepaste software nodig. De meest populaire keuze hierbij is de EAGLE PCB software, ontwikkeld door \makeurl{http://www.cadsoftusa.com/}{CadSoft}, waarschijnlijk omdat er een beperkte variant van de software gratis beschikbaar is. Wegens de populariteit van de tool bestaat er een heel actieve community, waardoor een zeer uitgebreide selectie aan componenten beschikbaar zijn voor gebruik binnen EAGLE. Ook biedt Eurocircuits enkel \ac{dru} bestanden aan voor de EAGLE software. Het lijkt daarom een verstandige keuze om onze printplaat ook te ontwerpen met EAGLE.
 
-Nu we alle nodige specificaties vergaard hebben en een softwarepakket geselecteerd hebben, kunnen we beginnen aan het produceren van de fysieke layout. Hierbij hebben we ervoor gekozen om een printplaat te maken die bestaat uit twee lagen, namelijk de boven en onderkant. Deze optie is niet veel duurder dan een 1-laags printplaat, en het geeft ons de nodige flexibiliteit om de componenten goed te kunnen plaatsen. Moesten we gekozen hebben voor een 1-laags printplaat dan zou de kost misschien zelfs hoger kunnen liggen door soms onnatuurlijke plaatsing om toch de nodige verbindingen te kunnen realiseren.
+Nu we alle nodige specificaties vergaard hebben en een softwarepakket geselecteerd hebben, kunnen we beginnen aan het produceren van de fysieke layout. Hierbij hebben we ervoor gekozen om een printplaat te maken die bestaat uit twee lagen, namelijk de boven en onderkant. Deze optie is niet veel duurder dan een 1-laags printplaat, en het geeft ons de nodige flexibiliteit om de componenten goed te kunnen plaatsen. Moesten we gekozen hebben voor een 1-laags printplaat dan zou de kost misschien zelfs hoger kunnen liggen door soms onnatuurlijke plaatsing om toch de nodige verbindingen te kunnen realiseren. 
+
+De finale versie van de 2-laags printplaat is te vinden in figuur \ref{fig:printplaat}. Hierbij zijn een aantal zaken waard om te vermelden. Zo is er de plaatsing van de 100 nanofarad condensator die instaat voor het ontkoppelen van de hoogfrequente ruis: aangezien dergelijke ruis veroorzaakt wordt door het schakelen van de transistoren binnen de microcontroller, hebben we de condensator zo dicht mogelijk geplaatst bij de bron van die ruis. Ook hebben we zoals de gewoonte is bij het ontwerpen van een schema, de vrije ruimte van elke laag gebruikt om een volledig geleidend vlak te maken. Daarbij zal de fill op de bovenste layer gebruikt worden om de positieve voedingsspanning $Vcc$ te geleiden, en de fill op de onderste layer om de elektronische grond te verdelen. Hoewel dit bij een hoogfrequent-circuit niet zou aan te raden zijn wegens de parasitaire capaciteiten die gepaard gaan met dergelijke \emph{plane fills}, is dit bij ons relatief laagfrequent schema niet van toepassing.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_pcb}
-	\caption{Finale versie van de printplaat}
+	\caption{Finale versie van de printplaat.}
+	\label{fig:printplaat}
 \end{figure}
 
+De laatste stap voor de effectieve productie is de conversie van ons schema naar het bestandsformaat dat vereist is door Eurocircuits. Hoewel dit verschilt van producent tot producent, moeten we meestal voorzien in de volgende bestanden (met het formaat steeds tussen haakjes):
+\begin{itemize}
+  \item Top copper (Extended Gerber): koper op bovenste laag;
+  \item Bottom Copper (Extended Gerber): koper op onderste laag;
+  \item Top Silkscreen (Extended Gerber): tekst op bovenste laag;
+  \item Top Soldermask (Extended Gerber): plaatsen op bovenste laag die moeten bedekt worden met beschermende laag;
+  \item Bottom Soldermask (Extended Gerber): plaatsen op bovenste laag die moeten bedekt worden met beschermende laag;
+  \item Drill File (Excellon): waar en hoe er geboord moet worden op de printplaat.
+\end{itemize}
+
+Het genereren van deze bestanden kunnen we uitvoeren met Eagle's CAM Processor. Hiertoe hebben we ons gebaseerd op een voorbeeld CAM job van Sparkfun, aangepast aan de specifieke eisen die Eurocircuit stelt. Na het insturen van deze bestanden, selectie van de benodigde materialen en processen, kregen we na enkele weken een afgewerkte printplaat in de bus. Vervolgens zijn we overgegaan tot aankoop van de benodigde componenten, waarna we die er op gesoldeerd hebben om dan eindelijk een afgewerkte print te bekomen zoals te zien in figuur \ref{fig:inputmodule}.
+
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_pcb_render}
-	\caption{3D-render van de printplaat}
+	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_afgewerkt}
+	\caption{Finale versie van de inputmodule.}
+	\label{fig:inputmodule}
 \end{figure}
 
 
