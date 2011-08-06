@@ -5,9 +5,6 @@
 % Preambule met standaardinstellingen
 \documentclass[a4paper,oneside,11pt,final]{memoir}
 
-% Gesplitst document
-\usepackage{subfiles}
-
 % Noot: zorg ervoor dat Nederlandse woord-splitsing geactiveerd is.
 \usepackage[dutch]{babel}
 
@@ -73,12 +70,12 @@ Extern:& Philippe MOLLET}
 \newpage
 
 \pagenumbering{arabic}
-\subfile{1_introductie.tex}
-\subfile{2_ontwerp.tex}
-\subfile{3_server.tex}
-\subfile{4_kiosk.tex}
-\subfile{5_inputmodule.tex}
-\subfile{6_invoering.tex}
+\input{1_introductie.tex}
+\input{2_ontwerp.tex}
+\input{3_server.tex}
+\input{4_kiosk.tex}
+\input{5_inputmodule.tex}
+\input{6_invoering.tex}
 
 \input{0_einde.tex}
 
