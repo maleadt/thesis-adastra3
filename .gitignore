@@ -1,0 +1,14 @@
+*~
+*.log
+*.aux
+*.fls
+*.d
+*.make
+*.out
+*.lof
+*.toc
+*.temp
+*.lol
+.project
+.texlipse
+
