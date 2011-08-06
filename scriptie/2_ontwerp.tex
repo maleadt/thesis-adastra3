@@ -105,7 +105,7 @@ Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer n
 
 Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository zullen gebruiken, ligt de exacte layout van de bestanden daarin nog niet vast. Aangezien zowel de voorstellingen als de kioskconfiguratie erin zal moeten opgeslagen worden, is het belangrijk om op voorhand een eenduidige structuur vast te leggen die tevens toelaat om eenvoudig wijzigingen te detecteren.
 
-\begin{lstlisting}[language=XML, float, caption=Voorbeeld van een repository layout.]
+\begin{lstlisting}[float, caption=Voorbeeld van een repository layout.]
 +-repository/
   |
   +-configurations/
@@ -372,7 +372,7 @@ We stellen er echter een specifieke eis aan de servlet engine, namelijk dat we b
 
 \paragraph{Web tooklit} Nu de servlet engine vast ligt, moeten we nog bepalen met welke technologie we de servlets zullen bouwen. Om ons niet bezig te moeten houden met hoe de webpagina's gegenereerd worden, zijn we op zoek gegaan naar een widget-oriented framework voor moderne webapplicaties. Zo hebben we gekeken naar \strong{\makeurl{http://vaadin.com/home}{vaadin}}, een bibliotheek die toelaat om op een eenvoudige manier met enkel Java code een rijke user-interface te onwerpen. De manier van ontwikkelen leunt nauw aan bij hoe reguliere user-interfaces ontwikkeld worden: event- en widget gebaseerd, zonder zich te moeten bezig houden met het effectief genereren van de interface.
 
-Een probleem met vaadin was echter dat het niet perfect werkt op oudere toestellen, en dat vrij veel code vereiste om een relatief eenvoudige \code{TreeView} op te bouwen. Daarom zijn we eens te meer op onze beslissing teruggekomen, en op zoek gegaan naar een betere toolkit. Zo zijn we gestuit op \strong{\makeurl{http://www.webtoolkit.eu/jwt}{JWT}}. Deze eveneens widget-oriented library heeft een zeer interessante feature, namelijk dat het voorziet in \emph{graceful degradation}. Hierbij zal de library detecteren wat de mogelijkheden zijn van de browser die de pagina opvraagt, en aan de hand daarvan meer of minder gesofisticeerde content genereren. Ook is zijn \ac{api} gemodelleerd naar de Qt \ac{api}, waarmee we reeds ervaring hadden. 
+Een probleem met vaadin was echter dat het niet perfect werkt op oudere toestellen, en dat vrij veel code vereiste om een relatief eenvoudige \code{TreeView} op te bouwen. Daarom zijn we eens te meer op onze beslissing teruggekomen, en op zoek gegaan naar een betere toolkit. Zo zijn we gestuit op \strong{\makeurl{http://www.webtoolkit.eu/jwt}{JWt}}. Deze eveneens widget-oriented library heeft een zeer interessante feature, namelijk dat het voorziet in \emph{graceful degradation}. Hierbij zal de library detecteren wat de mogelijkheden zijn van de browser die de pagina opvraagt, en aan de hand daarvan meer of minder gesofisticeerde content genereren. Ook is zijn \ac{api} gemodelleerd naar de Qt \ac{api}, waarmee we reeds ervaring hadden. 
 
 \subsubsection{Logging}
 

@@ -1,6 +1,8 @@
 \part{Server}
 \label{server}
 
+% somehow grootorde/duur/sloc project integreren
+
 \chapter{Structuur}
 
 Op het hoogste niveau hebben we de serverapplicatie onderverdeeld in enkele logische subsystemen, zijnde het netwerk, de repository, en tenslotte de webinterface. Onderling communiceren deze subsystemen niet met elkaar: coördinatie verloopt door een overkoepelende controller. Zo is het mogelijk om elk subsysteem als een alleenstaand geheel te behandelen, wat het ontwikkelingsproces sterk vereenvoudigt.
@@ -18,37 +20,73 @@ Om het voor de buitenwereld eenvoudig te maken om te interfacen met het netwerk,
 
 \section{Repository subsysteem}
 
-Dit systeem dient als wrapper rond de repository waarbinnen alle gegevens van het systeem (configuraties en voorstellingen) opgeslagen zijn. We verwerken wel niet alle gegevens binnen de repository: enkel de kioskconfiguraties zijn van belang voor de server. Vervolgens kunnen de kiosken manueel interfaces en mediagegevens inladen.
+Dit systeem dient als wrapper rond de repository waarbinnen alle gegevens van het systeem (configuraties en voorstellingen) opgeslagen zijn. Zoals vermeld in hoofdstuk \ref{ontwerp} staat de server in voor het ophalen en verwerken van de configuratiegegevens, en moet het de nodige kiosken laten weten wanneer de media die ze tonen gewijzigd is.
 
 Net zoals bij het netwerk subsysteem biedt het repository subsysteem een publieke interface die de buitenwereld toelaat gegevens op te vragen. Ook zullen de teruggegeven objecten opnieuw gesofisticeerd zijn om eenvoud verwerken van de gegevens toe te laten: de \code{Repository::getConfiguration(String id)} aanroep bijvoorbeld zal daarom een \code{KioskConfiguration} object teruggeven dewelke specifieke functies bevat zoals \code{getVolume}. Hoewel dit systeem zijn nadelen kent -- een wijziging van het configuratieformaat vereist direct wijzigingen aan de servercode -- zorgt de rigide opzet ervoor dat inconsistenties tussen de repository en de achterliggende logica snel zullen duidelijk worden. 
 
 Bij het opstarten van het repository subsysteem zal een initiële \code{checkout} uitgevoerd worden. Hierna zal een interne timer gestart worden die om de minuut controleert of er geen nieuwe revisie in de repository te vinden is. Indien dat het geval is, zullen alle configuraties opnieuw binnengehaald worden om dan eventueel de wijzigingen naar een client te sturen. Momenteel gebeurt dit echter vrij inefficiënt: alle configuraties worden opnieuw opgehaald en verstuurd, los van het feit of er ook effectief wijzigingen gebeurd zijn. Voor een volgende versie streven we ernaar om ook effectief de delta-gegevens te interpreteren en zo intelligent de nodige veranderingen door te sturen.
-% todo: vermelden bij ontwerp waarop gesplitst
-% niet alles vo server: doorsturen moeilijk
-% niet alles in kiosk: te statisch
-% hier nog eens snel herhalen
-
-De elementaire structuur van dit subsysteem kent veel gelijkenissen met het netwerk subsysteem: zo is er een publieke interface die interactie van buitenaf toelaat en de nodige signalen uitstuurt, alsook is er een private repository monitor die ervoor zorgt dat de data up-to-date is.
-
-% todo: svn lib vermelden.
-
-\section{Website subsysteem}
 
 \section{Applicatiecontroller}
 
-% controller
-% service modules
-% blabla
+Dit systeem staat in voor de coördinatie van acties die niet geïsoleerd blijven tot een enkel subsysteem. Het beste voorbeeld hiervoor is voor wanneer het netwerk subsysteem een nieuwe component detecteert. Om de code overzichtelijk te houden zal het netwerk subsysteem dan geen actie ondernemen, maar louter zijn gegevens updaten en een signaal uitsturen. De applicatiecontroller vangt vervolgens dit signaal op om vervolgens de repository te raadplegen voor eventuele configuratiegegevens.
 
-\chapter{Realisatie}
+\section{Website subsysteem}
 
-% duur
-% grootorde
-% problemen
-% resultaat
+Deze component visualiseert de gegevens uit de repository en netwerk subsystemen, en laat de gebruiker toe om er controle over uit te oefenen. Die controle is echter beperkt: persistente configuratie moet nog altijd verlopen via manuele interventie.
+
+\chapter{Besturingssysteem}
 
 \chapter{Deployment}
 
-% modules van maven
-% fatjar
-% integreren in linux os (debian)
+\section{Buildsystem}
+
+Voor het bouwen van een executable hebben we berust op \ac{maven}, een softwarebeheersysteem dat op een flexibele manier toelaat om alle aspecten van het bundelen van een applicatie te organiseren. Daartoe voorzien we in een \ac{pom} bestant waarin alle informatie verwerkt zit, zoals de naam en versie van de toepassing, de libraries waarop het berust, en hoe de applicatie moet opgestart worden. Aan de hand van die informatie kan \ac{maven} het project gepast uitvoeren of bundelen tot een finale executable.
+
+Ook wordt het gebruik van externe libraries vereenvoudigt: er bestaat een \ac{maven} repository met daarin de meest populaire libraries, waardoor we louter de naam en versie in het \ac{pom} bestand moeten specificeren en \ac{maven} met deze informatie zelf op zoek gaat naar de gepaste binaries die benodigd zijn om de applicatie op te starten.
+
+\begin{lstlisting}[language=XML, float, caption=Inladen van externe libraries via Maven.]
+<dependencies>
+  <dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>1.2.16</version>
+  </dependency>
+  ...
+</dependencies>
+\end{lstlisting}
+
+Voor enkele libraries die we niet terugvonden in de officiële \ac{maven} repositories hebben we ofwel een alternatieve repository toegevoegd die het pakket wel bevatte (zoals dat was in het geval van Cling), of zelf voorzien in een lokale repository die de benodigde bestanden bevat en gebundeld is met de broncode om iedereen toe te laten de applicatie zonder al te veel moeite te compileren.
+
+Ook kent \ac{maven} een plugin-systeem, dat we dankbaar gebruiken om bepaalde specifieke taken uit te voeren. Zo willen we bijvoorbeeld een \ac{jar} bestand genereren dat tegelijk alle afhankelijke libraries bevat, om zo installatie op de uiteindelijke server te vereenvoudigen. Dit druist deels in tegen de ideale manier om software te packagen, waarbij externe libraries steeds via de lokale package-manager geïnstalleerd worden, maar omdat we daarvoor zeer nauwgezet het pakket zouden moeten onderhouden (updates van een externe library kan immers steeds problemen veroorzaken in de applicatie zelf) hebben we ervoor gekozen om alles tesamen te bundelen tot een monolitisch geheel.
+
+\begin{lstlisting}[language=XML, float, caption=Gebruik van Maven modules om een executable te compileren.]
+<build>
+  <plugins>
+    <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <executions>
+      <execution>
+        <id>package-jar-with-dependencies</id>
+        <phase>package</phase>
+        <goals>
+          <goal>single</goal>
+        </goals>
+        <configuration>
+          <appendAssemblyId>false</appendAssemblyId>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>be.mira.adastra3.server.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+</build>
+\end{lstlisting}
+
+% todo: debian packaging
