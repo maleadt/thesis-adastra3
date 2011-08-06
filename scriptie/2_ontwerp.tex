@@ -302,6 +302,10 @@ Zoals reeds gezegd zijn dit \ac{xml} bestanden die elk een service tot in alle d
 </scpd>
 \end{lstlisting}
 
+\subsection{Presentatie}
+
+De \ac{upnp} standaard voorziet tenslotte ook nog in een presentatie gedeelte, dat omschrijft dat een library kan voorzien in een webpagina waarmee een administrator eenvoudig de status van een device kan bekijken en eventueel acties uitvoeren. We hebben er echter voor gekozen dit niet te gebruiken, daar dit zou vereisen dat een administrator manueel surft naar de presentation URL's van elk device dat hij wil beheren. Het alternatief waarvoor we gekozen hebben is een webinterface aan de kant van de server, waarbij acties daar teweeggebracht door de serverapplicatie doorgestuurd worden naar de correcte kiosk.
+
 \section{Redundantie en robuustheid}
 \label{sec:redundantie}
 
@@ -331,22 +335,31 @@ Opnieuw bestaan er verschillende mogelijkheden die ons essentieel de middelen aa
 
 \subsection{Hergebruik}
 
+\subsection{Repository}
+
+De originele opzet was om via de serverside-bindings in de \ac{svn} bibliotheek te voorzien in een \ac{svn}-compatibele repository die volledig overkoepeld zou zijn door de serverapplicatie. Hierdoor zou het geheel een enkel monolitisch geheel vormen dat geen extra configuratie zou vereisen en niet zou berusten op externe applicaties. Om niet te moeten interfacen met de C-library zouden we daarvoor gebruik maken van de enige Java-wrapper voor de serverside-bindings die er bestaat: \makeurl{http://code.google.com/p/svnj/}{SVN-J}. Jammer genoeg bleek deze library niet stabiel genoeg te zijn, en ontbraken er verschillende features. Daarom hebben we jammer genoeg moeten kiezen voor een externe \ac{svn} repository, niet overkoepeld door de serverapplicatie.
+
+Maar dat is niet alles: een externe \ac{svn} instantie moet altijd overkoepeld worden door een webserver, zoals Apache. Hierdoor zitten we nu met twee webservers: enerzijds Apache, en anderszijds de servlet engine binnen onze serverapplicatie. Om toch enige redundantie te vermijden zullen we Apache gebruiken om onze serverapplicatie te overkoepelen. Dit heeft verschillende voordelen: voor beide servers kunnen we nu de standaardpoort 80 gebruiken, alsook zal het in een later stadium eenvoudiger zijn om hier eventueel een authenticatie- of verificatiesysteem aan toe te voegen. Om de binding tussen Apache en Tomcat te bekomen, zullen we gebruik maken van \code{mod\_jk}, de officiële \makeurl{https://tomcat.apache.org/connectors-doc/}{Apache Tomcat connector}. Hierbij verloopt de communicatie tussen beide over het binaire \ac{ajp} protocol.
+
 \subsubsection{Netwerk}
 
 Tijdens het ontwerp van het applicatieprotocol hebben we er speciaal op gelet om zoveel mogelijk bestaande technologieën te gebruiken, zodat we enerzijds niet steeds het wiel opnieuw uitvinden en anderzijds ook tijdens de realisatie gebruik zouden kunnen maken van bestaande hoogwaardige codebibliotheken.
 
 \paragraph{Configuratie en invocatie} Zoals vermeld verloopt zowel het gros van de netwerkconfiguratie alsook het uitvoeren van acties via \ac{upnp}, wat we uit Java kunnen gebruiken door middel van de \makeurl{http://teleal.org/projects/cling/}{Cling} bibliotheek. Dit is een vrij volledige \ac{upnp} stack die de nadruk legt op strikte conformiteit en een duidelijke API. Hoewel er nog andere \ac{upnp} bibliotheken bestaan, zijn die vaak niet doorontwikkeld, proprietair of niet uitgebreid genoeg, waardoor Cling uiteindelijk de beste keus leek.
 
-\paragraph{Data uitwisseling} Opslag en distributie van de voorstellingen zal niet door de applicatie zelf verzorgd worden, maar door een \ac{webdav} toegangspunt dat wijst naar een \ac{svn} repository. Hiervoor zijn geen extra voorzieningen in de applicatie vereist. Om de toegang tot zowel de serverapplicatie als de repository op een eenduidige manier te laten verlopen, overkoepelen we beide door een Apache webserver, waardoor de toegang (poortnummer, hostname) op dezelfde manier verloopt, en bepaalde instellingen kunnen weggewerkt worden naar dit hoger niveau.
+\paragraph{Data uitwisseling} Door gebruik te maken van een externe \ac{svn} instantie worden we geconfronteerd met nog een probleem: waar we anders vanuit de serverapplicatie toegang zouden gehad hebben tot de bestanden in de repository (die vervolgens via een \ac{svn}-compatibele interface zouden geopend worden naar eventuele clients toe), moeten we nu zelf contact opnemen met de externe \ac{svn} instantie om de nodige configuratiegegevens op te halen. Ook moet het mogelijk zijn snel te kijken wat de laatste revisie van de repository is, en om vervolgens op te halen wat er veranderd is sinds de laatst bekende revisie. Met die informatie kan bepaald worden welke configuraties en/of voorstellingen opnieuw moeten opgehaald worden, om daarna die informatie door te sturen naar de relevante kiosken.
 
-Hoewel de effectieve dataoverdracht geen voorzieningen in de serverapplicatie vereist, moet er wel een mechanisme zijn dat wijzigingen detecteert en ze kan inladen, om vervolgens eventueel bepaalde kiosken te herconfigureren. Hiervoor hebben we nood aan een client-side \ac{svn} bibliotheek, die ons toelaat gegevens vanuit de repository op te halen en in te laden. Ook moet het mogelijk zijn snel te kijken wat de laatste revisie van de repository is, en om vervolgens op te halen wat er veranderd is sinds de laatst bekende revisie. Met die informatie kan bepaald worden welke configuraties en/of voorstellingen opnieuw moeten opgehaald worden, om daarna die informatie door te sturen naar de relevante kiosken.
 Hoewel er opnieuw verschillende \ac{svn} bibliotheken bestaan, lijkt \makeurl{http://svnkit.com/}{SVNKit} de enige die nog doorontwikkeld wordt. Ook is de bibliotheek geschreven in pure Java, wat opnieuw het geheel platformonafhankelijk maakt.
 
 \subsubsection{Beheersinterface}
 
-Tenslotte moeten we ook voorzien in een beheersinterface. Hiervoor zullen we een servlet-engine gebruiken, zodat we bij het genereren van een webpagina tegelijk toegang hebben tot de hele applicatie. Binnen de Javawereld zijn er verschillende servlet engines, de bekendste wellicht Tomcat en Jetty. Aangezien onze applicatie niet draait rond de webapplicatie, maar dat slechts een deelcomponent is, zullen we geen gebruik kunnen maken van de standaard servlet environment. Door de servlet engine te \emph{embedden} binnen onze applicatie, is het eenvoudiger om tegelijk verschillende andere niet-webgeoriënteerde services actief te hebben (zoals de \ac{mdns} monitor). Zowel Tomcat als Jetty maken het mogelijk om ze te gebruiken binnenin een applicatie, al is het bij de ene al makkelijker dan bij de andere. Er is echter een belangrijk verschil tussen beide: een embedded Tomcat deelt de \ac{jvm} van de applicatie, terwijl Jetty een nieuwe \ac{jvm} opstart. Aangezien we vanuit de servlets toegang willen hebben tot de rest van de applicatie, zonder daar een speciaal communicatieprotocol zoals \ac{rmi} voor te moeten gebruiken, kunnen we enkel Tomcat gebruiken.
+\paragraph{Servlet engine} Om een website te kunnen realiseren, hebben we nood aan een servlet-engine. Binnen de Javawereld zijn er verschillende servlet engines, de bekendste wellicht Tomcat en Jetty. Aangezien onze applicatie niet draait rond de webapplicatie, maar dat slechts een deelcomponent is, zullen we geen gebruik kunnen maken van de standaard servlet environment. Door de servlet engine te \emph{embedden} binnen onze applicatie, is het eenvoudiger om tegelijk verschillende andere niet-webgeoriënteerde services actief te hebben. Zowel Tomcat als Jetty maken het mogelijk om ze te gebruiken binnenin een applicatie, al is het bij de ene al makkelijker dan bij de andere.
 
-Nu de servlet engine vast ligt, moeten we nog bepalen op welke technologie we de servlets zullen bouwen. Om ons niet bezig te moeten houden met hoe de webpagina's gegenereerd worden, zijn we op zoek gegaan naar een widget-oriented framework voor moderne webapplicaties. Zo hebben we uiteindelijk gekozen voor \makeurl{http://vaadin.com/home}{vaadin}, een bibliotheek die toelaat om op een eenvoudige manier met enkel Java code een rijke user-interface te onwerpen. De manier van ontwikkelen leunt nauw aan bij hoe reguliere user-interfaces ontwikkeld worden: event- en widget gebaseerd, zonder zich te moeten bezig houden met het effectief genereren van de interface.
+We stellen er echter een specifieke eis aan de servlet engine, namelijk dat we bij het genereren van een webpagina tegelijk toegang hebben tot de hele applicatie. Dit vinden we enkel terug bij Tomcat, Jetty start een nieuwe \ac{jvm}. Als we geen speciaal communicatieprotocol zoals \ac{rmi} willen gebruiken om data van de rest van de applicatie op te halen, kunnen we enkel Tomcat gebruiken.
+
+\paragraph{Web tooklit} Nu de servlet engine vast ligt, moeten we nog bepalen met welke technologie we de servlets zullen bouwen. Om ons niet bezig te moeten houden met hoe de webpagina's gegenereerd worden, zijn we op zoek gegaan naar een widget-oriented framework voor moderne webapplicaties. Zo hebben we gekeken naar \strong{\makeurl{http://vaadin.com/home}{vaadin}}, een bibliotheek die toelaat om op een eenvoudige manier met enkel Java code een rijke user-interface te onwerpen. De manier van ontwikkelen leunt nauw aan bij hoe reguliere user-interfaces ontwikkeld worden: event- en widget gebaseerd, zonder zich te moeten bezig houden met het effectief genereren van de interface.
+
+Een probleem met vaadin was echter dat het niet perfect werkt op oudere toestellen, en dat vrij veel code vereiste om een relatief eenvoudige \code{TreeView} op te bouwen. Daarom zijn we eens te meer op onze beslissing teruggekomen, en op zoek gegaan naar een betere toolkit. Zo zijn we gestuit op \strong{\makeurl{http://www.webtoolkit.eu/jwt}{JWT}}. Deze eveneens widget-oriented library heeft een zeer interessante feature, namelijk dat het voorziet in \emph{graceful degradation}. Hierbij zal de library detecteren wat de mogelijkheden zijn van de browser die de pagina opvraagt, en aan de hand daarvan meer of minder gesofisticeerde content genereren. Ook is zijn \ac{api} gemodelleerd naar de Qt \ac{api}, waarmee we reeds ervaring hadden. 
 
 \subsubsection{Logging}
 
@@ -369,7 +382,7 @@ Het ontwikkelplatform \makeurl{http://qt.nokia.com/}{Qt} voldoet vrijwel perfect
 
 \subsection{Hergebruik}
 
-\subsubsection{Applicatieprotocol}
+\subsubsection{Netwerk}
 
 Net zoals dit bij de serverapplicatie het geval was, kunnen we door de nauwgezette selectie van protocollen optimaal gebruik maken van bestaande bibliotheken.
 
@@ -386,8 +399,6 @@ Daarom hebben er uiteindelijk voor gekozen op de C++ \ac{upnp} bibliotheek van h
 De voorstellingen zijn opgemaakt in een combinatie van \ac{html} en Javascript. Hierdoor kunnen we voor de weergave gebruik maken van de rendering engines ontwikkeld voor verschillende browsers. Zo is er de \makeurl{https://developer.mozilla.org/en/Gecko}{Gecko} rendering engine, ontwikkeld voor gebruik binnen de producten van Mozilla. Ondanks de recente port van Firefox naar het Qt platform, blijft de integratie van Gecko binnen Qt relatief moeilijk.
 
 Daarom zullen we eerder kiezen voor de \makeurl{http://www.webkit.org/}{WebKit} rendering engine, een doorontwikkeling van de KHTML rendering engine. WebKit is een interessantere keuze gezien zijn populaire port naar het Qt framework, \makeurl{http://trac.webkit.org/wiki/QtWebKit}{QtWebKit}. Deze port is een officieel onderdeel van het Qt framework, waardoor het een goedgedocumenteerd en kwalitatief product is.
-
-% todo: interface
 
 \subsubsection{Logging}
 
