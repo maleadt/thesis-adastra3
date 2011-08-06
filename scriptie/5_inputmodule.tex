@@ -2,10 +2,12 @@
 \label{inputmodule}
 
 \chapter{Hardware}
+\label{inputmodule:hardware}
 
 Zoals uit de doeken gedaan in deel \ref{ontwerp}, zullen we voor de module gebruik maken van een AVR microcontroller met daarop de V-USB firmware om low speed datacommunicatie te verwezenlijken met minimale periferie.
 
 \section{Microcontroller}
+\label{inputmodule:hardware:microcontroller}
 
 Door het gebruik van de V-USB bibliotheek moeten we ons beperken tot AVR microcontrollers, maar binnen die familie is het aanbod nog altijd zeer groot. Om een goede selectie te maken, moeten we logischerwijs rekening houden met de eisen die de V-USB bibliotheek stelt:
 \begin{itemize}
@@ -163,3 +165,43 @@ Het genereren van deze bestanden kunnen we uitvoeren met Eagle's CAM Processor. 
 
 
 \chapter{Firmware}
+
+\section{Geheugengebruik}
+
+Bij het schrijven van de firmware moesten we rekening houden met de mogelijkheden van de chip. Deze eigenschappen, vermeld in sectie \ref{inputmodule:hardware:microcontroller}, waren vaak sterk beperkend. Zo hadden we maar 4 kilobytes tot onze beschikking, waardoor het moeilijk zou worden om (een subset van) C++ te gebruiken: de overhead teweeggebracht door het gebruik van klassen is immers te groot. Ook moesten we erop letten om geen \emph{floating-point} berekeningen uit te voeren: aangezien de AtTiny45 geen \ac{fpu} bevat, zou het gebruik ervan resulteren in het meelinken van een \ac{fpu}-emulator (die ruim 2 kilobytes groot is).
+
+Ook moeten we rekening houden met de beperkte hoeveelheid \ac{ram} geheugen. Een voorbeeld van een dergelijke optimalisatie is hoe we 14 bytes \ac{ram} geheugen uitgespaard hebben bij de lookup-table waarmee een bitmap van geactiveerde schakelaars geconverteerd wordt naar de geschikte toetsaandruk. Aangezien we over 7 schakelaars bevatten, en er 1 extra entry in de lookup tabel aanwezig is voor wanneer er geen toets ingedrukt is, hebben we 8 ingangen nodig binnen de lookup-table. Voor elke ingang in die tabel, die we indexeren met de bitmap om zo geen extra ruimte te vereisen, hebben we twee waarden nodig: de toets, en een modifier (zoals \code{shift} of \code{alt}). Beide waarden worden geëncodeerd als een \code{uchar}, en nemen dus elk 1 byte in beslag. Hierdoor is de hele lookup-table exact 16 bytes groot. Omdat we deze tabel rechtstreeks indexeren moet ze volledig in het \ac{ram} geheugen staan, zélfs als we ze nooit zullen wijzigen. Om deze verkwisting te vermijden zullen we gebruik maken van de \code{PROGMEM} macro die ons toelaat om bepaalde datastructuren onder dwang in het programmageheugen op te slaan. Hoewel we daardoor 16 bytes uitsparen, moeten we nu meer opletten bij het gebruik van de lookup-tabel: de tabel is niet langer rechtstreeks te indexeren. Meer concreet: pointers die we berekenen door het optellen van een offset (de bitmap waarmee we normaal de tabel indexeerden) met het basisadres van de tabel mogen we nu niet langer rechtstreeks dereferentieren, maar enkel na aanroepen van de \code{pgm\_read\_word} functie. Het resultaat, nu slechts 2 bytes groot, dienen we natuurlijk op te slaan in \ac{ram} geheugen.
+
+\begin{lstlisting}[language=C, float, caption=Optimalisatie van de lookup-table.]
+static const uchar keyReport[NUM_KEYS+1][2] PROGMEM = {
+/* none */  {0, 0},
+/*  1 */    {MOD_SHIFT_RIGHT, KEY_1},
+/*  2 */    {MOD_SHIFT_RIGHT, KEY_2},
+/*  3 */    {MOD_SHIFT_RIGHT, KEY_3},
+/*  4 */    {MOD_SHIFT_RIGHT, KEY_4},
+/*  5 */    {MOD_SHIFT_RIGHT, KEY_5},
+/*  6 */    {MOD_SHIFT_RIGHT, KEY_6},
+/*  7 */    {MOD_SHIFT_RIGHT, KEY_7},
+};
+
+static void handleKeyPress(uchar key)
+{
+    *(int *)data = pgm_read_word(keyReport[key]);
+}
+\end{lstlisting}
+
+Tenslotte gebruiken we ook nog 1 byte uit het \ac{eeprom} geheugen om het resultaat van een succesvolle calibratie in op te slaan. Die calibrarie is, zoals beschreven in sectie \ref{inputmodule:hardware:microcontroller}, nodig omdat we geen oscillator gebruikt hebben op de printplaat. Omdat die calibratie echter enige tijd in beslag neemt, slaan we het resultaat ervan op zodat na een heropstart de calibratie niet opnieuw moet uitgevoerd worden.
+
+Na verschillende optimalisaties ziet het geheugengebruik er als volgt uit:
+\begin{table}[h!]
+  \begin{center}
+    \begin{tabular}{c c c}
+    Geheugen & Gebruik & Limiet \\
+    \hline
+    Flash & 2172 bytes & 4 kilobytes \\
+    \ac{ram} & 61 bytes & 256 bytes \\
+    \ac{eeprom} & 1 byte & 256 bytes \\
+    \end{tabular}
+  \end{center}
+  \caption{Geheugengebruik van de firmware voor de inputmodule.}
+\end{table}
