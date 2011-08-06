@@ -97,12 +97,6 @@ Maar er bestaan tientallen versiebeheersystemen, die we elk gepeild hebben aan o
 \item Efficiënte omgang met binaire bestanden.
 \end{itemize}
 
-Gezien de uiteindelijke keuze van het applicatieprotocol (zie onderdeel \ref{ontwerp:applicatie:applicatieprotocol}), komen hier nog twee eisen bij:
-\begin{itemize}
-\item Beveiliging via \ac{ssl};
-\item Te gebruiken over \ac{http}.
-\end{itemize}
-
 Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide vergelijking, blijkt enkel \ac{svn} een geschikte keuze te zijn. Voor \ac{svn} bestaan er tevens Java-bindings, te vinden in de \makeurl{http://code.google.com/p/svnj/}{SVN-J} bibliotheek, waardoor de repository als 1 geheel zou kunnen geïntegreerd worden met de rest van de serverapplicatie. Jammer genoeg is de bibliotheek echter niet matuur genoeg, waardoor we zullen moeten gebruik maken van een overkoepelende webserver zoals Apache. Hierdoor wordt de binding tussen de applicatie en de repository iets minder sterk (wat bijvoorbeeld extra configuratie zal vereisen), maar het is de trade-off nodig om een realistisch systeem te bekomen.
 
 \subsection{Repository layout}
@@ -172,11 +166,11 @@ Aangezien we gebruik maken van een losstaand versiebeheersysteem (zie \ref{ontwe
 
 Om het systeem eenvoudig in gebruik te maken, hebben we er voor geopperd om zoveel mogelijk configuratie automatisch te laten verlopen. Er blijft echter steeds één link die manueel moet gelegd worden: namelijk welke voorstelling naar elke kiosk moet gestuurd worden. Hoe we de overige configuratie automatiseren wordt besproken in de volgende paragrafen.
 
-\paragraph{Adressering}
+\subsubsection{Adressering}
 
 % TODO: DHCP, lokal link, etc
 
-\paragraph{Service discovery en naamresolutie}
+\subsubsection{Service discovery en naamresolutie}
 
 Service discovery staat in voor het publiceren van en luisteren naar meldingen waarbij een toestel zijn diensten adverteert op een bepaald netwerkkanaal. Hierbij wordt vaak aangegeven wat de naam is van het toestel, en wat de exacte mogelijkheden zijn van elke dienst. Zoals duidelijk is gaat dit hand in hand met het aspect van naamresolutie: hoe moet een luisterende partij contact opnemen met het toestel dat zonet zijn diensten geadverteerd heeft. Omdat beide aspecten vaak aangepakt worden via eenzelfde mechanisme, behandelen we ze ook samen in een enkele paragraaf.
 
@@ -205,7 +199,7 @@ Vervolgens hebben we de nodige aandacht besteed aan \strong{XML-RPC}, een zeer s
 
 Van zodra we echter het service discovery mechanisme overgezet hebben naar \ac{ssdp}, hebben we besloten om ook voor de acties gebruik te maken van \strong{\ac{upnp}}, dat de mogelijkheid biedt om bij het adverteren van een toestel te voorzien in verschillende \emph{services} en een exacte beschrijving van de verschillende acties die via die service kunnen ondernomen worden.	
 
-\paragraph{SSDP}
+\subsubsection{SSDP}
 % todo	
 
 \section{Redundantie en robuustheid}
@@ -243,7 +237,7 @@ Tijdens het ontwerp van het applicatieprotocol hebben we er speciaal op gelet om
 
 \paragraph{Configuratie en invocatie} Zoals vermeld verloopt zowel het gros van de netwerkconfiguratie alsook het uitvoeren van acties via \ac{upnp}, wat we uit Java kunnen gebruiken door middel van de \makeurl{http://teleal.org/projects/cling/}{Cling} bibliotheek. Dit is een vrij volledige \ac{upnp} stack die de nadruk legt op strikte conformiteit en een duidelijke API. Hoewel er nog andere \ac{upnp} bibliotheken bestaan, zijn die vaak niet doorontwikkeld, proprietair of niet uitgebreid genoeg, waardoor Cling uiteindelijk de beste keus leek.
 
-\paragraph{Data uitwisseling} Opslag en distributie van de voorstellingen zal niet door de applicatie zelf verzorgd worden, maar door een \ac{webdav} toegangspunt dat wijst naar een \ac{svn} repository. Hiervoor zijn geen extra voorzieningen in de applicatie vereist. Om de toegang tot zowel de serverapplicatie als de repository op een eenduidige manier te laten verlopen, overkoepelen we beide door een Apache webserver, waardoor de toegang (poortnummer, hostname) op dezelfde manier verloopt, en bepaalde instellingen (\ac{ssl}) kunnen weggewerkt worden naar dit hoger niveau.
+\paragraph{Data uitwisseling} Opslag en distributie van de voorstellingen zal niet door de applicatie zelf verzorgd worden, maar door een \ac{webdav} toegangspunt dat wijst naar een \ac{svn} repository. Hiervoor zijn geen extra voorzieningen in de applicatie vereist. Om de toegang tot zowel de serverapplicatie als de repository op een eenduidige manier te laten verlopen, overkoepelen we beide door een Apache webserver, waardoor de toegang (poortnummer, hostname) op dezelfde manier verloopt, en bepaalde instellingen kunnen weggewerkt worden naar dit hoger niveau.
 
 Hoewel de effectieve dataoverdracht geen voorzieningen in de serverapplicatie vereist, moet er wel een mechanisme zijn dat wijzigingen detecteert en ze kan inladen, om vervolgens eventueel bepaalde kiosken te herconfigureren. Hiervoor hebben we nood aan een client-side \ac{svn} bibliotheek, die ons toelaat gegevens vanuit de repository op te halen en in te laden. Ook moet het mogelijk zijn snel te kijken wat de laatste revisie van de repository is, en om vervolgens op te halen wat er veranderd is sinds de laatst bekende revisie. Met die informatie kan bepaald worden welke configuraties en/of voorstellingen opnieuw moeten opgehaald worden, om daarna die informatie door te sturen naar de relevante kiosken.
 Hoewel er opnieuw verschillende \ac{svn} bibliotheken bestaan, lijkt \makeurl{http://svnkit.com/}{SVNKit} de enige die nog doorontwikkeld wordt. Ook is de bibliotheek geschreven in pure Java, wat opnieuw het geheel platformonafhankelijk maakt.
@@ -324,7 +318,7 @@ Algemeen worden er enkele vrij zware eisen gesteld aan de kioskhardware:
 
 Vooraleer op zoek te gaan naar een specifiek hardwaremodel, is het belangrijk te kiezen wat voor soort hardware we zullen aankopen. Er zijn immers verschillende pistes, elk met hun voor- en nadelen.
 
-\paragraph{Tweedehands thin clients}
+\subsubsection{Tweedehands thin clients}
 
 Een eerste richting die we verkend hebben, is die van hergebruik. Veel bedrijven hebben in het verleden gebruik gemaakt van thin clients, die wanneer het support-contract verloopt vaak voor een appel en een ei van de hand gedaan worden op populaire tweedehands-sites.
 
@@ -332,13 +326,13 @@ Hoewel dergelijke aanbiedingen wel interessant lijken, biedt een tweedehands thi
 
 Daarom hebben we besloten om verder geen aandacht meer te besteden aan tweedehands thin clients, zelfs al zijn die op het eerste zicht qua prijs erg aantrekkelijk.
 
-\paragraph{Embedded hardware}
+\subsubsection{Embedded hardware}
 
 Embedded hardware is specifiek ontworpen voor toepassingen als deze. Hoewel vrij prijzig, biedt het daar veel in ruil voor: alle periferie is geïntegreerd op een enkele chip, vaak is er voorzien in specialistische acceleratie-chips, alsook zijn er features te vinden die interessant zijn voor embedded developers (zoals on-board flash, of een SD-kaartslot).
 
 Ook de duurzaamheid is vaak indrukwekkend, mede door het feit dat er enkel solid-state componenten aanwezig zijn. Energieconsumptie is meestal ook een speerpunt, zo verbruikt de Beagleboard slechts 2.2 watt!
 
-\paragraph{Consument-georiënteerde hardware}
+\subsubsection{Consument-georiënteerde hardware}
 
 Hoewel niet echt geschikt voor dit doel, hebben we ook gekeken naar populaire consument-georiënteerde hardware. In die hardwarecategorie zijn er sinds enkele jaren energie-efficiënte configuraties te vinden, meestal bedoeld voor \ac{nas} toestellen of low-powered computers. Voorbeelden hiervan zijn moederborden gebaseerd op de \makeurl{http://www.intel.com/technology/atom/}{Intel Atom}, of de meer recent geïntroduceerde \makeurl{http://sites.amd.com/us/fusion/apu/Pages/fusion.aspx}{AMD Fusion}. Dergelijke moederborden komen vaak met een geïntegreerde \ac{gpu} (in het geval van de AMD Fusion zit die zelf op de processorchip) en andere periferie, waardoor het moederbord een handig functioneel geheel vormt.
 
@@ -346,7 +340,7 @@ Toch is er ook nood aan extra hardware, waaronder \ac{ram}, een harde schijf, en
 
 Ondanks de nood aan die extra hardware blijft de prijs relatief aantrekkelijk. En voor die prijs wordt er meestal vrij veel pure performantie bekomen, wat het gemis aan interessante features deels tegemoet komt. Toch is dit, zeker gecombineerd met de teleurstellende duurzaamheid, niet voldoende om ons er voor te laten kiezen.
 
-\subsection{Model}
+\subsubsection{Model}
 
 Zoals uit de vorige paragraaf blijkt, is embedded hardware de meest geschikte keuze voor dit project. Maar hier eindigt het niet: er bestaan immers talloze modellen, van verschillende fabrikanten, met elk hun specifieke eigenschappen en mogelijkheden. We zochten naar de volgende features:
 \begin{itemize}
