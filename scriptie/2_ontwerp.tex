@@ -99,7 +99,7 @@ Maar er bestaan tientallen versiebeheersystemen, die we elk gepeild hebben aan o
 \item Efficiënte omgang met binaire bestanden.
 \end{itemize}
 
-Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide vergelijking, blijkt enkel \ac{svn} een geschikte keuze te zijn. Dit ondertussen ruim 10 jaar oud project biedt ons een zeer goed ontwikkeld en stabiel versiebeheersysteem om onze repository mee te realiseren. Ook voorziet het project in een uitgebreide library die toelaat om de repository direct te manipuleren vanuit een externe applicatie.
+Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide vergelijking, blijkt enkel \ac{svn} een geschikte keuze te zijn. Dit ondertussen ruim 10 jaar oud project biedt ons een zeer goed ontwikkeld en stabiel versiebeheersysteem om onze repository mee te realiseren. Ook voorziet het project in een uitgebreide library die toelaat om de repository direct te manipuleren vanuit een externe applicatie. Hierdoor zal relatief eenvoudig zijn om vanuit de client- en serverapplicatie bestanden op te vragen uit de repository, door gebruik te maken van de clientside-bindings in de \ac{svn} bibliotheek. Ook wouden we voor de serverapplicatie een nog hechtere integratie realiseren, waarbij de repository zich eigenlijk binnen de applicatie zou bevinden. Dit zou als voordeel gehad hebben dat we niet zouden moeten berusten op een externe \ac{svn} instantie, maar zoals later zal blijken hebben we uiteindelijk dit idee moeten opgeven.
 
 \subsection{Repository layout}
 
@@ -141,17 +141,19 @@ Van zodra we echter begonnen aan de effectieve implementatie van de applicaties,
 \begin{lstlisting}[language=XML, float, caption=Voorbeeld van een kiosk configuratiebstand, label=code:kioskconfiguratie]
 <?xml version="1.0"?>
 <kiosk xmlns="http://www.mira.be">
-	<target>0026b900-926f-1000-8000-000000000000</target>
-	<device>
-		<sound>
-			<volume>255</volume>
-		</sound>
-	</device>
-	<application>
-		<media id="manen" />
-	</application>
+  <target>0026b900-926f-1000-8000-000000000000</target>
+  <device>
+    <sound>
+      <volume>255</volume>
+    </sound>
+  </device>
+  <application>
+    <media id="manen" />
+  </application>
 </kiosk>
 \end{lstlisting}
+
+De specificatie van de \ac{xml} bestanden is zodanig gemaakt dat het eenvoudig te mappen valt over de services waarmee de server een kiosk kan controleren (zie later).
 
 \section{Netwerk}
 \label{ontwerp:applicatie:netwerk}
@@ -166,11 +168,7 @@ Aangezien we gebruik maken van een losstaand versiebeheersysteem (zie \ref{ontwe
 
 Om het systeem eenvoudig in gebruik te maken, hebben we er voor geopperd om zoveel mogelijk configuratie automatisch te laten verlopen. Er blijft echter steeds één link die manueel moet gelegd worden: namelijk welke voorstelling naar elke kiosk moet gestuurd worden. Hoe we de overige configuratie automatiseren wordt besproken in de volgende paragrafen.
 
-\subsubsection{Adressering}
-
-% TODO: DHCP, lokal link, etc
-
-\subsubsection{Service discovery en naamresolutie}
+\subsubsection{Discovery}
 
 Service discovery staat in voor het publiceren van en luisteren naar meldingen waarbij een toestel zijn diensten adverteert op een bepaald netwerkkanaal. Hierbij wordt vaak aangegeven wat de naam is van het toestel, en wat de exacte mogelijkheden zijn van elke dienst. Zoals duidelijk is gaat dit hand in hand met het aspect van naamresolutie: hoe moet een luisterende partij contact opnemen met het toestel dat zonet zijn diensten geadverteerd heeft. Omdat beide aspecten vaak aangepakt worden via eenzelfde mechanisme, behandelen we ze ook samen in een enkele paragraaf.
 
@@ -187,7 +185,15 @@ Een compacter alternatief is \strong{\ac{mdns}}, onderdeel van het door Apple on
 
 Wegens de eenvoud elegantie van het protocol, was de initiële implementatie dan ook gebaseerd op \ac{mdns} door gebruik te maken van de \code{JmDNS} bibliotheek. Na verloop van tijd bleek die bibliotheek echter niet zo stabiel: zo kwam het soms voor dat een kiosk die zichzelf gepubliceerd werd, niet door de server herkend werd. Aangezien dergelijke stabiliteitsproblemen totaal onaanvaardbaar zijn, en \code{JmDNS} de enige \ac{mdns} implementatie voor Java is (platformgebonden code hierbij niet in achting genomen), hebben we uiteindelijk moeten overschakelen naar \ac{upnp}.
 
-\subsection{Acties}
+\subsubsection{Adressering}
+
+Hoewel we nu beschikken over een systeem dat zonder enige configuratie toelaat om een kiosk te vinden en contacteren, is er nog steeds nood aan een mechanisme die de netwerkinterfaces op de kiosken configureert. Maar omdat elk contact volledig dynamisch verloopt, maakt het eigenlijk niet uit welke adressen toegewezen worden aan individuele kiosken, de enige vereiste is dat de adressen legaal zijn waardoor netwerkcommunicatie correct kan verlopen.
+
+De meest logische keuze hiervoor is het \ac{dhcp} protocol, een veelgebruikt en robuust protocol waarbij de kiosken bij het opstarten een aanvraag voor een adres broadcasten. Hierbij wordt rekening gehouden met welke adressen reeds ingenomen zijn, waardoor er geen conflicten zullen optreden bij het toewijzen van adressen. Een nadeel aan \ac{dhcp} is dat het nood heeft aan een serverapplicatie die instaat voor het uitdelen en beheren van adressen, maar aangezien we toch een router zullen nodig hebben binnen het netwerk en quasi elke router een \ac{dhcp} server aan boord heeft, vormt dit niet echt een probleem.
+
+Een toekomstgericht alternatief dat we misschien in een volgende versie zouden kunnen implementeren, maakt gebruik van \ac{ip} versie 6, terwijl we voor de huidige setup kiezen voor \ac{ip} versie 4. Versie 6 kent immers een robuustere en snellere vorm van local-link adressering, waardoor het mogelijk zou zijn om de kiosken zichzelf volledig autonoom een adres te laten toekennen.
+
+\subsection{Controle}
 
 In eerste instantie, toen we er nog van uitgingen dat we geen \ac{upnp} zouden gebruiken, zijn we op zoek gegaan naar eenvoudige \emph{remote procedure} protocollen om zo zonder teveel overhead de nodige acties op de kiosken te kunnen teweegbrengen. In die categorie vinden we zo \strong{\ac{rest}}. Hoewel dit lichtgewicht, \ac{http}-gebaseerd, en ook veelgebruikt protocol op het eerste zicht aan onze eisen voldoet, kent het zijn mindere kanten. Zo kent het geen eenduidige manier om fouten terug te geven, alsook is het formaat waarin gegevens verstuurd worden niet gestandaardiseerd. Omdat de implementatie daarvan nog vrij veel werk zou vereisen, besteden we verder geen aandacht aan dit protocol.
 
@@ -197,10 +203,104 @@ Ook hebben we meer moderne \ac{rpc}-frameworks overwogen zoals \strong{Apache Et
 
 Vervolgens hebben we de nodige aandacht besteed aan \strong{XML-RPC}, een zeer simplistisch \ac{rpc}-protocol dat XML-geformatteerde berichten verstuurt over \ac{http}. Jammer genoeg kent XML-RPC enkele fundamentele problemen, zoals het inefficiënte berichtformaat. Ook is de specificatie, om het zacht uit te drukken, vrij beperkt. Dit kan echter een voordeel zijn: de ermee geïmplementeerde interface wordt er compact mee gehouden, en valt eenvoudig te gebruiken vanuit verschillende talen. Dit wordt verder vereenvoudigd door het groot aantal implementaties, voor de meeste talen zijn er verschillende te vinden.
 
-Van zodra we echter het service discovery mechanisme overgezet hebben naar \ac{ssdp}, hebben we besloten om ook voor de acties gebruik te maken van \strong{\ac{upnp}}, dat de mogelijkheid biedt om bij het adverteren van een toestel te voorzien in verschillende \emph{services} en een exacte beschrijving van de verschillende acties die via die service kunnen ondernomen worden.	
+Van zodra we echter het service discovery mechanisme overgezet hebben naar \ac{ssdp}, hebben we besloten om ook voor de acties gebruik te maken van \strong{\ac{upnp}}, dat de mogelijkheid biedt om bij het adverteren van een toestel te voorzien in verschillende \emph{services} en een exacte beschrijving van de verschillende acties die via die service kunnen ondernomen worden.
 
-\subsubsection{SSDP}
-% todo	
+\subsection{Device en service descriptions}
+
+Om een \ac{upnp} client na het ontdekken van een toestel en diens services toe te laten om het toestel ook effectief te controleren, heeft de client meer informatie nodig. Zo zal de client een \strong{device description} kunnenn opvragen, waarin informatie staat die het toestel identificeert en gedeeltelijk beschrijft. Ook zullen we voor elk van zijn services moeten voorzien in een \strong{service description}. Beide zijn steeds opgemaakt als een \ac{xml} bestand, met de opmaak gedicteerd door de \ac{upnp} specificatie. Bij veel libraries moeten we echter nooit zelf de bestanden schrijven, maar worden ze gegenereerd via een hulpklasse of (zoals vaak het geval is bij libraries voor dynamische talen) worden ze via introspectie afgeleid van een relevante klasse.
+
+\subsubsection{Device description}
+
+Om ons toestel te laten voldoen aan de \ac{upnp} specificatie voorzien we in de volgende gegevens:
+
+\begin{table}[h!]
+  \begin{center}
+    \begin{tabular}{r l}
+    \hline
+    Type & \texttt{urn:mira-be:device:Kiosk:1} \\
+    Friendly name & Multimedia kiosk \\
+    Manufacturer & Volkssterrenwacht MIRA vzw \\
+    Manufacturer URL & www.mira.be \\
+    Model description & Flexible network-enabled multimedia kiosk \\
+    Model name & Ad-Astra Kiosk \\
+    Model number & 3.0 \\
+    Model URL & https://sites.google.com/site/miraadastraiii/ \\
+    Serial number & 1.0 \\
+    \hline
+    \end{tabular}
+  \end{center}
+  \caption{Velden binnen de \ac{upnp} device description.}
+\end{table}
+
+Naast deze statische gegevens zullen we ook moeten voorzien in een unieke identifier die het toestel identificeert binnen het netwerk. Dit zullen we bespreken bij de effectieve implementatie van de kiosk.
+
+\subsubsection{Service description}
+
+Aangezien deze taak zal verzorgd worden door een applicatie geschreven in C++ (de motivaties hiervan worden later beschreven) is het moeilijker om de service description bestanden dynamisch te genereren. Meer nog, voor de library die we zullen gebruiken zullen we de description files manueel moeten uitschrijven. Hoewel niet zeer arbeidsintensief, is het een foutgevoelig proces dat we liefst niet teveel willen doen. Daarom hebben we eerst grondig nagedacht over hoe de service er moet uitzien, om pas daarna over te gaan tot de effectieve implementatie. Hoewel we nog altijd af en toe wijzigingen hebben moeten doorvoeren aan de service description files, is dit hierdoor tot een minimum beperkt gebleven.
+
+\paragraph{Functionele opdeling}
+
+Om een overvloed aan functies binnen een enkele service te vermijden, hebben we ervoor gekozen om een functionele opdeling door te voeren. Zo hebben we de service die toelaat om het toestel te controleren, met functies zoals \code{Shutdown} en \code{SetVolume}. Een tweede service staat vervolgens in voor acties die een impact hebben op de applicatie, zoals \code{LoadMedia}. Een bijkomend voordeel van deze scheiding is dat alle platform- of hardwareafhankelijke code geïsoleerd is binnen een enkele service, wat de implementatie ervan vereenvoudigt.
+
+\begin{table}[h!]
+  \begin{center}
+    \begin{tabular}{p{4,5cm} p{5cm}}
+    \multicolumn{2}{c}{\strong{Device service}} \\
+    \hline
+    \hline
+    Functie & Beschrijving \\
+    \hline
+    \code{void Shutdown()} & Toestel afsluiten. \\
+    \code{void Reboot()} & Toestel heropstarten. \\
+    \code{void SetVolume(uint)} & Volume instellen. \\
+    \code{uint GetVolume()} & Volume ophalen. \\
+    \\
+    \multicolumn{2}{c}{\strong{Application service}} \\
+    \hline
+    \hline
+    Functie & Beschrijving \\
+    \hline
+    \code{void LoadMedia(string)} & Presentatie inladen. \\
+    \end{tabular}
+  \end{center}
+  \caption{Enkele functies uit beide services.}
+\end{table}
+
+\paragraph{Description bestanden}
+
+Zoals reeds gezegd zijn dit \ac{xml} bestanden die elk een service tot in alle details beschrijven. De exacte velden in deze bestanden worden opgelegd door de \ac{upnp} standaard, waardoor we ons soms in vreemde moeten wringen om toch een volledig compatibele service te bekomen. Strikte compatibiliteit is hierbij een vereiste omdat een van de libraries die we zullen gebruiken erop staat dat elk toestel volledig voldoet aan de \ac{upnp} specificatie. Een consequentie hiervan is bijvoorbeeld dat elke parameter van een functie moet overeen komen met een \code{state variable}, ook al heeft dat soms niet echt een praktisch nut.
+
+\begin{lstlisting}[language=XML, float, caption=Voorbeeld van een service descriptor]
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <actionList>
+    <action>
+      <name>Shutdown</name>
+    </action>
+    <action>
+      <name>SetVolume</name>
+      <argumentList>
+        <argument>
+          <name>iVolumeValue</name>
+          <relatedStateVariable>Volume</relatedStateVariable>
+          <direction>in</direction>
+        </argument>
+      </argumentList>
+    </action>
+  </actionList>
+  <serviceStateTable>
+    <stateVariable sendEvents="no">
+      <name>Volume</name>
+      <dataType>ui1</dataType>
+      <defaultValue>0</defaultValue>
+    </stateVariable>
+  </serviceStateTable>
+</scpd>
+\end{lstlisting}
 
 \section{Redundantie en robuustheid}
 \label{sec:redundantie}
@@ -231,7 +331,7 @@ Opnieuw bestaan er verschillende mogelijkheden die ons essentieel de middelen aa
 
 \subsection{Hergebruik}
 
-\subsubsection{Applicatieprotocol}
+\subsubsection{Netwerk}
 
 Tijdens het ontwerp van het applicatieprotocol hebben we er speciaal op gelet om zoveel mogelijk bestaande technologieën te gebruiken, zodat we enerzijds niet steeds het wiel opnieuw uitvinden en anderzijds ook tijdens de realisatie gebruik zouden kunnen maken van bestaande hoogwaardige codebibliotheken.
 
