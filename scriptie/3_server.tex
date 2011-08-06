@@ -75,11 +75,15 @@ Ook kent \ac{maven} een plugin-systeem, dat we dankbaar gebruiken om bepaalde sp
         <configuration>
           <appendAssemblyId>false</appendAssemblyId>
           <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
+            <descriptorRef>
+              jar-with-dependencies
+            </descriptorRef>
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>be.mira.adastra3.server.Main</mainClass>
+              <mainClass>
+                be.mira.adastra3.server.Main
+              </mainClass>
             </manifest>
           </archive>
         </configuration>

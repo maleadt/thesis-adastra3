@@ -141,7 +141,9 @@ Van zodra we echter begonnen aan de effectieve implementatie van de applicaties,
 \begin{lstlisting}[language=XML, float, caption=Voorbeeld van een kiosk configuratiebstand, label=code:kioskconfiguratie]
 <?xml version="1.0"?>
 <kiosk xmlns="http://www.mira.be">
-  <target>0026b900-926f-1000-8000-000000000000</target>
+  <target>
+    0026b900-926f-1000-8000-000000000000
+  </target>
   <device>
     <sound>
       <volume>255</volume>
@@ -299,7 +301,9 @@ Zoals reeds gezegd zijn dit \ac{xml} bestanden die elk een service tot in alle d
       <argumentList>
         <argument>
           <name>iVolumeValue</name>
-          <relatedStateVariable>Volume</relatedStateVariable>
+          <relatedStateVariable>
+            Volume
+          </relatedStateVariable>
           <direction>in</direction>
         </argument>
       </argumentList>
