@@ -105,8 +105,7 @@ Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer n
 
 Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository zullen gebruiken, ligt de exacte layout van de bestanden daarin nog niet vast. Aangezien zowel de voorstellingen als de kioskconfiguratie erin zal moeten opgeslagen worden, is het belangrijk om op voorhand een eenduidige structuur vast te leggen die tevens toelaat om eenvoudig wijzigingen te detecteren.
 
-\begin{codefragment}
-\begin{verbatim}
+\begin{lstlisting}[language=XML, float, caption=Voorbeeld van een repository layout.]
 +-repository/
   |
   +-configurations/
@@ -116,13 +115,11 @@ Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository z
   | +-kiosk2.xml
   |
   +-media/
-  | |
-  | +-presentation1/
-  |   |
-  |   +-index.html
-\end{verbatim}
-\caption{Voorbeeld van een repository layout.}
-\end{codefragment}
+    |
+    +-presentation1/
+      |
+      +-index.html
+\end{lstlisting}
 
 Op het hoogste niveau zal de repository bestaan uit twee mappen. In de \code{configurations} map bevinden zich bestanden die een configuratie typeren, elk uniek geïdentificeerd door hun bestandsnaam. De configuratie bepaalt volledig hoe een kiosk zich zal gedragen, zoals welke media ingeladen moet worden of hoe sterk het volume moet staan. Om de implementatie eenvoudig te houden hebben we ervoor gekozen om een een configuratie eenduidig te laten overeenkomen met een enkele kiosk, en niet te voorzien in functionaliteit om gedeelde instellingen weg te abstraheren. Natuurlijk laat het formaat toe om dit in een later stadium toe te voegen.
 
@@ -141,8 +138,7 @@ Als eerste kandidaat hebben we gekeken naar het \strong{INI formaat}, een popula
 
 Van zodra we echter begonnen aan de effectieve implementatie van de applicaties, bleek het formaat niet voldoende voor onze toepassing. Zo hadden we op een gegeven moment nood aan een hierarchische datastructuur, wat bij een ini-bestand onmogelijk is. Ook hebben we een tijdje last gehad van een bug die veroorzaakt werd door een typfout in een configuratiebestand, iets dat de parser niet merktte bij gebrek aan verificatiemogelijkheden. Daarom hebben we besloten om op zoek te gaan naar een alternatief, dat we gevonden hebben onder de vorm van \strong{\ac{xml} bestanden}. Dit formaat kent enkele duidelijke voordelen: zo is het enerzijds mogelijk om hierarchische datastructuren te modelleren, en bestaan er verschillende mechanismen om de bestanden te verifiëren vooraleer ze effectief in te laden. Voor dat laatste zullen we kiezen voor \ac{xml} schema, waartoe we eerst een \ac{xsd} bestand zullen moeten maken dat het exacte formaat van de configuratiebestanden formeel beschrijft. Ook bestaan er talloze bibliotheken om de bestanden in code in te laden. Toch kent het formaat een belangrijk nadeel: het is nu niet meer zo gebruiksvriendelijk om het met de hand te bewerken. Daartoe zullen we in de toekomst misschien een kleine applicatie ontwerpen die een administrator toelaat om een kiosk te configureren via een gebruiksvriendelijke wizard, waarbij deze applicatie handig gebruik zal kunnen maken van het \ac{xsd} bestand. 
 
-\begin{codefragment}
-\begin{verbatim}
+\begin{lstlisting}[language=XML, float, caption=Voorbeeld van een kiosk configuratiebstand, label=code:kioskconfiguratie]
 <?xml version="1.0"?>
 <kiosk xmlns="http://www.mira.be">
 	<target>0026b900-926f-1000-8000-000000000000</target>
@@ -155,9 +151,7 @@ Van zodra we echter begonnen aan de effectieve implementatie van de applicaties,
 		<media id="manen" />
 	</application>
 </kiosk>
-\end{verbatim}
-\caption{Voorbeeld van een kiosk configuratiebstand, \code{configurations/kiosk1.xml}.}
-\end{codefragment}
+\end{lstlisting}
 
 \section{Netwerk}
 \label{ontwerp:applicatie:netwerk}
