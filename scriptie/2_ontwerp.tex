@@ -101,7 +101,7 @@ Maar er bestaan tientallen versiebeheersystemen, die we elk gepeild hebben aan o
 
 Er zijn maar weinig versiebeheersystemen die aan dit eisenpakket voldoen. Meer nog, na een uitgebreide vergelijking, blijkt enkel \ac{svn} een geschikte keuze te zijn. Dit ondertussen ruim 10 jaar oud project biedt ons een zeer goed ontwikkeld en stabiel versiebeheersysteem om onze repository mee te realiseren. Ook voorziet het project in een uitgebreide library die toelaat om de repository direct te manipuleren vanuit een externe applicatie. Hierdoor zal relatief eenvoudig zijn om vanuit de client- en serverapplicatie bestanden op te vragen uit de repository, door gebruik te maken van de clientside-bindings in de \ac{svn} bibliotheek. Ook wouden we voor de serverapplicatie een nog hechtere integratie realiseren, waarbij de repository zich eigenlijk binnen de applicatie zou bevinden. Dit zou als voordeel gehad hebben dat we niet zouden moeten berusten op een externe \ac{svn} instantie, maar zoals later zal blijken hebben we uiteindelijk dit idee moeten opgeven.
 
-\subsection{Repository layout}
+\subsubsection{Layout}
 
 Hoewel het nu bepaald is dat we een bestandsgeoriënteerde \ac{svn}-repository zullen gebruiken, ligt de exacte layout van de bestanden daarin nog niet vast. Aangezien zowel de voorstellingen als de kioskconfiguratie erin zal moeten opgeslagen worden, is het belangrijk om op voorhand een eenduidige structuur vast te leggen die tevens toelaat om eenvoudig wijzigingen te detecteren.
 
@@ -154,6 +154,19 @@ Van zodra we echter begonnen aan de effectieve implementatie van de applicaties,
 \end{lstlisting}
 
 De specificatie van de \ac{xml} bestanden is zodanig gemaakt dat het eenvoudig te mappen valt over de services waarmee de server een kiosk kan controleren (zie later).
+
+\subsubsection{Verwerking}
+
+Nu de gegevens binnen de repository gesplitst zijn in twee delen, de configuraties en de voorstellingen, valt het nog te bepalen wie instaat voor de verwerking van welke gegevens. Betreffende de \strong{voorstellingen} is het eenvoudig om te zien dat we best de client hiervoor verantwoordelijk stellen. Als we immers de server zouden laten instaan voor het ophalen van de media, dan zouden we zelf moeten zorgen voor het efficiënt overdragen van de gegevens naar de client. Als we echter vanuit de client rechtstreeks contact opnemen met de repository maken we gebruik van de jaren na jaren aan optimalisaties en verbeteringen doorgevoerd aan het \ac{svn} protocol.
+
+Betreffende de \strong{configuraties} is het een complexere afweging. Moesten we de configuraties laten verwerken door de clients, dan zouden we maar op 1 plek contact opnemen met de repository, wat natuurlijk de beste oplossing lijkt. Toch hebben we ervoor gekozen om de configuraties door de server te laten inlezen, wat essentieel twee grote nadelen heeft: de serverapplicatie vereist er een clientside \ac{svn} library door, en op de clients zullen we de nodige interfaces moeten voorzien om configuratie over het netwerk toe te laten. De motivatie voor deze keuze was als volgt:
+
+\begin{enumerate}
+\item Vooreerst is er het probleem van monitoring. Aangezien een beheerder op elk moment wijzigingen kan uploaden, moet de partij die verantwoordelijk is voor het ophalen van gegevens periodiek de repository controleren. Als we hiervoor de client zouden gebruiken, betekent dit dat een potentieel groot aantal clients periodiek contact opneemt met de server, wat niet echt efficiënt is. Ook is er het probleem van scheduling: als elke client volledig onafhankelijk de repository in de gaten houdt en ageert wanneer wijzigingen plaatsvinden, is het onmogelijk om extreme belasting van de server te vermijden door de clients slechts sequentieel toegang tot de repository te verlenen. Het is dus duidelijk dat we binnen de server sowieso een clientside \ac{svn} library zullen moeten voorzien.
+\item Een tweede motivatie is de nood aan een krachtige configuratie-tool. Een administrator moet de mogelijkheid hebben om via een tool (hetzij een webinterface, hetzij een lokale applicatie) direct een actie teweeg te brengen op een kiosk naar keuze. Het kan bijvoorbeeld zijn dat een kiosk afgesloten moet worden, of dat heel snel al het geluid moet afgezet worden. Het is logisch dat dit buiten de repository om moet kunnen, en om dit te realiseren moeten de client-applicaties voorzien in een bepaalde interface die toelaat om acties teweeg te brengen.
+\end{enumerate}
+
+Het is dus duidelijk dat het geen extra complexiteit teweegbrengt om de configuraties binnen de serverapplicatie te verwerken (zowel een clientside \ac{svn} library als de nodige configuratieinterfaces zijn sowieso nodig), meer nog, het is een interessante oplossing omdat we zo tenminste de belasting van de server kunnen controleren door het updaten van de clients intelligent te schedulen.
 
 \section{Netwerk}
 \label{ontwerp:applicatie:netwerk}
