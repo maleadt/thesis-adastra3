@@ -547,7 +547,60 @@ Een derde optie is om gebruik te maken van een \strong{microcontroller met \ac{u
 
 \chapter{Licenties}
 
-Bij de keuze van codebibliotheken en technologieën hebben we vaak rekening gehouden met overdraagbaarheid en platform-onafhankelijkheid zodat het steeds mogelijk blijft om de ontwikkelde software eventueel te gebruiken in andere musea en daar zelf eventueel munt uit te slaan.
+De keuze van een goede licentie is een element waar niet te snel over mag gegaan worden. Elke licentie heeft verschillende eisen en consequenties, en ook ons eigen eisen verschillen van component tot component. Terzelfdertijd moet de gekozen licentie natuurlijk compatibel zijn met de licenties waaronder de verschillende bibliotheken die we hergebruiken vallen. Ook willen we het eindresultaat openstellen voor open-source gebruik, want we maken er uiteindelijk zelf zeer sterk gebruik van. Tenslotte willen we ook de piste naar eventuele commercialisering open houden, voor moest er na verloop van tijd interesse komen in het product.
+
+Het lijkt misschien moeilijk, al dan niet onmogelijk om al deze eisen te combineren, vooral als we tegelijk spreken over eventuele commercialisering en het product open-source maken. Toch is dit perfect mogelijk, en de manier waarop gaan we beschrijven in dit hoofdstuk.
+
+\section{Types licenties}
+
+Vooraleer dieper in te gaan op de verschillende open-source licenties of hoe ze gebruikt worden, is het interessant om een rudimentaire indeling te maken en zo enkele terugkerende eigenschappen te beschrijven. Hierbij baseren we ons op \makeurl{https://www.gnu.org/philosophy/categories.html}{een beschrijving} van de \ac{fsf}.
+
+\subsection{Copyleft licenties}
+
+Bij dergelijke licenties wordt het copyright van de auteur gebruikt om te vereisen dat het herdistribueren van het product of een gewijzigde versie daarvan enkel gebeurt onder dezelfde of een compatibele licentie. Hiermee kan een auteur bijvoorbeeld zorgen dat software die hij vrijgeeft, ook altijd vrij zal blijven. Bekende voorbeelden van deze licentie zijn de \acs{gnu} \ac{gpl}, of de CreativeCommons ShareAlike licentie.
+
+Vervolgens maken we ook nog een onderscheid of het gaat over ``weak'' of ``strong'' copyleft. Het verschil tussen beide is wat er vereist wordt van afgeleid werkt. Meer bepaald, in het geval van weak copyleft vereist men niet dat het volledige product onder copyleft valt indien met enkel \emph{linkt} met een project dat onder een copyleft licentie valt. Als dat project echter onder een strong copyleft licentie zou vallen, dan moet het volledige eindresultaat vrijgegeven worden onder een compatibele copyleft licentie. Dit onderscheid is vooral van belang bij libraries: als die onder een weak copyleft licentie valt kan men de library gebruiken zonder de volledige applicatie te moeten vrijgeven. Wijzigingen aan de code zélf moeten echter wel vrijgegeven worden. Voorbeelden van weak copyleft licenties zijn de \acs{gnu} Lesser \ac{gpl} en de \ac{mpl}.
+
+\subsection{Permissive licenties}
+
+Hierbij is het niet langer vereist om wijzigingen aan de code vrij te geven indien men aan redistributie doet. Hierdoor kan het dus zijn dat projecten die onder deze licentie vallen na een eventuele wijzigingen verkocht kunnen worden zonder daarbij de broncode te moeten vrijgeven. Vaak komen de licenties echter wel met een extra eis, maar houdt vaak niet veel in. Zo vereist de \ac{mit} licentie dat de tekst van de licentie meegeleverd wordt met het eindproduct, en dicteert de Apache licentie dat naast een copyright notice ook een disclaimer meegeleverd wordt.
+
+\subsection{Public domain licenties}
+
+Hoewel permissive licenties weinig of geen restricties stelden aan het gebruik van de code, blijft het copyright van de code nog steeds in handen van de originele auteur. Bij public domain licenties is dit niet langer het geval: de auteur geeft al zijn rechten uit handen, waardoor iedereen om het even wat mag doen met de code.
+
+\section{Open-source software commercialiseren}
+
+Het begrip ``open-source'' is complexer dan enkel toegang hebben tot de broncode. Hoewel \makeurl{http://www.opensource.org/docs/osd}{de volledige definitie} te vinden is op de site van het \ac{osi}\footnote{Merk op dat dit maar 1 mogelijke definitie is, verschillende instanties houden er vaak verschillende meningen aan over. Toch kent de \ac{osi} definitie eer grote aanhang, vandaar dat we ze ook gebruiken}, vermelden we hier de belangrijkste punten:
+\begin{enumerate}
+  \item Redistributie en aggregatie moet mogelijk zijn;
+  \item De broncode moet toegankelijk zijn;
+  \item Afgeleide werken moeten mogelijk zijn (onder dezelfde licentie).
+\end{enumerate}
+
+Om zowel deze definitie te hanteren als het product te commercialiseren, zijn er verschillende opties. We beschrijven kort de twee meest populaire.
+
+\subsection{Ondersteuning leveren}
+
+Een model dat vaak toegepast wordt door verkopers van distributies is het leveren van ondersteuning naast een gratis product. Een mooi voorbeeld hiervan is Red Hat, die de \ac{rhel} distributie verkoopt. Aangezien \ac{rhel} gebaseerd is op Linux en andere open-source componenten waarvan de overgrote meerderheid valt onder een copyleft of permissive licentie, mag Red Hat niet zomaar zijn product verkopen zonder er de broncode van vrij te geven. Toch zijn er veel diensten die Red Hat wel mag verkopen:
+\begin{itemize}
+  \item Toegang tot servers die updates verschaffen;
+  \item Hulp bij installatie;
+  \item Zelfgeschreven documentatie;
+  \item Hardware (installatieschijven, \ldots).
+\end{itemize}
+
+Tenslotte beschermt Red Hat hun product ook via een handelsmerk: de naam \acl{rhel} mag niet zomaar gebruikt worden. Het gevolg hiervan is dat er verschillende \ac{rhel} ``klonen'' bestaan, zoals CentOS en \ac{sl}, maar hoewel ze gebaseerd zijn op dezelfde basissoftware zijn het toch steeds heel andere producten.
+
+Het resultaat van al dit is dat Red Hat een krachtig product levert waar er een grote commerciële interesse voor is, maar dat het toch in de kern een volwaardig open-source product is.
+
+\subsection{Herlicentiëren onder betaling}
+
+Een tweede model berust op het feit dat commerciële partijen vaak geïnteresseert zijn in non-copylefted software, en dat de auteur van software steeds de eigenaar blijft (en dus de licentie van die software naar believen mag veranderen). We illustreren dit opnieuw met een concreet voorbeeld: het Qt framework dat uitgegeven wordt door Digia. Qt is beschikbaar onder verschillende licenties: een weak copyleft licentie, en een commerciële licentie. Dankzij de weak copyleft licentie kan iedereen Qt downloaden, en er open-source of commerciële applicaties met maken. In geval van commercieel gebruik moeten wijzigingen aan de Qt code wel vrijgegeven worden, dat wordt voorgeschreven door de copyleft licentie.
+
+Bedrijven hebben dit laatste echter vaak niet graag, ze willen wijzigingen kunnen doorvoeren aan de interne Qt code zonder die vervolgens te moeten publiceren. En dat is net waar Digia geld uit slaat: een bedrijf kan Qt gebruiken onder een commerciële licentie, als het daar voor betaalt.
+
+Hoe men net die conversie naar een commerciële licentie bekomt, kan op verschillende manieren. Als de auteur van de software in kwestie nog het volledige copyright bezit (wat het geval is als hij bijvoorbeeld de enige is die aan het projcet gewerkt heeft), is het voor hem geen probleem om de licentie te veranderen. Van zodra er verschillende auteurs zijn wordt het echter complexer. Binnen een bedrijf is het logisch dat de code die een werknemer schrijft eigenlijk eigendom is van het bedrijf. Maar van zodra dat er externe auteurs zijn, wat vaak het gevolg is bij open-source software, moeten er andere maatregelen getroffen worden. De piste die Nokia en Digia gekozen hebben, is die van een ``contribution agreement''. Hierbij staat een auteur toe dat zijn code kan gelicencieerd worden onder een commerciële licentie. Andere bedrijven kiezen voor een striktere ``copyright assignment''. Dit zorgt ervoor dat het copyright van de code volledig doorgegeven wordt aan het bedrijf in kwestie. Het ``voordeel'' van dit laatste is dat het bedrijf geen enkele verplichting heeft en daardoor later de licentie volledig kan veranderen. In het geval van Qt staat er bijvoorbeeld in de contribution agreement dat de code steeds beschikbaar zal blijven onder een copyleft licentie.
 
 % licentie hardware: cern
 
