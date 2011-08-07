@@ -1,6 +1,67 @@
 \part{Kiosk}
 \label{kiosk}
 
+% somehow grootorde/duur/sloc project integreren
+
+\chapter{Structuur}
+
+De manier waarop we de kioskapplicatie hebben opgedeelt kent sterke gelijkenissen met de manier waarbij we de serverapplicatie gestructureerd hebben: alle logische componenten (de networkinterface, de userinterface en de datamanager) worden geïsoleerd in een apart subsysteem, en een overkoepelende controller staat in voor interacties die over verschillende subsystemen heen gaan.
+
+\section{Network interface}
+
+Dit gedeelte van de applicatie neemt alle netwerkcommunicatie op zich. Daartoe creëert het een \ac{upnp} device, registreert het de nodige services, en broadcast het die gegevens. Wanneer een bepaalde actie aangeroepen wordt, zal de respectievelijke service louter een signaal uitsturen. Dat signaal (bijvoorbeeld \code{reboot} of \code{setVolume(uint)}) zal vervolgens opgevangen worden door de applicatiecontroller, die dan tot de effectieve actie overgaat.
+
+Door de effectieve implementatie in een andere klasse te plaatsen vereenvoudigen we de netwerkinterface die in de minimale opzet al complex genoeg is (beheren van \ac{upnp} state variables, conversie van parameters, registratie van \ac{scpd} bestanden, \ldots). Tevens wordt de hele component hierdoor platform-onafhankelijk, en moeten we bij het herimplementeren voor een nieuw platform enkel de implementatie herschrijven die volledig geïsoleerd is binnen de applicatiecontroller. Dit is opnieuw vergelijkbaar met de opzet die we gehanteerd hebben bij de serverapplicatie: code binnen een bepaald subsysteem staat enkel in voor verwerking relevant toe dat subsysteem, acties die ergens anders een impact hebben worden afgehandeld door de applicatiecontroller.
+
+\subsection{Datamanager}
+
+Deze klasse komt overeen met het repository subsysteem in de serverapplicatie, maar heeft een andere naam gekregen wegens een \emph{namespace clash} met enkele klassen die we gebruiken uit een library. De taken veranderen echter niet: de datamanager staat in  voor het ophalen van gegevens die zich in een externe \ac{svn} repository bevinden, en alles dat daarmee gepaar gaat. Zo zal de component moeten rekening houden met een eventuele cache, om zo een checkout van gegevens te versnellen. Ook moet het bij het opstarten kunnen controleren of er geen oude checkout aanwezig is, om zo direct al een voorstelling te kunnen weergeven, zelfs als dat een oude voorstelling betreft.
+
+In tegenstelling tot de repository klasse in de serverapplicatie moeten we hier geen data interpreteren: na een checkout of update gedaan te hebben, moet de voorstelling in zijn geheel opnieuw doorgegeven worden aan de userinterface, het is niet van belang om te weten wélke gegevens veranderd zijn. Hierdoor wordt het gebruik van de \ac{svn} libraries sterk vereenvoudigt.
+
+\subsection{Userinterface}
+
+Dit gedeelte van de applicatie staat in voor de effectieve weergave van ontvangen voorstellingen. Zoals reeds vermeld bestaan die voorstellingen uit \ac{html} en Javascript, en gebruiken we de WebKit rendering engine om die gegevens weer te geven. In de huidige opzet hebben we enkel voorzien in een naadloze integratie van de rendering engine en onze applicatie, waardoor de voorstellingen zeer vlot geladen en verwerkt kunnen worden. Voor een volgende versie plannen we deze component uit te breiden zodat het niet alleen voorstellingen weergeeft, maar gegevens over hoe exact die weergegeven worden teruggestuurd worden naar de server. Zo kunnen we bijvoorbeeld statistieken vergaren over welke voorstellingen het meest bekeken worden, welke filmpjes het snelst gestopt worden, \ldots
+
+Omdat de integratie van de rendering engine en de rest van de applicatie zo goed bleek te werken, hebben we besloten om de overige gebruikersinterfaces op eenzelfde manier te implementeren in \ac{html} en Javascript. Hoewel er niet zoveel reguliere interfaces binnen de applicatie te vinden zijn (opstart-pagina, en enkele debug pagina's), resulteerde dit in een uniforme userinterface-implementatie waarbij het zelf op termijn mogelijk zou moeten zijn om de interface code dynamisch te updaten op eenzelfde manier als dat bij de voorstellingen gebeurt.
+
+Er is echter een groot verschil tussen een ordinaire voorstelling en een userinterface-pagina bij de applicatie: waar een voorstelling volledig \emph{self-contained} is, heeft een informatieve userinterface-pagina gegevens nodig uit de applicatie. Een debugpagina bijvoorbeeld heeft nood aan een mechanisme om debuggegevens van de applicatie te ontvangen.
+Een mogelijkheid zou zijn om via \ac{ajax} gegevens op te halen die via een webservice lokaal opengesteld worden. Dit verhoogt echter de complexiteit van zowel de interface als de kioskapplicatie, laat staan dat het een efficiënte manier is om een weinig gegevens over te brengen. Daarom hebben we gekozen voor een secundaire piste, waarbij we gebruik maken van de \makeurl{http://doc.qt.nokia.com/latest/qtwebkit-bridge.html}{QtWebKit Bridge}. Dit mechanisme laat ons toe om een klasse binnen onze C++ applicatie toegankelijk te maken vanuit Javascript code, om zo gegevens op een efficiënte manier te kunnen doorspellen. Zo hebben we voor alle soorten pagina's die we moeten kunnen weergeven, een meta-klasse aangemaakt die de nodige gegevens aggregeert (zie fragment \ref{lst:expose_cpp}). Bij het aanmaken van de pagina in kwestie wordt die meta-klasse vervolgens geregistreert binnen de rendering engine, waardoor de Javascript code die met de pagina geladen wordt er toegang tot heeft. Een voorbeeld van dit laatste is te zien in fragment \ref{lst:expose_js}.
+
+\begin{lstlisting}[language=C++, float, caption=Registratie van een klase binnen de rendering engine., label=lst:expose_cpp]
+class LogPage : public QWebPage
+{
+Q_OBJECT
+Q_PROPERTY(QString id READ id CONSTANT)
+public:
+    LogPage(QObject* parent = 0);
+    ~LogPage();
+
+    QString id() const;
+signals:
+    void newMessage(const QString& iMessage);
+};
+
+LogPage::LogPage(QObject *parent) : QWebPage(parent)
+{
+    mainFrame()->addToJavaScriptWindowObject(
+    	"application",
+        this);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=JavaScript, float, caption=Gebruik van een geregistreerde C++ klasse., label=lst:expose_js]
+// Gebruik van een signaal
+function showMessage(message)
+{
+	...
+}
+application.newMessage.connect(showMessage);
+
+// Gebruik van een property
+document.write(application.id)
+\end{lstlisting}
+
 % vermelden nut open source: forken log4qt
 % vermelden werk aan svnqt
 % uuid

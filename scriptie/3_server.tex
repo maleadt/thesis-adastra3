@@ -5,7 +5,7 @@
 
 \chapter{Structuur}
 
-Op het hoogste niveau hebben we de serverapplicatie onderverdeeld in enkele logische subsystemen, zijnde het netwerk, de repository, en tenslotte de webinterface. Onderling communiceren deze subsystemen niet met elkaar: coördinatie verloopt door een overkoepelende controller. Zo is het mogelijk om elk subsysteem als een alleenstaand geheel te behandelen, wat het ontwikkelingsproces sterk vereenvoudigt.
+Op het hoogste niveau hebben we de serverapplicatie onderverdeeld in enkele logische subsystemen, zijnde het netwerk en de repository. Onderling communiceren deze subsystemen niet met elkaar: coördinatie verloopt door een overkoepelende controller. Zo is het mogelijk om elk subsysteem als een alleenstaand geheel te behandelen, wat het ontwikkelingsproces sterk vereenvoudigt. Tenslotte is er nog de webinterface, die dezelfde visibiliteit heeft als de controller: acties die een gebruiker uitvoert op de beheersinterface kunnen een impact hebben op objecten binnen het netwerk of de repository.
 
 Om code te abstraheren en controle van subsystemen te vereenvoudigen moet elk van de subsystemen een bepaalde klasse uitbreiden met de concrete implementatie. Die klasse voorziet niet alleen in bepaalde gedeelde functionaliteit (zoals het genereren van log berichten, of inladen van de nodige configuratiebestanden), maar schrijft ook voor hoe de effectieve implementatie moet gevormd worden. Hierdoor wordt het eenvoudig om vanuit de applicatiecontroller op een eenduidige manier bepaalde standaardacties (zoals het opstarten of afsluiten van een subsysteem) uit te voeren.
 
