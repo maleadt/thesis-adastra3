@@ -67,6 +67,44 @@ document.write(application.id)
 
 Tijdens de realisatie van de kioskapplicatie zijn we op enkele interessante problemen gestuit die zeker het vermelden waard zijn.
 
+\section{Uniek ID}
+
+Aangezien de software die op de kiosken zal draaien volledig identiek is -- we streven immers naar een configuratieloze opzet -- moet de applicatie in staat zijn om een identifier te genereren die uniek is, maar toch gebonden aan een specifieke kiosk om er vanuit de configuratie naar te kunnen verwijzen. De identifier zal gebruikt worden door de \ac{upnp} library, die het doorspeelt naar een externe partij als deel van de device description. Daarom zullen we ons moeten schikken naar de \ac{upnp} standaard, die een \ac{uuid} vereist als identifier.
+
+Een \ac{uuid} is zeer specifiek opgemaakt, en bestaat steeds uit 16 bytes, onderverdeeld in 5 groepen die elk gescheiden zijn door een steepje: \code{DEADBEEF-E29B-41D4-A716-446655440000}. Er bestaan echter verschillende \ac{uuid} varianten, elk met een aantal versies. Zowel de variant als de versie wordt in de \ac{uuid} string geëncodeerd, met als template \code{xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx}. De officiële specificatie detailleert maar 1 variant, die geïdentificeerd wordt door de twee meest-significante bits van de \code{N} byte op $1 0$ in te stellen. Betreffende de versie hebben we de keus uit een aantal versies, en kiezen we voor een gewijzigde vorm van de \ac{mac} versie. Hierbij moet de \code{M} byte ingesteld worden op een hexadecimale 1, en kunnen we de eerste twee groepen (samen exact 12 bytes) gebruiken om het \ac{mac} adres in te encoderen.
+
+Normaal worden de overige bits vervolgens gevuld met tijdsgegevens, maar omdat we willen dat onze identifier identiek blijft na een reboot kiezen we ervoor om die bits op 0 in te stellen. Het resultaat hiervan valt te vinden in fragment \ref{lst:uuid}.
+
+\begin{lstlisting}[language=C++, float, caption=Generatie van een \ac{uuid}., label=lst:uuid]
+QUuid getHardwareUuid() const
+{
+  // Create an interface request struct
+  struct ifreq ifr;
+  bzero(&ifr, sizeof(ifr));
+  ifr.ifr_addr.sa_family = AF_INET;
+  strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
+
+  // Open a socket and perform the IOCTL
+  int fd = socket(AF_INET, SOCK_DGRAM, 0);
+  ioctl(fd, SIOCGIFHWADDR, &ifr);
+  close(fd);
+
+  // Create an UUID
+  char* hwaddr = ifr.ifr_hwaddr.sa_data
+  QUuid oUuid;
+  oUuid.data1    |= (unsigned char) hwaddr[0] << 24;
+  oUuid.data1    |= (unsigned char) hwaddr[1] << 16;
+  oUuid.data1    |= (unsigned char) hwaddr[2] << 8;
+  oUuid.data1    |= (unsigned char) hwaddr[3];
+  oUuid.data2    |= (unsigned char) hwaddr[4] << 8;
+  oUuid.data2    |= (unsigned char) hwaddr[5];
+  oUuid.data4[0]  = (oUuid.data4[0] & 0x3F  ) | 0x80;
+  oUuid.data3     = (oUuid.data3    & 0x0FFF) | 0x1000;
+  
+  return oUuid;
+}
+\end{lstlisting}
+
 \section{BRisa \ac{upnp} library}
 
 Zoals reeds vermeld gebruiken we de BRisa library aan de kant van de kiosk, waarbij acties en methodes opgeroepen worden door de Cling bibliotheek aan de kant van de server. Cling staat er echter voor bekend om de \ac{upnp} specificatie op de letter te volgen, waarbij elke afwijking daarvan als een waarschuwing of zelfs vaak als een regelrechte fout beschouwd wordt. En jammer genoeg bleek de BRisa bibliotheek soms laks om te gaan met de standaarden voorgeschreven door de \ac{upnp} standaard \ldots
@@ -77,4 +115,4 @@ Hierbij was het een groot voordeel dat de library open-source was. Nadat we het 
 
 % vermelden nut open source: forken log4qt
 % vermelden werk aan svnqt
-% uuid
+
