@@ -1,15 +1,3 @@
-% Verkleinde margin entry
-\setlength{\marginparwidth}{1.2in}
-\let\oldmarginpar\marginpar
-\renewcommand\marginpar[1] {\-\oldmarginpar[\raggedleft\footnotesize #1]%
-{\raggedright\footnotesize #1}}
-
-% Een TODO-entry
-\newcommand{\todo}[1] {
-	\addcontentsline{tdo}{todo}{\protect{#1}}
-	\marginpar{#1}
-}
-
 % Hyperlink maken en URL in footnote tonen
 \usepackage{hyperref}
 \newcommand{\makeurl}[2]{\href{#1}{#2} \footnote{#1}}
@@ -18,9 +6,8 @@
 \renewcommand\emph{\textit}
 \newcommand\code{\texttt}
 \newcommand\strong{\textbf}
-\newcommand\note{\marginpar}
 
-% Javascript highlighting
+% Extra talen voor lstlistings
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
   ndkeywords={class, export, boolean, throw, implements, import, this},

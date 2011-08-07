@@ -34,13 +34,13 @@ Dit systeem staat in voor de coördinatie van acties die niet geïsoleerd blijve
 
 Deze component visualiseert de gegevens uit de repository en netwerk subsystemen, en laat de gebruiker toe om er controle over uit te oefenen. Die controle is echter beperkt: persistente configuratie moet nog altijd verlopen via manuele interventie.
 
-\chapter{Besturingssysteem}
-
-% todo
-
 \chapter{Deployment}
 
-\section{Buildsystem}
+\section{Besturingssysteem}
+
+%todo
+
+\section{Compilatie}
 
 Voor het bouwen van een executable hebben we berust op \ac{maven}, een softwarebeheersysteem dat op een flexibele manier toelaat om alle aspecten van het bundelen van een applicatie te organiseren. Daartoe voorzien we in een \ac{pom} bestant waarin alle informatie verwerkt zit, zoals de naam en versie van de toepassing, de libraries waarop het berust, en hoe de applicatie moet opgestart worden. Aan de hand van die informatie kan \ac{maven} het project gepast uitvoeren of bundelen tot een finale executable.
 
@@ -94,6 +94,8 @@ Ook kent \ac{maven} een plugin-systeem, dat we dankbaar gebruiken om bepaalde sp
   </plugin>
 </build>
 \end{lstlisting}
+
+\section{Packaging}
 
 % todo: debian packaging
 
