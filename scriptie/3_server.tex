@@ -42,9 +42,9 @@ Deze component visualiseert de gegevens uit de repository en netwerk subsystemen
 
 Voor het bouwen van een executable hebben we berust op \ac{maven}, een softwarebeheersysteem dat op een flexibele manier toelaat om alle aspecten van het bundelen van een applicatie te organiseren. Daartoe voorzien we in een \ac{pom} bestant waarin alle informatie verwerkt zit, zoals de naam en versie van de toepassing, de libraries waarop het berust, en hoe de applicatie moet opgestart worden. Aan de hand van die informatie kan \ac{maven} het project gepast uitvoeren of bundelen tot een finale executable.
 
-Ook wordt het gebruik van externe libraries vereenvoudigt: er bestaat een \ac{maven} repository met daarin de meest populaire libraries, waardoor we louter de naam en versie in het \ac{pom} bestand moeten specificeren en \ac{maven} met deze informatie zelf op zoek gaat naar de gepaste binaries die benodigd zijn om de applicatie op te starten.
+Ook wordt het gebruik van externe libraries vereenvoudigt: er bestaat een \ac{maven} repository met daarin de meest populaire libraries, waardoor we louter de naam en versie in het \ac{pom} bestand moeten specificeren en \ac{maven} met deze informatie zelf op zoek gaat naar de gepaste binaries die benodigd zijn om de applicatie op te starten (zie bijvoorbeeld fragment \ref{lst:maven}).
 
-\begin{lstlisting}[language=XML, float, caption=Inladen van externe libraries via Maven.]
+\begin{lstlisting}[language=XML, float, caption=Inladen van externe libraries via Maven., label=lst:maven]
 <dependencies>
   <dependency>
     <groupId>log4j</groupId>
@@ -57,9 +57,9 @@ Ook wordt het gebruik van externe libraries vereenvoudigt: er bestaat een \ac{ma
 
 Voor enkele libraries die we niet terugvonden in de officiële \ac{maven} repositories hebben we ofwel een alternatieve repository toegevoegd die het pakket wel bevatte (zoals dat was in het geval van Cling), of zelf voorzien in een lokale repository die de benodigde bestanden bevat en gebundeld is met de broncode om iedereen toe te laten de applicatie zonder al te veel moeite te compileren.
 
-Ook kent \ac{maven} een plugin-systeem, dat we dankbaar gebruiken om bepaalde specifieke taken uit te voeren. Zo willen we bijvoorbeeld een \ac{jar} bestand genereren dat tegelijk alle afhankelijke libraries bevat, om zo installatie op de uiteindelijke server te vereenvoudigen. Dit druist deels in tegen de ideale manier om software te packagen, waarbij externe libraries steeds via de lokale package-manager geïnstalleerd worden, maar omdat we daarvoor zeer nauwgezet het pakket zouden moeten onderhouden (updates van een externe library kan immers steeds problemen veroorzaken in de applicatie zelf) hebben we ervoor gekozen om alles tesamen te bundelen tot een monolitisch geheel.
+Ook kent \ac{maven} een plugin-systeem, dat we dankbaar gebruiken om bepaalde specifieke taken uit te voeren. Zo willen we bijvoorbeeld een \ac{jar} bestand genereren dat tegelijk alle afhankelijke libraries bevat, om zo installatie op de uiteindelijke server te vereenvoudigen. Dit druist deels in tegen de ideale manier om software te packagen, waarbij externe libraries steeds via de lokale package-manager geïnstalleerd worden, maar omdat we daarvoor zeer nauwgezet het pakket zouden moeten onderhouden (updates van een externe library kan immers steeds problemen veroorzaken in de applicatie zelf) hebben we ervoor gekozen om alles tesamen te bundelen tot een monolitisch geheel. Specifiek voor de serverapplicatie is de relevante configuratie daarvoor te vinden in fragment \ref{lst:fatjar}.
 
-\begin{lstlisting}[language=XML, float, caption=Gebruik van Maven modules om een executable te compileren.]
+\begin{lstlisting}[language=XML, float, caption=Gebruik van Maven modules om een executable te compileren., label=lst:fatjar]
 <build>
   <plugins>
     <plugin>
