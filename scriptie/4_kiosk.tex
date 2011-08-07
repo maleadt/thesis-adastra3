@@ -78,26 +78,26 @@ Normaal worden de overige bits vervolgens gevuld met tijdsgegevens, maar omdat w
 \begin{lstlisting}[language=C++, float, caption=Generatie van een \ac{uuid}., label=lst:uuid]
 QUuid getHardwareUuid() const
 {
-  // Create an interface request struct
-  struct ifreq ifr;
-  bzero(&ifr, sizeof(ifr));
-  ifr.ifr_addr.sa_family = AF_INET;
-  strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
+  // Maak een interface request object aan
+  struct ifreq tRequest;
+  bzero(&tRequest, sizeof(tRequest));
+  tRequest.ifr_addr.sa_family = AF_INET;
+  strncpy(tRequest.ifr_name, "eth0", IFNAMSIZ-1);
 
-  // Open a socket and perform the IOCTL
-  int fd = socket(AF_INET, SOCK_DGRAM, 0);
-  ioctl(fd, SIOCGIFHWADDR, &ifr);
-  close(fd);
+  // Open een socket en voer de systeemaanroep uit
+  int tFd = socket(AF_INET, SOCK_DGRAM, 0);
+  ioctl(tFd, SIOCGIFHWADDR, &tRequest);
+  close(tFd);
 
-  // Create an UUID
-  char* hwaddr = ifr.ifr_hwaddr.sa_data
+  // Genereer een UUID
+  char* tMAC = ifr.ifr_hwaddr.sa_data
   QUuid oUuid;
-  oUuid.data1    |= (unsigned char) hwaddr[0] << 24;
-  oUuid.data1    |= (unsigned char) hwaddr[1] << 16;
-  oUuid.data1    |= (unsigned char) hwaddr[2] << 8;
-  oUuid.data1    |= (unsigned char) hwaddr[3];
-  oUuid.data2    |= (unsigned char) hwaddr[4] << 8;
-  oUuid.data2    |= (unsigned char) hwaddr[5];
+  oUuid.data1    |= (unsigned char) tMAC[0] << 24;
+  oUuid.data1    |= (unsigned char) tMAC[1] << 16;
+  oUuid.data1    |= (unsigned char) tMAC[2] << 8;
+  oUuid.data1    |= (unsigned char) tMAC[3];
+  oUuid.data2    |= (unsigned char) tMAC[4] << 8;
+  oUuid.data2    |= (unsigned char) tMAC[5];
   oUuid.data4[0]  = (oUuid.data4[0] & 0x3F  ) | 0x80;
   oUuid.data3     = (oUuid.data3    & 0x0FFF) | 0x1000;
   
@@ -121,20 +121,16 @@ Zoals beschreven in hoofdstuk \ref{ontwerp} hebben we voor onze kioskapplicatie 
 
 Log4qt is een project dat een Log4J-achtige interface aanbiedt om op eenvoudige manier een consistente logging te voorzien, waarbij het mogelijk is om via een configuratiebestand de specifiëren waar de logberichten terechtkomen (zoals te zien is in fragment \ref{lst:log4qt}). Hoewel de bibliotheek functioneel vrij compleet is en op het eerste zicht geen problemen opleverde, hebben we naar verloop van tijd toch enkele wijzigingen toegebracht aan de \emph{upstream} code.
 
-\begin{lstlisting}[float, caption=Externe configuratie van Log4qt., label=lst:log4qt]
-log4j.rootLogger                            = DEBUG, InfoLog, DebugLog
+\begin{lstlisting}[language=JavaProperties, float, caption=Externe configuratie van Log4qt., label=lst:log4qt]
+# Registreer alle appenders
+log4j.rootLogger          = DEBUG, dbg
 
-log4j.appender.DebugLog                     = org.apache.log4j.FileAppender
-log4j.appender.DebugLog.file                = debug.log
-log4j.appender.DebugLog.layout              = org.apache.log4j.TTCCLayout
-log4j.appender.DebugLog.layout.DateFormat   = ISO8601
-
-log4j.appender.InfoLog                      = org.apache.log4j.ConsoleAppender
-log4j.appender.InfoLog.layout               = org.apache.log4j.TTCCLayout
-log4j.appender.InfoLog.layout.DateFormat    = ISO8601
-log4j.appender.InfoLog.Threshold            = DEBUG
+# Debug appender
+log4j.appender.dbg        = org.apache.log4j.FileAppender
+log4j.appender.dbg.file   = debug.log
+log4j.appender.dbg.layout = org.apache.log4j.TTCCLayout
 \end{lstlisting}
 
-Een \makeurl{https://gitorious.org/log4qt/log4qt/merge_requests/3}{eerste patch} die we ingestuurd hebben corrigeerde een probleem met namespaces. C++ code die gebruik maakt van Qt wordt immers eerst gepreprocessed door een Qt-specifieke preprocessor: de \ac{moc}. Deze preprocessor zorgt ervoor dat Qt meta-object en introspectiemogelijkheden krijgt, wat krachtige mechanismen zoals \code{signals & slots} mogelijk maakt. Dit mechanisme is echter niet altijd even robuust: externe factoren kunnen ertoe leiden dat een \ac{moc}-macro verkeerd expandeert, en dat was hier het geval bij een ontbrekende namespace prefix binnen een \code{Q_PROPERTY} \ac{moc}-macro.
+Een \makeurl{https://gitorious.org/log4qt/log4qt/merge\_requests/3}{eerste patch} die we ingestuurd hebben corrigeerde een probleem met namespaces. C++ code die gebruik maakt van Qt wordt immers eerst gepreprocessed door een Qt-specifieke preprocessor: de \ac{moc}. Deze preprocessor zorgt ervoor dat Qt meta-object en introspectiemogelijkheden krijgt, wat krachtige mechanismen zoals \code{signals \& slots} mogelijk maakt. Dit mechanisme is echter niet altijd even robuust: externe factoren kunnen ertoe leiden dat een \ac{moc}-macro verkeerd expandeert, en dat was hier het geval bij een ontbrekende namespace prefix binnen een \code{Q\_PROPERTY} \ac{moc}-macro.
 
-Vervolgens hebben we ook enkele kleine features toegevoegd die het werken met de bibliotheek aangenamer maken. Zo hebben we voorzien in een \makeurl{https://gitorious.org/log4qt/log4qt/merge_requests/4}{patch} die het mogelijk maakt om de Log4qt objecten te gebruiken met output operatoren: dit is een veelgebruikte techniek in de officiële Qt libraries waardoor de Log4qt bibliotheek eenvoudiger is voor mensen die er nog niet thuis in zijn maar toch ervaring hebben met Qt. Op vergelijkbare wijze hebben we de manier om headers te includen \makeurl{https://gitorious.org/log4qt/log4qt/merge_requests/5}{gewijzigd} zodat het eveneens dichter aanleunt bij de manier waarop dat gebeurt bij de officiële Qt code.
+Vervolgens hebben we ook enkele kleine features toegevoegd die het werken met de bibliotheek aangenamer maken. Zo hebben we voorzien in een \makeurl{https://gitorious.org/log4qt/log4qt/merge\_requests/4}{patch} die het mogelijk maakt om de Log4qt objecten te gebruiken met output operatoren: dit is een veelgebruikte techniek in de officiële Qt libraries waardoor de Log4qt bibliotheek eenvoudiger is voor mensen die er nog niet thuis in zijn maar toch ervaring hebben met Qt. Op vergelijkbare wijze hebben we de manier om headers te includen \makeurl{https://gitorious.org/log4qt/log4qt/merge\_requests/5}{gewijzigd} zodat het eveneens dichter aanleunt bij de manier waarop dat gebeurt bij de officiële Qt code.

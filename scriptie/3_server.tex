@@ -103,8 +103,8 @@ Zoals uitvoerig beschreven in hoofdstuk \ref{ontwerp} hebben we wegens het gebre
 
 De eerste daarbij is de configuratie van een \ac{svn} instantie. Hierbij is het van belang dat enkel een beheerder die data kan wijzigen, maar iedereen er toegang tot heeft (er is geen nood aan authenticatie, de voorstellingen bevatten geen gevoelige data). Na het aanmaken van een \ac{svn} repository op de server kunnen we die overkoepelen door de Apache webserver via de configuratie uit fragment \ref{lst:apache:svn}.
 
-\begin{lstlisting}[language=XML, float, caption=Configuratie van Apache om een \ac{svn} server te overkoepelen., label=lst:apache:svn]
-<Location /repository>
+\begin{lstlisting}[language=ApacheConfig, caption=Configuratie van Apache om een \ac{svn} server te overkoepelen., label=lst:apache:svn]
+<Location "/repository">
   DAV svn
   SVNPath /var/db/subversion
   AuthType Basic
@@ -117,9 +117,9 @@ De eerste daarbij is de configuratie van een \ac{svn} instantie. Hierbij is het 
 </Location>
 \end{lstlisting}
 
-Vervolgens moeten we nog de beheersinterface van de serverapplicatie overkoepelen. Hierbij configureren we de embedded Tomcat instantie eerst om toegankelijk te zijn via het \ac{ajp} protocol, wat we op eenvoudige manier mogelijk gemaakt hebben via het standaard configuratiebestand dat met de broncode van de serverapplicatie geleverd wordt. Daarnaast moeten we er Apache op wijzen dat requests op een bepaalde locatie nog moeten doorgestuurd worden naar een externe applicatie. Dit gebeurt via de Apache Tomcat connector, te vinden in \code{mod_jk}. Zoals te zien is in de Apache configuratie van fragment \ref{lst:apache:jakarta} wordt daarbij nog verwezen naar een extern bestand: dit bevat de configuratie die \code{mod_jk} nodig heeft om de externe applicatie bereiken, namelijk de locatie van de applicatie en hoe ermee moet gecommuniceerd worden (zie fragment \ref{lst:jakarta}).
+Vervolgens moeten we nog de beheersinterface van de serverapplicatie overkoepelen. Hierbij configureren we de embedded Tomcat instantie eerst om toegankelijk te zijn via het \ac{ajp} protocol, wat we op eenvoudige manier mogelijk gemaakt hebben via het standaard configuratiebestand dat met de broncode van de serverapplicatie geleverd wordt. Daarnaast moeten we er Apache op wijzen dat requests op een bepaalde locatie nog moeten doorgestuurd worden naar een externe applicatie. Dit gebeurt via de Apache Tomcat connector, te vinden in \code{mod\_jk}. Zoals te zien is in de Apache configuratie van fragment \ref{lst:apache:jakarta} wordt daarbij nog verwezen naar een extern bestand: dit bevat de configuratie die \code{mod\_jk} nodig heeft om de externe applicatie bereiken, namelijk de locatie van de applicatie en hoe ermee moet gecommuniceerd worden (zie fragment \ref{lst:jakarta}).
 
-\begin{lstlisting}[lfloat, caption=Configuratie van Apache om een externe Jakarta applicatie te overkoepelen., label=lst:apache:jakarta]
+\begin{lstlisting}[language=ApacheConfig, float, caption=Configuratie van Apache om een externe Jakarta applicatie te overkoepelen., label=lst:apache:jakarta]
 // Inladen van de connector
 LoadModule jk_module modules/mod_jk.so
 
@@ -127,16 +127,16 @@ LoadModule jk_module modules/mod_jk.so
 JkWorkersFile /etc/httpd/conf/jakarta.properties
 
 // Instellen van de logging
-JkShmFile     /var/log/httpd/mod_jk.shm
-JkLogFile     /var/log/httpd/mod_jk.log
-JkLogLevel    info
+JkShmFile        /var/log/httpd/mod_jk.shm
+JkLogFile        /var/log/httpd/mod_jk.log
+JkLogLevel       info
 JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
 
 // Doorverwijzen van een bepaalde locatie
-JkMount  /status/* worker1
+JkMount /status/* worker1
 \end{lstlisting}
 
-\begin{lstlisting}[lfloat, caption=Configuratie van de Apache Tomcat connector., label=lst:jakarta]
+\begin{lstlisting}[language=JavaProperties, float, caption=Configuratie van de Apache Tomcat connector., label=lst:jakarta]
 # Registreren van alle workers
 worker.list=worker1
 
