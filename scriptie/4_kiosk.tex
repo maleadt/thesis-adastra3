@@ -119,7 +119,21 @@ Zoals beschreven in hoofdstuk \ref{ontwerp} hebben we voor onze kioskapplicatie 
 
 \section{Log4qt library}
 
-Log4qt is een project dat een Log4J-achtige interface aanbiedt om op eenvoudige manier een consistente logging te voorzien, waarbij het mogelijk is om via een configuratiebestand de specifiëren waar de logberichten terechtkomen. Hoewel de bibliotheek functioneel vrij compleet is en op het eerste zicht geen problemen opleverde, hebben we naar verloop van tijd toch enkele wijzigingen toegebracht aan de \emph{upstream} code.
+Log4qt is een project dat een Log4J-achtige interface aanbiedt om op eenvoudige manier een consistente logging te voorzien, waarbij het mogelijk is om via een configuratiebestand de specifiëren waar de logberichten terechtkomen (zoals te zien is in fragment \ref{lst:log4qt}). Hoewel de bibliotheek functioneel vrij compleet is en op het eerste zicht geen problemen opleverde, hebben we naar verloop van tijd toch enkele wijzigingen toegebracht aan de \emph{upstream} code.
+
+\begin{lstlisting}[float, caption=Externe configuratie van Log4qt., label=lst:log4qt]
+log4j.rootLogger                            = DEBUG, InfoLog, DebugLog
+
+log4j.appender.DebugLog                     = org.apache.log4j.FileAppender
+log4j.appender.DebugLog.file                = debug.log
+log4j.appender.DebugLog.layout              = org.apache.log4j.TTCCLayout
+log4j.appender.DebugLog.layout.DateFormat   = ISO8601
+
+log4j.appender.InfoLog                      = org.apache.log4j.ConsoleAppender
+log4j.appender.InfoLog.layout               = org.apache.log4j.TTCCLayout
+log4j.appender.InfoLog.layout.DateFormat    = ISO8601
+log4j.appender.InfoLog.Threshold            = DEBUG
+\end{lstlisting}
 
 Een \makeurl{https://gitorious.org/log4qt/log4qt/merge_requests/3}{eerste patch} die we ingestuurd hebben corrigeerde een probleem met namespaces. C++ code die gebruik maakt van Qt wordt immers eerst gepreprocessed door een Qt-specifieke preprocessor: de \ac{moc}. Deze preprocessor zorgt ervoor dat Qt meta-object en introspectiemogelijkheden krijgt, wat krachtige mechanismen zoals \code{signals & slots} mogelijk maakt. Dit mechanisme is echter niet altijd even robuust: externe factoren kunnen ertoe leiden dat een \ac{moc}-macro verkeerd expandeert, en dat was hier het geval bij een ontbrekende namespace prefix binnen een \code{Q_PROPERTY} \ac{moc}-macro.
 
