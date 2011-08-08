@@ -1,8 +1,6 @@
 \part{Kiosk}
 \label{kiosk}
 
-% somehow grootorde/duur/sloc project integreren
-
 \chapter{Structuur}
 
 De manier waarop we de kioskapplicatie hebben opgedeelt kent sterke gelijkenissen met de manier waarbij we de serverapplicatie gestructureerd hebben: alle logische componenten (de networkinterface, de userinterface en de datamanager) worden geïsoleerd in een apart subsysteem, en een overkoepelende controller staat in voor interacties die over verschillende subsystemen heen gaan.
@@ -144,8 +142,12 @@ Vervolgens hebben we ook enkele kleine features toegevoegd die het werken met de
 
 \section{Compilatie}
 
-% todo
+Om de software te compileren maken we gebruik van de tools die het Qt framework daartoe biedt. De belangrijkste daarvanis \code{qmake}, een applicatie die het genereren van een \code{Makefile} automatiseert. Dit is vooral interessant omdat zoals hierboven vermeld bronbestanden die gebruik maken van Qt-macro's eerst moeten voorverwerkt worden door de \ac{moc} preprocessor. Door gebruik te maken van qmake moeten we dit niet langer manueel doen: qmake detecteert welke bestanden eerst moeten verwerkt worden door de preprocessor, en genereert een \code{Makefile} waarbij dit dan ook eerst gebeurt.
+
+Ook hebben we tijdens de ontwikkeling van de applicatie gebruik gemaakt van \makeurl{http://clang.llvm.org/}{Clang}, een moderne compiler voor C en C++. Hoewel deze vrij jonge compiler nog niet op hetzelfde niveau staat als de \ac{gcc}, is het op enkele vlakken veel beter dan \ac{gcc}. Zo is er zeer veel aandacht besteed aan het error reporting subsysteem, waardoor de foutmeldingen die Clang genereert vaak een pak behulpzamer zijn dat wat \ac{gcc} in eenzelfde situatie zou laten weten. Toch worden de uiteindelijke executables gegenereert met \ac{gcc}, omdat die op vlak van optimalisaties (zowel op vlak van snelheid als grootte) nog steeds de beste keuze is.
 
 \section{Packaging}
+
+% todo: vermelden shared linken
 
 % todo

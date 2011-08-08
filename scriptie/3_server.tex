@@ -1,8 +1,6 @@
 \part{Server}
 \label{server}
 
-% somehow grootorde/duur/sloc project integreren
-
 \chapter{Structuur}
 
 Op het hoogste niveau hebben we de serverapplicatie onderverdeeld in enkele logische subsystemen, zijnde het netwerk en de repository. Onderling communiceren deze subsystemen niet met elkaar: coördinatie verloopt door een overkoepelende controller. Zo is het mogelijk om elk subsysteem als een alleenstaand geheel te behandelen, wat het ontwikkelingsproces sterk vereenvoudigt. Tenslotte is er nog de webinterface, die dezelfde visibiliteit heeft als de controller: acties die een gebruiker uitvoert op de beheersinterface kunnen een impact hebben op objecten binnen het netwerk of de repository.
