@@ -208,7 +208,28 @@ Na verschillende optimalisaties ziet het geheugengebruik er als volgt uit:
 
 \section{Codeanalyse}
 
-% clang
+Net zoals we bij de kioskapplicatie een probleem hadden om de constructies specifiek aan Qt te analyseren, was het ook niet eenvoudig de code van de firmware te controleren. Het probleem hierbij is dat de code opnieuw gebruik maakt van een groot aantal macro's en symbolen gedefiniëerd door een complexe combinatie van AVR-specifieke headers en symbolen die via de command-line aan de preprocessor doorgegeven worden. Om dit te illustreren leggen we uit hoe je een bit uitschrijft naar de eerste pin van de eerste uitwendige poort. De code daarvoor is eenvoudig, en werkt op alle AVR microcontrollers: \code{PORTA = (1<<PA1);}. Hierbij zijn er twee speciale symbolen in het spel: \code{PORTA} die naar de juiste I/O-registers van de poort wijst, en \code{PA1} die indiceert hoeveel plaatsen de bit moet opgeschoven worden om terecht te komen op het gedeelte van het I/O-register dat wijst naar de eerste pin van de poort.
+
+Het is duidelijk dat exacte inhoudt van deze registers verschilt van model tot model, en die symbolen gebruikt worden om de code enigszinds overdraagbaar te houden. Wanneer de code echter gecompileerd wordt, moeten deze symbolen vervangen worden door de juiste geheugenadressen en waarden. Daarvoor zorgen de headers uit de AVR C-library, tegelijk een mooie illustratie van de mogelijkheden die de C preprocessor biedt. Een illustratief voorbeeld van hoe de het \code{PA1} symbool door de preprocessor zal omgezet worden, is zien in fragment \ref{lst:avr:preprocessor}.
+
+\begin{lstlisting}[language=C, float, caption=Omzetten van AVR symbolen via preprocessor-logica., label=lst:avr:preprocessor]
+#ifndef _AVR_ATTINY13A_
+  #define PA1 2
+  #define PA2 1
+  #define PA3 0
+#elif _AVR_ATTINY45PU_
+  #define PA1 0
+  #define PA2 1
+  #define PA3 2
+  #define PA4 4
+#else
+  #error Unknown microprocessor model.
+#endif
+\end{lstlisting}
+
+Zoals te zien is in fragment \ref{lst:avr:preprocessor} berust de preprocessor op enkele symbolen die door de programmeur moeten gespecificeerd worden. Die symbolen moeten gedefiniëerd zijn wanneer de preprocessor de code verwerkt, wat in de praktijk vaak gedaan wordt door een header te includen (bijvoorbeeld \code{settings.h}) die als enige taak heeft die kritieke symbolen te definiëren. Wij hebben er echter voor gekozen om de symbolen door te geven aan de compiler en preprocessor via de command-line, waardoor we alle configuratie kunnen isoleren binnen de \code{Makefile}.
+
+Het grote probleem met al deze preprocessor-logica is dat statische analyse-tools er vaak niet goed mee overweg kunnen. Het is ook geen oplossing om eerst de preprocessor zijn werk te laten doen omdat de code dan vaak niet meer herkenbaar is en het voor de programmeur dan niet te doen is om de output van de analysetools correct te interpreteren. Daarom hebben we, zeker gezien de beperkte grootte van de firmware (nog geen 250 regels code) besloten om niet verder te zoeken naar analysetools en gewoon zelf de code eens extra grondig te controleren.
 
 \section{Compilatie}
 
