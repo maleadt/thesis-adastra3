@@ -133,6 +133,19 @@ Een \makeurl{https://gitorious.org/log4qt/log4qt/merge\_requests/3}{eerste patch
 
 Vervolgens hebben we ook enkele kleine features toegevoegd die het werken met de bibliotheek aangenamer maken. Zo hebben we voorzien in een \makeurl{https://gitorious.org/log4qt/log4qt/merge\_requests/4}{patch} die het mogelijk maakt om de Log4qt objecten te gebruiken met output operatoren: dit is een veelgebruikte techniek in de officiële Qt libraries waardoor de Log4qt bibliotheek eenvoudiger is voor mensen die er nog niet thuis in zijn maar toch ervaring hebben met Qt. Op vergelijkbare wijze hebben we de manier om headers te includen \makeurl{https://gitorious.org/log4qt/log4qt/merge\_requests/5}{gewijzigd} zodat het eveneens dichter aanleunt bij de manier waarop dat gebeurt bij de officiële Qt code.
 
+\section{Statische codeanalyse}
+
+Net zoals we dat bij de serverapplicatie gedaan hebben, willen we met behulp van statische codeanalyse proberen de kwaliteit van de code te verbeteren. Jammer genoeg blijkt het voor C++ code veel moeilijker te zijn om aan statische analyse te doen. Het grote probleem is dat van de \emph{preprocessor}: door toe te laten dat macro's op een heel flexibele manier arbitraire code kunnen genereren is het veel moeilijker om eenduidig op zoek te gaan naar fouten in die code. Zeker in het geval van Qt, dat sterk berust op macro's om geavanceerde technieken zoals signalen en introspectie te implementeren.
+
+\subsection{Stijl}
+
+Na lang gezocht te hebben bleek er geen goede tool te bestaan om de stijl van een C++ codebase te controleren, wat we bij de serverapplicatie wel hebben kunnen doen met Checkstyle. Het beste dat we gevonden hebben is \makeurl{https://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py}{cpplint}, een script door Google ontworpen dat ze intern gebruiken om hun C++ code te standaardiseren. Maar zoals nogal snel duidelijk werd is het een veel minder krachtige applicatie: het voert enkel wat rudimentaire controles uit op vlak van indentatie en andere elementaire syntax, geavanceerde modules zoals Checkstyle ze kent vinden we hier niet terug. Gelukkig is de kioskapplicatie een pak minder complex dan de serverapplicatie, waardoor het toch nog haalbaar is om de code af en toe manueel te overlopen.
+
+\subsection{Correctheid}
+
+Om de correctheid van C++ code te analyseren bestaan er al wat meer tools, zoals het veelgebruikte en relatief uitgebreide \makeurl{http://cppcheck.sourceforge.net/}{cppcheck}. Deze tool controleert onder andere het gebruik van arrays, of excepties correct afgehandeld worden, en of er geen grote memory leaks zijn. Dankzij deze applicatie hebben we verschillende codefragmenten kunnen identificeren waar objecten onnodig gekopiëerd werden, wat het geheugengebruik ten goede gekomen is.
+
+Een probleem met cppcheck is dat het niet goed overweg kan met de vele macro's specifiek aan Qt. Daarom zijn we op zoek gegaan naar een statische codeanalysetool die op zijn minst geen problemen heeft met de constructies die we terugvinden bij Qt applicaties. En zo een tool hebben we ook gevonden, onder de naam \makeurl{http://www.englishbreakfastnetwork.org/krazy/}{Krazy}. Deze applicatie is deel van het \ac{kde} project, een desktop environment die hoofdzakelijk bestaat uit Qt en C++. Krazy is dan ook specifiek gemaakt om niet alleen overweg te kunnen met Qt code, maar om ze ook expliciet te controleren op fouten. Hoewel Krazy veel onbelangrijke problemen vermeldde (die vaak hun oorsprong kennen in de \ac{kde} coding policies), heeft het ook effectief een serieuze fout gevonden. Bij een bepaalde klasse hadden we immers een essentiële macro vergeten die absoluut nodig is om een correct object te verkrijgen.
 
 \chapter{Deployment}
 
