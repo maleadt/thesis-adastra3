@@ -35,6 +35,7 @@ Deze component visualiseert de gegevens uit de repository en netwerk subsystemen
 \chapter{Realisatie}
 
 \section{Statische codeanalyse}
+\label{server:realisatie:codeanalyse}
 
 Om de kwaliteit van de code systematisch op te drijven, hebben we gebruik gemaakt van statische codeanalyse. Daarbij analyseert een applicatie de code zonder die ook effectief uit te voeren, om vervolgens een verslag te kunnen opbouwen waarbij de inhoud verschilt van applicatie tot applicatie.
 
@@ -73,8 +74,6 @@ Een andere applicatie die we gebruikt hebben is \makeurl{http://pmd.sourceforge.
 
 \section{Compilatie}
 
-% todo: integratie statische codenalyse
-
 Voor het bouwen van een executable hebben we berust op \ac{maven}, een softwarebeheersysteem dat op een flexibele manier toelaat om alle aspecten van het bundelen van een applicatie te organiseren. Daartoe voorzien we in een \ac{pom} bestant waarin alle informatie verwerkt zit, zoals de naam en versie van de toepassing, de libraries waarop het berust, en hoe de applicatie moet opgestart worden. Aan de hand van die informatie kan \ac{maven} het project gepast uitvoeren of bundelen tot een finale executable.
 
 Ook wordt het gebruik van externe libraries vereenvoudigt: er bestaat een \ac{maven} repository met daarin de meest populaire libraries, waardoor we louter de naam en versie in het \ac{pom} bestand moeten specificeren en \ac{maven} met deze informatie zelf op zoek gaat naar de gepaste binaries die benodigd zijn om de applicatie op te starten (zie bijvoorbeeld fragment \ref{lst:maven}).
@@ -84,7 +83,6 @@ Ook wordt het gebruik van externe libraries vereenvoudigt: er bestaat een \ac{ma
   <dependency>
     <groupId>log4j</groupId>
     <artifactId>log4j</artifactId>
-    <version>1.2.16</version>
   </dependency>
   ...
 </dependencies>
@@ -128,6 +126,25 @@ Ook kent \ac{maven} een plugin-systeem, dat we dankbaar gebruiken om bepaalde sp
 </build>
 \end{lstlisting}
 
+Een andere plugin die we gebruikt hebben is de ``site plugin'', waarmee we tijdens het compileren een website kunnen genereren. Afhankelijk van welke reporting-plugins we inschakelen, zal deze site bijvoorbeeld een pagina met informatie over het project bevatten, of een overzicht van alle klassen aanbieden. Een andere mogelijkheid is om de verslagen gegenereerd door verschillende codeanalyse tools overzichtelijk weer te geven, waardoor het eenvoudiger is om de resultaten van de analyse te verwerken. Jammer genoeg bestaan er niet voor alle codeanalyse tools Maven plugins die de output ervan kunnen verwerken, maar voor de tools die wij geselecteerd hebben in sectie \ref{server:realisatie:codeanalyse} bestonden de nodige plugins gelukkig wel. Een voorbeeld van hoe we dit geconfigureerd hebben voor de Checkstyle tool is te vinden in fragment \ref{lst:maven:reporting}.
+
+\begin{lstlisting}[language=XML, float, caption=Configuratie van de Maven site plugin voor het genereren van Checkstyle reports., label=lst:maven:reporting]
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-site-plugin</artifactId>
+  <configuration>
+    <reportPlugins>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>
+      <...>
+    </reportPlugins>
+  </configuration>
+</plugin>
+\end{lstlisting}
 \section{Packaging}
 
 % todo: debian packaging
