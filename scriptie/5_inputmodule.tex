@@ -207,6 +207,7 @@ Na verschillende optimalisaties ziet het geheugengebruik er als volgt uit:
 \end{table}
 
 \section{Codeanalyse}
+\label{inputmodule:firmware:codenalyse}
 
 Net zoals we bij de kioskapplicatie een probleem hadden om de constructies specifiek aan Qt te analyseren, was het ook niet eenvoudig de code van de firmware te controleren. Het probleem hierbij is dat de code opnieuw gebruik maakt van een groot aantal macro's en symbolen gedefiniëerd door een complexe combinatie van AVR-specifieke headers en symbolen die via de command-line aan de preprocessor doorgegeven worden. Om dit te illustreren leggen we uit hoe je een bit uitschrijft naar de eerste pin van de eerste uitwendige poort. De code daarvoor is eenvoudig, en werkt op alle AVR microcontrollers: \code{PORTA = (1<<PA1);}. Hierbij zijn er twee speciale symbolen in het spel: \code{PORTA} die naar de juiste I/O-registers van de poort wijst, en \code{PA1} die indiceert hoeveel plaatsen de bit moet opgeschoven worden om terecht te komen op het gedeelte van het I/O-register dat wijst naar de eerste pin van de poort.
 
@@ -233,4 +234,8 @@ Het grote probleem met al deze preprocessor-logica is dat statische analyse-tool
 
 \section{Compilatie}
 
-% todo
+Het grote probleem bij het compileren van de firmware is dat de machinecode die de AVR microcontroller vereist niet compatibel is met de x86-machinecode die een compiler op onze computers genereerd. We zullen dus een compiler moeten gebruiken die specifiek geconfigureerd is om machinecode te genereren die kan draaien op een ander systeem dan hetgene waar de compiler op uitgevoerd wordt. Dit proces heet \emph{cross compiling}.
+
+Als we kijken naar de bekendere open-source compilers is de AVR port van \ac{gcc} de de-facto standaard voor het compileren van code voor AVR microprocessoren. Ook zou het gebruiken van een andere compiler ervoor zorgen dat we flink wat code zouden moeten converteren om uberhaupt nog te compileren. Veel van de preprocessor-logica beschreven in sectie \ref{inputmodule:firmware:codenalyse} is immers geïmplementeerd met \ac{gcc}-specifieke instructies (ook wel \emph{compiler intrinsics} genoemd). Als we bijvoorbeeld naar een andere kwalitatieve compiler kijken, IAR's Embedded Workbench, moeten we zelf afhankelijk van het model microprocessor bepalen welke header we gebruiken, en is het natuurlijk niet mogelijk om daarvoor de \ac{gcc} headers te gebruiken die wel voorzien in een handige abstractielaag.
+
+Om tenslotte toch nog enigszinds aan codeanalyse te doen hebben we vervolgens \ac{gcc} dusdanig geconfigureerd dat het zoveel mogelijk potentiële fouten detecteerd en uitschrijft. Dit hebben we gedaan met de \code{-Wall} en \code{-Wextra} parameters, waarmee we een probleem hebben ondekt betreffende \emph{pointer aliasing}.
