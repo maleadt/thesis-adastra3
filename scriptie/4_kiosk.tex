@@ -73,7 +73,7 @@ Een \ac{uuid} is zeer specifiek opgemaakt, en bestaat steeds uit 16 bytes, onder
 
 Normaal worden de overige bits vervolgens gevuld met tijdsgegevens, maar omdat we willen dat onze identifier identiek blijft na een reboot kiezen we ervoor om die bits op 0 in te stellen. Het resultaat hiervan valt te vinden in fragment \ref{lst:uuid}.
 
-\begin{lstlisting}[language=C++, float, caption=Generatie van een \ac{uuid}., label=lst:uuid]
+\begin{lstlisting}[language=C++, float, caption=Generatie van een \acs{uuid}., label=lst:uuid]
 QUuid getHardwareUuid() const
 {
   // Maak een interface request object aan
@@ -103,7 +103,7 @@ QUuid getHardwareUuid() const
 }
 \end{lstlisting}
 
-\section{BRisa \ac{upnp} library}
+\section{BRisa \acs{upnp} library}
 
 Zoals reeds vermeld gebruiken we de BRisa library aan de kant van de kiosk, waarbij acties en methodes opgeroepen worden door de Cling bibliotheek aan de kant van de server. Cling staat er echter voor bekend om de \ac{upnp} specificatie op de letter te volgen, waarbij elke afwijking daarvan als een waarschuwing of zelfs vaak als een regelrechte fout beschouwd wordt. En jammer genoeg bleek de BRisa bibliotheek soms laks om te gaan met de standaarden voorgeschreven door de \ac{upnp} standaard \ldots
 
@@ -111,7 +111,7 @@ Om Cling te overtuigen om zonder veel probleem te werken met clients die de BRis
 
 Hierbij was het een groot voordeel dat de library open-source was. Nadat we het probleem gelocaliseerd hadden door de foutmeldingen van Cling te combineren met een analyse van de verzonden berichten, konden we eenvoudig de code van de library ophalen, het probleem localiseren en oplossen. Hoewel we beide patches ingestuurt hebben op de bug tracker van het BRisa project (\makeurl{https://garage.maemo.org/tracker/index.php?func=detail\&aid=6953\&group\_id=138\&atid=583}{eerste patch}, \makeurl{https://garage.maemo.org/tracker/index.php?func=detail\&aid=6954\&group\_id=138\&atid=583}{tweede patch}), kon het gerust nog even duren vooraleer de wijzigingen toegepast worden, of dat een nieuwe versie zou vrijgegeven worden. Daarom hebben we een \makeurl{https://github.com/MIRAvzw/qt-brisa}{onze eigen versie} van het project gemaakt (ook wel een \emph{fork}) genoemd, waarin de fouten reeds gecorrigeerd zijn. Op de toestellen waarop de applicatie ontwikkeld en geïnstalleerd wordt kunnen we nu in afwachting van een nieuwe versie onze eigen versie van de bibliotheek op installeren.
 
-\section{svnqt \ac{svn} library}
+\section{svnqt \acs{svn} library}
 
 Zoals beschreven in hoofdstuk \ref{ontwerp} hebben we voor onze kioskapplicatie een interessante \ac{svn} library gevonden die gebruik maakt en geïntegreerd is met het Qt framework dat we gebruiken. De code was oorspronkelijk een stand-alone library, genaamd ``svncpp" en ontwikkeld door RapidSVN in 2002. Nadien is de code geïntegreerd en verder ontwikkeld als deel van de KDESvn applicatie. Om de code eenvoudig doch efficiënt te kunnen gebruiken binnen onze kioskapplicatie hebben we code uit de KDESvn applicatie geëxtraheerd en er een \makeurl{https://github.com/MIRAvzw/svnqt}{alleenstaande bibliotheek} van gemaakt. Buiten enkele kleine wijzigingen hebben we niks moeten wijzigen om deze code vervolgens te kunnen gebruiken binnen ons project.
 

@@ -80,7 +80,11 @@ Thereafter we proceed to the actual implementation of each subsystem. While the 
 % Lijst met listings
 %
 
+\renewcommand{\lstlistlistingname}{Lijst van fragmenten}
+\renewcommand{\lstlistingname}{Fragment}
 \lstlistoflistings
+\addcontentsline{toc}{chapter}{Lijst van fragmenten}
+% TODO: probleem als meer dan 1 pagina aan fragmenten
 
 
 %
@@ -156,3 +160,6 @@ Thereafter we proceed to the actual implementation of each subsystem. While the 
 \acro{gcc}[GCC]{\acs{gnu} compiler collection}
 \acro{kde}[KDE]{K Desktop Environment}
 \end{acronym}
+
+\acresetall
+

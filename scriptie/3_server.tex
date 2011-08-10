@@ -138,7 +138,7 @@ Zoals uitvoerig beschreven in hoofdstuk \ref{ontwerp} hebben we wegens het gebre
 
 De eerste daarbij is de configuratie van een \ac{svn} instantie. Hierbij is het van belang dat enkel een beheerder die data kan wijzigen, maar iedereen er toegang tot heeft (er is geen nood aan authenticatie, de voorstellingen bevatten geen gevoelige data). Na het aanmaken van een \ac{svn} repository op de server kunnen we die overkoepelen door de Apache webserver via de configuratie uit fragment \ref{lst:apache:svn}.
 
-\begin{lstlisting}[language=ApacheConfig, caption=Configuratie van Apache om een \ac{svn} server te overkoepelen., label=lst:apache:svn]
+\begin{lstlisting}[language=ApacheConfig, caption=Configuratie van Apache om een \acs{svn} server te overkoepelen., label=lst:apache:svn]
 <Location "/repository">
   DAV svn
   SVNPath /var/db/subversion
