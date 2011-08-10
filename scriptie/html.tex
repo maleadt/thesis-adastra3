@@ -1,0 +1,60 @@
+%
+% Configuratie
+%
+
+% Preambule met standaardinstellingen
+\documentclass[a4paper]{report}
+
+% Noot: zorg ervoor dat Nederlandse woord-splitsing geactiveerd is.
+\usepackage[dutch,english]{babel}
+
+% UTF8 gebruiken voor gebruik van alle symbolen
+\usepackage[utf8]{inputenc}
+\usepackage{eurosym}
+\DeclareUnicodeCharacter{03A9}{\Omega}
+
+\usepackage{graphicx}
+
+% Navigeerbaarheid van hyperlinks in PDF
+\usepackage{hyperref}
+
+% Afkortingen intelligent gebruiken
+\usepackage[nolist]{acronym}
+
+% Math support
+\usepackage{amssymb,amsmath}
+
+% Listings
+\usepackage{listings}
+\lstset{captionpos=b, frame=tb}
+
+% Tonen van LaTeX counters (gebruiken footnotes binnen tabel)
+\usepackage{fmtcount}
+
+% Extra functies
+\input{functies.tex}
+\renewcommand{\makeurl}[2]{\href{#1}{#2}}
+\renewcommand{\footnote}[2][]{}
+
+\title{Ontwikkeling van een multimediaframework}
+\author{Tim BESARD}
+
+
+%
+% Inhoud
+%
+
+\begin{document}
+
+\input{0_acronyms.tex}
+
+\input{1_introductie.tex}
+\input{2_ontwerp.tex}
+\input{3_server.tex}
+\input{4_kiosk.tex}
+\input{5_inputmodule.tex}
+\input{6_voorstellingen.tex}
+
+\input{0_einde.tex}
+
+\end{document}
