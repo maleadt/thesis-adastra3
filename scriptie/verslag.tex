@@ -6,7 +6,7 @@
 \documentclass[a4paper,oneside,11pt,final]{memoir}
 
 % Noot: zorg ervoor dat Nederlandse woord-splitsing geactiveerd is.
-\usepackage[dutch]{babel}
+\usepackage[dutch,english]{babel}
 
 % UTF8 gebruiken voor gebruik van alle symbolen
 \usepackage[utf8]{inputenc}
@@ -75,11 +75,10 @@ Extern:& Philippe MOLLET}
 
 \begin{document}
 
-\pagenumbering{roman}
+\frontmatter
 \input{0_begin.tex}
-\newpage
 
-\pagenumbering{arabic}
+\mainmatter
 \input{1_introductie.tex}
 \input{2_ontwerp.tex}
 \input{3_server.tex}
@@ -87,6 +86,9 @@ Extern:& Philippe MOLLET}
 \input{5_inputmodule.tex}
 \input{6_voorstellingen.tex}
 
+\appendix
+
+\backmatter
 \input{0_einde.tex}
 
 \end{document}

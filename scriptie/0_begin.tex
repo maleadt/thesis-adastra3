@@ -29,23 +29,31 @@ Copyright © 2011 Tim Besard
 % Abstract
 %
 
-\chapter*{Abstract}
-\addcontentsline{toc}{chapter}{Abstract}
+\cleardoublepage
 
-\section*{Nederlands} Het doel van deze thesis is de ontwikkeling van een modern multimediaframework ter vervanging van het verouderde systeem in de volkssterrenwacht MIRA. Het framework moet instaan voor de opslag, distributie, en weergave van multimediafragmenten, alsook de nodige middelen bieden zodat een designer er aantrekkelijke en veelzijdige presentaties kan voor ontwerpen.
+\selectlanguage{dutch}
+\begin{abstract}
+Het doel van deze thesis is de ontwikkeling van een modern multimediaframework ter vervanging van het verouderde systeem in de volkssterrenwacht MIRA. Het framework moet instaan voor de opslag, distributie, en weergave van multimediafragmenten, alsook de nodige middelen bieden zodat een designer er aantrekkelijke en veelzijdige presentaties kan voor ontwerpen.
 
 Eerst en vooral wordt het systeem ingedeeld in de nodige deelsystemen, en hebben we na een grondige studie vastgelegd hoe die deelsystemen met elkaar communiceren. Zo zal de opslag en distributie gerealiseerd worden door een centrale server, die de kiosken zal detecteren en configureren via \acs{upnp}. Dataopslag en -overdracht zal gerealiseerd worden door gebruik te maken van een \acs{svn} repository, waarbij de presentaties opgemaakt zullen zijn in \acs{html} en Javascript.
 
 Vervolgens worden alle deelsystemen geïmplementeerd. Waar we voor de server enkel voorzien in een Java-applicatie die alle vereiste taken uitvoert, zorgen we voor de kiosken naast de Qt-applicatie tevens voor de nodige hardware. Hiervoor selecteren we een gepaste embedded computer en stellen we een besturingssysteem samen die de applicatie adequaat kan uitvoeren. Ook voorzien we in een inputmodule die instaat voor het verwerken van gebruikersinvoer, waarvoor we een printplaat ontwerpen en zorgen voor de bijhorende firmware.
+\end{abstract}
 
-\newpage
+\clearpage
 
-\section*{English} The purpose of this applied dissertation is to develop a modern multimedia framework replacing an outdated system in the astronomy museum MIRA. The framework has to take care of data storage, distribution, and visualisation. It should also offer the means for a designer to develop visually appealing and versatile presentations.
+\selectlanguage{english}
+\begin{abstract}
+The purpose of this applied dissertation is to develop a modern multimedia framework replacing an outdated system in the astronomy museum MIRA. The framework has to take care of data storage, distribution, and visualisation. It should also offer the means for a designer to develop visually appealing and versatile presentations.
 
 Before all else, we divide the system in several subcomponents, and determine the exact interface between them. In order to do this, we carefully select the best technologies to accomplish each task: storage and distribution shall be taken care of by a central server, discovering and configuring any clients using the \acs{upnp} protocol. To accomplish efficient storage and distribution, a \acs{svn} repository will be used. Finally, the presentations will be formatted using \acs{html} and Javascript.
 
 Thereafter we proceed to the actual implementation of each subsystem. While the server-application will only consist of a single Java application, the clients need some more work. Not only do we create a Qt-based application to perform all necesary tasks, we also need to select the proper hardware to run that application on. This means selecting an appropriate embedded computer, and compiling an operation system capable of running our application. We also develop the \acs{pcb} and firmware for an input module to take care of any user input.
+\end{abstract}
 
+\selectlanguage{dutch}
+
+\clearpage
 
 %
 % Voorwoord
@@ -56,17 +64,17 @@ Thereafter we proceed to the actual implementation of each subsystem. While the 
 
 \textit{Hier komt het voorwoord.}
 
+\clearpage
+
 
 %
 % Inhoudstafel
 %
 
 \setlength\cftpartnumwidth{2em}
-
-\newpage
 \tableofcontents
 
-\newpage
+\clearpage
 
 
 %
@@ -75,16 +83,21 @@ Thereafter we proceed to the actual implementation of each subsystem. While the 
 
 \listoffigures
 
+\clearpage
+
 
 %
-% Lijst met listings
+% Lijst met fragmenten
 %
 
 \renewcommand{\lstlistlistingname}{Lijst van fragmenten}
 \renewcommand{\lstlistingname}{Fragment}
-\lstlistoflistings
+\markboth{List van fragmenten}{Lijst van fragmenten}
 \addcontentsline{toc}{chapter}{Lijst van fragmenten}
+\lstlistoflistings
 % TODO: probleem als meer dan 1 pagina aan fragmenten
+
+\clearpage
 
 
 %
@@ -92,6 +105,7 @@ Thereafter we proceed to the actual implementation of each subsystem. While the 
 %
 
 \chapter*{Lijst van afkortingen}
+\markboth{List van afkortingen}{Lijst van afkortingen}
 \addcontentsline{toc}{chapter}{Lijst van afkortingen}
 
 \begin{acronym}[WYSIWYG]	% langste afkorting
@@ -162,4 +176,4 @@ Thereafter we proceed to the actual implementation of each subsystem. While the 
 \end{acronym}
 
 \acresetall
-
+\clearpage
