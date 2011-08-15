@@ -24,7 +24,12 @@ Die inhoud wordt per sectie onderverdeeld via het \ac{html} \code{<div>} element
 \section{Applicatielogica}
 
 Om die logica te implementeren zullen we Javascript code moeten schrijven die uitgevoerd wordt wanneer de pagina geladen wordt, en wanneer de bezoeker bepaalde acties onderneemt. Om het schrijven van Javascript code specifiek gericht op \ac{html} pagina's te vereenvoudigen, maken we gebruik van de \makeurl{http://jquery.com/}{jQuery} bibliotheek. Hiermee wordt het onder andere veel eenvoudiger om specifieke \ac{html} elementen op te halen en op events te reageren, zoals geïllustreerd is in fragment \ref{lst:jquery:selector}.
-\begin{lstlisting}[language=Javascript, float, caption=Ophalen van een element met gewone Javascript, en met behulp van JQuery., label=lst:jquery:selector]
+\begin{lstlisting}[language=Javascript, float, caption=Ophalen van een element met en zonder hulp van JQuery., label=lst:jquery:selector]
+function countCheckedElements_jQuery()
+{
+	return $("#myForm input:checked").length
+}
+
 function countCheckedElements()
 {
 	var form = document.getElementById('myForm')
@@ -39,11 +44,6 @@ function countCheckedElements()
 	}
 	
 	return count
-}
-
-function countCheckedElements_jQuery()
-{
-	return $("#myForm input:checked").length
 }
 \end{lstlisting}
 
