@@ -552,7 +552,7 @@ Het lijkt misschien moeilijk, al dan niet onmogelijk om hier allemaal rekening m
 
 \section{Types licenties}
 
-Vooraleer dieper in te gaan op hoe we open-source licenties kunnen gebruiken, is het interessant om een grove indeling te maken en zo enkele terugkerende eigenschappen te beschrijven. Hierbij baseren we ons op \makeurl{https://www.gnu.org/philosophy/categories.html}{een beschrijving} van de \ac{fsf}.
+Vooraleer dieper in te gaan op hoe we open-source licenties kunnen gebruiken, is het interessant om een grove indeling te maken en zo enkele terugkerende eigenschappen te beschrijven. Hierbij identificeren we drie soorten open-source software: die in het publieke domein, die onder een permissive licentie, en die onder een copyleft licentie \citep{fsf:categories}.
 
 \subsection{Copyleft licenties}
 
@@ -666,7 +666,7 @@ Vooreerst kijken we naar de licenties van externe projecten die we gebruiken:
 
 \paragraph{Licentie} De situatie is hier iets eenvoudiger dan bij de serverapplicatie. Door het gebruik van een project dat valt onder versie 2.0 van de Apache License, kunnen we eigenlijk al maar enkel gebruik maken van versie 3.0 van de \ac{gpl}. Die licentie is vervolgens compatibel met de overige licenties waarvan we gebruik maken.
 
-Maar aangezien de applicatie een webservice aanbiedt wouden we gebruik maken van de \ac{agpl}. Als we in detail kijken naar de tekst van die licentie zien we dat vanaf versie 3 er in beide licenties een \makeurl{https://www.gnu.org/licenses/gpl.html\#section13}{expliciete clausule} is opgenomen die ze compatibel maakt. Daardoor kunnen we zonder probleem de code onder versie 3 van de \ac{agpl} laten vallen.
+Maar aangezien de applicatie een webservice aanbiedt wouden we gebruik maken van de \ac{agpl}. Als we in detail kijken naar de tekst van die licentie zien we dat vanaf versie 3 er in beide licenties een expliciete clausule \citetext{\citealp[sectie 13]{fsf:gpl}; \citealp[sectie 13]{fsf:agpl}} is opgenomen die ze compatibel maakt. Daardoor kunnen we zonder probleem de code onder versie 3 van de \ac{agpl} laten vallen.
 
 \paragraph{Herlicentiëren} Ook dit aspect is gemakkelijker voor de kioskapplicatie. Een proprietaire licentie is immers toegelaten door de permissive licentie waaronder Log4Qt valt, en de overige projecten gebruiken een weak copyleft licentie die expliciet stelt dat copyleft niet van toepassing is indien we enkel linken met de code. Wijzigingen aan de code zelf moeten wel vrijgegeven worden, maar dat hebben we ook gedaan (zie deel \ref{kiosk}).
 
