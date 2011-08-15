@@ -153,6 +153,10 @@ Een probleem met cppcheck is dat het niet goed overweg kan met de vele macro's s
 
 % todo
 
+\section{Versioning}
+
+Ook voor de kioskapplicatie maken we gebruik van het Git versioning systeem, wat we in sectie \ref{server:deployment:versioning} beschreven hebben is dus hier ook van toepassing.
+
 \section{Compilatie}
 
 Om de software te compileren maken we gebruik van de tools die het Qt framework daartoe biedt. De belangrijkste daarvanis \code{qmake}, een applicatie die het genereren van een \code{Makefile} automatiseert. Dit is vooral interessant omdat zoals hierboven vermeld bronbestanden die gebruik maken van Qt-macro's eerst moeten voorverwerkt worden door de \ac{moc} preprocessor. Door gebruik te maken van qmake moeten we dit niet langer manueel doen: qmake detecteert welke bestanden eerst moeten verwerkt worden door de preprocessor, en genereert een \code{Makefile} waarbij dit dan ook eerst gebeurt.

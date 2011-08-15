@@ -72,6 +72,20 @@ Een andere applicatie die we gebruikt hebben is \makeurl{http://pmd.sourceforge.
 
 %todo
 
+\section{Versioning}
+\label{server:deployment:versioning}
+
+We hebben gekozen om de code en andere relevante bestanden te bewaren met behulp van Git, een populair broncode management systeem. Een van de voordelen van Git is dat het gedistribueerd is: elke \emph{checkout} bevat de hele geschiedenis van het project, en het is mogelijk om code van de ene checkout naar de andere te \emph{pushen} of \emph{pullen}. Er is met andere woorden geen centrale server in het spel, waardoor er geen single point of failure meer is.
+
+Hoewel er verschillende gedistribueerde versiebeheersystemen bestaan, hebben we dankzij eerdere ervaring alsook de beschikbaarheid van gratis servers om een Git-repository op te hosten (zoals \makeurl{https://github.com/}{GitHub}) gekozen voor Git. Dergelijke hosting servers zijn in principe niet nodig, maar het verhoogt de blootstelling van de code en zorgt ervoor dat er een kopie van het project op een externe server staat waardoor de kans op dataverlies weer zoveel kleiner wordt.
+
+Een sterke eigenschap van Git is dat het heel eenvoudig (en snel) is om een \emph{branch} aan te maken: dit is een afsplitsing van de code waarop men kan werken zonder invloed te hebben op andere branches. Hiermee kunnen we zeer eenvoudig de ontwikkeling splitsen in twee pistes, elk met hun specifiek doel:
+\begin{enumerate}
+  \item Master branch: hierop gebeurt de ontwikkeling van nieuwe features, die eerst nog grondig moeten getest worden vooraleer in productie te komen;
+  \item Stable branch: deze branch bevat grondig geteste code die direct in gebruik mag komen.
+\end{enumerate}
+Nadat een nieuwe feature op de master branch ontwikkeld is, kunnen we ze nu zo lang testen als we willen zonder daarbij te verhinderen dat we tegelijkertijd fixes doorvoeren aan de code die effectief in gebruik is: door eenvoudig te wisselen naar de stable branch vergeten we tijdelijk alles over de nieuwe features op de master branch. Wanneer vervolgens de feature stabiel geacht wordt, kunnen we de relevante commits pushen naar de stable branch.
+
 \section{Compilatie}
 
 Voor het bouwen van een executable hebben we berust op \ac{maven}, een softwarebeheersysteem dat op een flexibele manier toelaat om alle aspecten van het bundelen van een applicatie te organiseren. Daartoe voorzien we in een \ac{pom} bestant waarin alle informatie verwerkt zit, zoals de naam en versie van de toepassing, de libraries waarop het berust, en hoe de applicatie moet opgestart worden. Aan de hand van die informatie kan \ac{maven} het project gepast uitvoeren of bundelen tot een finale executable.
