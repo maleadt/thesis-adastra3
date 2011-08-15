@@ -12,11 +12,11 @@ De eerste stap van het ontwerp was de identificatie van de verschillende deelsys
 \begin{itemize}
 \item Voorstellingen weergeven, en gebruikersinvoer verwerken;
 \item Toelaten om eenvoudig voorstellingen te wijzigen, zonder veel technische bagage;
-\item Voorzien in een gebruiksvriendelijke beheersinterface;
+\item Voorzien in een gebruiksvriendelijke beheerinterface;
 \item Dit alles voldoende robuust uitvoeren.
 \end{itemize}
 
-Hiermee konden we de verschillende deelsystemen identificeren. Zo zijn er natuurlijk de kiosken, die instaan voor de weergave van de voorstellingen, en de verwerking van gebruikersinvoer. Om het systeem flexibel te houden, zullen we de kiosken zo inrichten dat zowel de configuratie als de weer te geven voorstellingen zich niet op voorhand op de kiosk bevinden, maar van een centrale server gehaald worden. Diezelfde centrale server kan dan ook voorzien in een beheersinterface, waarbij de status van de verschillende kiosken gevisualiseerd wordt, en de administrator eventueel bepaalde acties kan ondernemen. Al deze functionaliteit zullen we bundelen binnen het specifiek hiervoor ontworpen applicatie-raamwerk, waarvoor we ook een communicatieprotocol zullen moeten definiëren.
+Hiermee konden we de verschillende deelsystemen identificeren. Zo zijn er natuurlijk de kiosken, die instaan voor de weergave van de voorstellingen, en de verwerking van gebruikersinvoer. Om het systeem flexibel te houden, zullen we de kiosken zo inrichten dat zowel de configuratie als de weer te geven voorstellingen zich niet op voorhand op de kiosk bevinden, maar van een centrale server gehaald worden. Diezelfde centrale server kan dan ook voorzien in een beheerinterface, waarbij de status van de verschillende kiosken gevisualiseerd wordt, en de administrator eventueel bepaalde acties kan ondernemen. Al deze functionaliteit zullen we bundelen binnen het specifiek hiervoor ontworpen applicatie-raamwerk, waarvoor we ook een communicatieprotocol zullen moeten definiëren.
 
 In de volgende hoofdstukken gaan we elk van deze deelsystemen, en al wat daar bij hoort, tot in details uitwerken. Zo zullen we ook frequent bestaande technologieën hergebruiken, of net een gerichte keuze maken zodat hergebruik mogelijk wordt. Daarbij gaan we meestal uit van een initiële selectie aan technologieën die gebruikt kan worden om een specifiek doel te bekomen, waarna de selectie uitgedund wordt tot er slechts 1 mogelijkheid overblijft. Het valt op te merken dat we bij dergelijke selectieprocedures steeds een impliciete doch sterke voorkeur stellen voor open technologieën, waarvoor er een gratis, cross-platform en open-source implementatie bestaat. Dat we kiezen voor technologieën met een kosteloze implementatie, vloeit voort uit het beperkte budget dat toegekend is door de MIRA vzw. Het cross-platform aspect is belangrijk omdat op termijn de applicatie misschien op een ander systeem zal moeten draaien, alsook zal het in geval van een succesvol eindproduct de openstelling voor andere bedrijven bevorderen. Het open-source kenmerk tenslotte kent zijn oorsprong weliswaar deels in idealistische gronden, maar blijkt in de praktijk ook zeer praktisch te zijn. Zo is het tijdens de realisatie van het project verschillende keren extreem nuttig gebleken om vrije toegang te hebben tot de broncode van de bibliotheek.
 
@@ -87,9 +87,9 @@ Zoals hierboven reeds vermeld, zullen noch de nieuwste voorstellingen noch de co
 
 Initieel dachten we dit te doen met een \strong{database-systeem}. Hoewel dergelijke systemen vooral sterk zijn in het herbergen van gestructureerde data, zou het perfect mogelijk zijn om er de eerder bestandsgeoriënteerde voorstellingen in op te slaan. Voor efficiënte overdracht zouden we wel zelf moeten zorgen, en bovendien zou het vrij arbeidsintensief zijn om een gebruiksvriendelijke interface te bouwen bovenop dit systeem.
 
-Een andere verzameling technologieën die we overwogen hebben, waren de \strong{Enterprise Content Management} systemen. Hierbij vinden we al vaker een geïntegreerde beheersinterface, alsook komt het frequent voor dat een reeds aanwezig versiebeheer-systeem zorgt voor efficiënte dataoverdracht. Toch zijn we blijven zoeken naar andere oplossingen, omdat bij deze systemen de nadruk vaak nog explicieter ligt op gestructureerde data, waardoor het niet praktisch zou zijn om er onze ongestructureerde voorstellingen in op te slaan.
+Een andere verzameling technologieën die we overwogen hebben, waren de \strong{Enterprise Content Management} systemen. Hierbij vinden we al vaker een geïntegreerde beheerinterface, alsook komt het frequent voor dat een reeds aanwezig versiebeheer-systeem zorgt voor efficiënte dataoverdracht. Toch zijn we blijven zoeken naar andere oplossingen, omdat bij deze systemen de nadruk vaak nog explicieter ligt op gestructureerde data, waardoor het niet praktisch zou zijn om er onze ongestructureerde voorstellingen in op te slaan.
 
-Daarom hebben we uiteindelijk te stap gemaakt naar speciale \strong{versiebeheer-systemen}. Hierbij is efficiënte overdracht van gegevens een basiseigenschap, en zorgt het bestandsgeoriënteerde aspect tegelijkertijd voor een relatief gebruiksvriendelijke interface. Zo kan een administrator heel gemakkelijk lokaal enkele wijzigingen doorvoeren aan een voorstelling, het resultaat testen in zijn browser, en indien gewenst zijn werk doorsturen naar de centrale server. Ook zorgt het ervoor dat het in eerste instantie niet nodig is om te voorzien in een gebruiksinterface maar blijft het wel nog steeds mogelijk om dit later te doen.
+Daarom hebben we uiteindelijk te stap gemaakt naar speciale \strong{versiebeheer-systemen}. Hierbij is efficiënte overdracht van gegevens een basiseigenschap, en zorgt het bestandsgeoriënteerde aspect tegelijkertijd voor een relatief gebruiksvriendelijke interface. Zo kan een administrator heel gemakkelijk lokaal enkele wijzigingen doorvoeren aan een voorstelling, het resultaat testen in zijn browser, en indien gewenst zijn werk doorsturen naar de centrale server. Ook zorgt het ervoor dat het in eerste instantie niet nodig is om te voorzien in extra software om überhaupt met de bestanden te kunnen werken, maar blijft het wel nog steeds mogelijk om dit later te doen en zo het proces gebruiksvriendelijker te maken.
 
 Er bestaan echter tientallen versiebeheersystemen, die we elk gepeild hebben aan ons eisenpakket:
 \begin{itemize}
@@ -341,7 +341,7 @@ Zoals reeds vermeld, is de centrale server van essentieel belang in het systeem.
 \item Opslag en distributie van de voorstellingen.
 \end{itemize}
 
-Naast deze elementaire taken, vereenvoudigt de server tevens de werklast van een administrator. We zullen immers voorzien in een beheersinterface die niet alleen een overzicht van het systeem biedt, maar ook toelaat om acties te ondernemen om eventuele problemen te verhelpen.
+Naast deze elementaire taken, vereenvoudigt de server tevens de werklast van een administrator. We zullen immers voorzien in een beheerinterface die niet alleen een overzicht van het systeem biedt, maar ook toelaat om acties te ondernemen om eventuele problemen te verhelpen.
 
 \subsection{Ontwikkelplatform}
 
@@ -367,7 +367,7 @@ Tijdens het ontwerp van het applicatieprotocol hebben we er speciaal op gelet om
 
 Hoewel er opnieuw verschillende \ac{svn} bibliotheken bestaan, lijkt \makeurl{http://svnkit.com/}{SVNKit} de enige die nog doorontwikkeld wordt. Ook is de bibliotheek geschreven in pure Java, wat opnieuw het geheel platformonafhankelijk maakt.
 
-\subsubsection{Beheersinterface}
+\subsubsection{Beheerinterface}
 
 \paragraph{Servlet engine} Om een website te kunnen realiseren, hebben we nood aan een servlet-engine. Binnen de Javawereld zijn er verschillende servlet engines, de bekendste wellicht Tomcat en Jetty. Aangezien onze applicatie niet draait rond de webapplicatie, maar dat slechts een deelcomponent is, zullen we geen gebruik kunnen maken van de standaard servlet environment. Door de servlet engine te \emph{embedden} binnen onze applicatie, is het eenvoudiger om tegelijk verschillende andere niet-webgeoriënteerde services actief te hebben. Zowel Tomcat als Jetty maken het mogelijk om ze te gebruiken binnenin een applicatie, al is het bij de ene al makkelijker dan bij de andere.
 
@@ -507,7 +507,7 @@ Daarom zijn we op zoek gegaan naar een vergelijkbare plug-computer (zodat we nie
 \section{Input module}
 \label{ontwerp:hardware:input}
 
-De gebruikersinterface wordt gerealiseerd door 4 grote drukknoppen ingebouwd in de kast van elke kiosk. Momenteel worden deze knoppen intern doorverbonden met een afstandsbediening, waardoor de gebruiker via het indrukken van de knoppen indirect de DVD-speler kan besturen om zo een fragment te selecteren.
+De gebruiksinterface wordt gerealiseerd door 4 grote drukknoppen ingebouwd in de kast van elke kiosk. Momenteel worden deze knoppen intern doorverbonden met een afstandsbediening, waardoor de gebruiker via het indrukken van de knoppen indirect de DVD-speler kan besturen om zo een fragment te selecteren.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/kiosk_knoppen}
