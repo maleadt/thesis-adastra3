@@ -325,7 +325,7 @@ De \ac{upnp} standaard voorziet tenslotte ook nog in een presentatie gedeelte, d
 \section{Redundantie en robuustheid}
 \label{sec:redundantie}
 
-Een belangrijk aspect van het systeem is dat het robuust is, en dus voorziet in een bepaalde vorm van redundantie. Zoals het hardwareontwerp zal verduidelijken (zie hoofdstuk \ref{ontwerp:hardware}), voorzien we reeds in hardwarematige redundantie onder de vorm van een RAID configuratie. Toch verhelpt dit het fundamentele probleem niet: de centrale server is een \emph{single point of failure}.
+Een belangrijk aspect van het systeem is dat het robuust is, en dus voorziet in een bepaalde vorm van redundantie. Zoals het hardwareontwerp zal verduidelijken (zie hoofdstuk \ref{ontwerp:hardware}), voorzien we reeds in hardwarematige redundantie onder de vorm van een \ac{raid} configuratie. Toch verhelpt dit het fundamentele probleem niet: de centrale server is een \emph{single point of failure}.
 
 Een eerste idee om dit te verhelpen was het voorzien van een \strong{backup server}, die de centrale server continu zou monitoren. In geval van diens falen, zou de failover functionaliteit geactiveerd worden, waarbij de taken van de centrale server integraal overgenomen zouden worden. Gezien het configuratieloze aspect van de opstelling, en het feit dat elk initiatief steeds van de servers uit komt, zou dit totaal geen actie vereisen. Om ervoor te zorgen dat de backup server steeds over de meest recente informatie beschikt, activeert die tevens een (passieve) \ac{mdns} module, alsook registreert die zich bij de primaire server zodat updates aan de presentatie-repository steeds op beide servers aanwezig zijn.
 Hoewel deze configuratie zeer elegant lijkt (zeker indien de replicatie alsook promotie/degradatie van de server volledig autonoom verloopt), is ze niet realistisch op budgettair vlak. Het is niet alleen kostelijk om een tweede voldoende krachtige server samen te stellen, maar de aanwezigheid ervan betekent een extra continue energieconsumptie.
@@ -428,10 +428,17 @@ Net zoals we bij de serverapplicatie gekozen hebben voor een speciale loggingbib
 
 Gezien het beperkte budget is de zoektocht naar gepaste hardware best een uitdaging geweest.
 
+\section{Server}
+\label{ontwerp:hardware:server}
+
+De belangrijkste eigenschap van de serverhardware is dat ze betrouwbaar is. Zoals eerder vermeld hebben we de clients een backup-cache voorzien, waardoor bereikbaarheid van de server niet langer kritiek is. Op vlak van opslag blijft betrouwbaarheid echter zeer belangrijk: hoewel er wel externe backups zullen zijn, moet de data altijd bereikbaar kunnen zijn.
+
+Daarom hebben we gekozen om gebruik te maken van een \ac{nas}, aangezien dergelijke toestellen er op gemaakt zijn om verschillende jaren aan een stuk actief te zijn. Het model dat we specifiek gekozen hebben, de Synology DS207+, komt met twee harde-schijven waardoor we gebruik zullen kunnen maken van een \ac{raid} opstelling om de redundantie te verhogen.
+
 \section{Kiosk}
 \label{ontwerp:hardware:kiosk}
 
-Algemeen worden er enkele vrij zware eisen gesteld aan de kioskhardware:
+De keuze van de kioskhardware is een pak moeilijker dan het voor de server was. Eerst en vooral omdat de eisen specifieker zijn, maar ook omdat we er direct meer dan $10$ zullen moeten aankopen waardoor de foutenmarge een pak kleiner is. Bij het zoeken naar de beste oplossing hebben we concreet rekening gehouden met de volgende eisen:
 \begin{itemize}
 \item Goedkoop: zowel betreffende aankoopprijs, als energieconsumptie;
 \item Duurzaam: de hardware moet minstens 5 jaar meegaan;
@@ -461,7 +468,7 @@ Ook de duurzaamheid is vaak indrukwekkend, mede door het feit dat er enkel solid
 
 Hoewel niet echt geschikt voor dit doel, hebben we ook gekeken naar populaire consument-georiënteerde hardware. In die hardwarecategorie zijn er sinds enkele jaren energie-efficiënte configuraties te vinden, meestal bedoeld voor \ac{nas} toestellen of low-powered computers. Voorbeelden hiervan zijn moederborden gebaseerd op de \makeurl{http://www.intel.com/technology/atom/}{Intel Atom}, of de meer recent geïntroduceerde \makeurl{http://sites.amd.com/us/fusion/apu/Pages/fusion.aspx}{AMD Fusion}. Dergelijke moederborden komen vaak met een geïntegreerde \ac{gpu} (in het geval van de AMD Fusion zit die zelf op de processorchip) en andere periferie, waardoor het moederbord een handig functioneel geheel vormt.
 
-Toch is er ook nood aan extra hardware, waaronder \ac{ram}, een harde schijf, en een voeding. Dat is dan ook direct een nadeel van deze piste: extra componenten verhogen de kans op falen. Andere features die dan wel geïntegreerd zijn op het moederbord, zijn volledig nutteloos voor dit project (zoals een RAID controller, of 5.1 audio).
+Toch is er ook nood aan extra hardware, waaronder \ac{ram}, een harde schijf, en een voeding. Dat is dan ook direct een nadeel van deze piste: extra componenten verhogen de kans op falen. Andere features die dan wel geïntegreerd zijn op het moederbord, zijn volledig nutteloos voor dit project (zoals een \ac{raid} controller, of 5.1 audio).
 
 Ondanks de nood aan die extra hardware blijft de prijs relatief aantrekkelijk. En voor die prijs wordt er meestal vrij veel pure performantie bekomen, wat het gemis aan interessante features deels tegemoet komt. Toch is dit, zeker gecombineerd met de teleurstellende duurzaamheid, niet voldoende om ons er voor te laten kiezen.
 

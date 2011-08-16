@@ -17,6 +17,8 @@ Deze klasse komt overeen met het repository subsysteem in de serverapplicatie, m
 
 In tegenstelling tot de repository klasse in de serverapplicatie moeten we hier geen data interpreteren: na een checkout of update gedaan te hebben, moet de voorstelling in zijn geheel opnieuw doorgegeven worden aan de userinterface, het is niet van belang om te weten wélke gegevens veranderd zijn. Hierdoor wordt het gebruik van de \ac{svn} libraries sterk vereenvoudigt.
 
+% backup cache uitleggen? config saven enzo
+
 \subsection{Userinterface}
 
 Dit gedeelte van de applicatie staat in voor de effectieve weergave van ontvangen voorstellingen. Zoals reeds vermeld bestaan die voorstellingen uit \ac{html} en Javascript, en gebruiken we de WebKit rendering engine om die gegevens weer te geven. In de huidige opzet hebben we enkel voorzien in een naadloze integratie van de rendering engine en onze applicatie, waardoor de voorstellingen zeer vlot geladen en verwerkt kunnen worden. Voor een volgende versie plannen we deze component uit te breiden zodat het niet alleen voorstellingen weergeeft, maar gegevens over hoe exact die weergegeven worden teruggestuurd worden naar de server. Zo kunnen we bijvoorbeeld statistieken vergaren over welke voorstellingen het meest bekeken worden, welke filmpjes het snelst gestopt worden, \ldots
