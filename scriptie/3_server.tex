@@ -159,6 +159,24 @@ Een andere plugin die we gebruikt hebben is de ``site plugin'', waarmee we tijde
   </configuration>
 </plugin>
 \end{lstlisting}
-\section{Packaging}
 
-% todo: debian packaging
+\section{Repository}
+
+Zoals beschreven in hoofdstuk \ref{ontwerp:applicatie} hebben we wegens problemen met de serverside-bindings ervoor moeten kiezen om gebruik te maken van een externe \ac{svn} repository. In eerste instantie hadden we dat gedaan door een overkoepelende Apache webserver op te stellen, waarbij het eenvoudig mogelijk is om een \ac{svn} repository te hosten via de \code{mod\_dav} \ac{webdav} module. Om dan wel geen twee webservers draaiende te hebben (onze applicatie heeft immers ook nog een embedded Tomcat servlet engine aan boord), hadden we dan gebruik gemaakt van de \code{mod\_jk} Tomcat Apache Connector om te serverapplicatie te laten overkoepelen door Apache. Daarbij wordt de communicatie tussen beide applicaties verzorgt over het binaire \ac{ajp} protocol, waardoor het mogelijk is om communicatie met zowel de Tomcat servlet-engine als de door Apache beheerde \ac{svn} repository over dezelfde poort te laten.
+
+Maar dit was maar een geconvolueerd systeemn, en \ac{webdav} bleek ook niet de meest efficiënte overdrachtsmodus te zijn die \ac{svn} ondersteunt. Daarom hebben we er uiteindelijk voor gekozen om \code{svnserve} te gebruiken, die communicatie verzorgt over een binair protocol dat zeker op low-latency \ac{lan} netwerken een veel betere performantie bleek te hebben. Hierbij verviel de nood aan een Apache webserver, en de bijhorende Tomcat Apache Connector. De configuratie van \code{svnserve} (te zien in fragment \ref{lst:svnserve}) was uiteindelijk ook niet al te moeilijk, en zeker niet complexer dan de samengestelde configuratie van alle componenten die in de eerste opzet benodigd waren.
+
+\begin{lstlisting}[float, caption=Configuratie van een door svnserve-beheerde \acs{svn} repository., label=lst:svnserve]
+[general]
+anon-access = none
+auth-access = write
+password-db = passwd
+realm = Ad-Astra III - Data repository
+
+[sasl]
+use-sasl = true
+min-encryption = 1
+max-encryption = 256
+\end{lstlisting}
+
+Zoals in fragment \ref{lst:svnserve} te zien is maken we gebruik van \ac{sasl}, waardoor we op een eenvoudige manier kunnen gebruik maken van een robuust authenticatiemechanisme voor dataoverdracht van en naar de \ac{svn} repository. Hoewel dit als nadeel heeft dat anonieme toegang tot de repository, wat we (natuurlijk \emph{read-only}) zouden gebruikt hebben voor de kiosken bestanden te laten ophalen, biedt het een zeer groot voordeel: encryptie en integriteitscontrole. Door de \code{min-encryption} instelling op $1$ te zetten, verplichten we dat alle communicatie tenminste onderworpen wordt aan een integriteitscontrole, terwijl de \code{max-encryption} instelling ervoor zorgt dat het wel mogelijk blijft om volledige encryptie toe te passen. Hierdoor wordt het onmogelijk om de data te vervalsen, en worden de gebruikersnamen en wachtwoorden die het mogelijk maken om de data te wijzigen beschermd door de encryptie die \ac{sasl} biedt.
