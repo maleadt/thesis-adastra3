@@ -365,7 +365,7 @@ Tijdens het ontwerp van het applicatieprotocol hebben we er speciaal op gelet om
 
 \paragraph{Data uitwisseling} Door gebruik te maken van een externe \ac{svn} instantie worden we geconfronteerd met nog een probleem: waar we anders vanuit de serverapplicatie toegang zouden gehad hebben tot de bestanden in de repository (die vervolgens via een \ac{svn}-compatibele interface zouden geopend worden naar eventuele clients toe), moeten we nu zelf contact opnemen met de externe \ac{svn} instantie om de nodige configuratiegegevens op te halen. Ook moet het mogelijk zijn snel te kijken wat de laatste revisie van de repository is, en om vervolgens op te halen wat er veranderd is sinds de laatst bekende revisie. Met die informatie kan bepaald worden welke configuraties en/of voorstellingen opnieuw moeten opgehaald worden, om daarna die informatie door te sturen naar de relevante kiosken.
 
-Hoewel er opnieuw verschillende \ac{svn} bibliotheken bestaan, lijkt \makeurl{http://svnkit.com/}{SVNKit} de enige die nog doorontwikkeld wordt. Ook is de bibliotheek geschreven in pure Java, wat opnieuw het geheel platformonafhankelijk maakt.
+Opnieuw bestonden er verschillende \ac{svn} bibliotheken, waaronder \makeurl{http://svnkit.com/}{SVNKit}. Deze actief ontwikkelde bibliotheek is geschreven in pure Java, wat het geheel volledig platformonafhankelijk maakt. Toch heeft dit ook een sterk nadeel: toen we de applicatie een eerste keer testen op een tragere computer duurde het verschillende minuten vooraleer SVNKit alle bestanden binnen gehaald had. Daarom hebben we vrij laat in het ontwikkelingsproces besloten om gebruik te gaan maken van de officiële Java bindings voor Subversion, die eigenlijk enkel een fijne wrapper zijn rond de C-library. Hierdoor is de library minder sterk object-georiënteerd, en wordt er minder gebruik gemaakt van typische Java-paradigma's. Een voordeel echter is dat de bibliotheek veel stabieler is, en ook ontwikkelingen aan de officiële Subversion code veel sneller kan opvolgen \citep{svn:javahl}.
 
 \subsubsection{Beheerinterface}
 
@@ -633,17 +633,17 @@ Laten we eerst kijken naar de externe projecten die we gebruiken binnen de appli
     log4j & Apache License versie 2.0 \\
     Tomcat & Apache License versie 2.0 \\
     Apache Commons & Apache License versie 2.0 \\
+    Subversion & Apache License versie 2.0 \\
     XPP & Indiana University Extreme! Lab Software License$^{\decimal{footnote}}$\addtocounter{footnote}{1} \\
     JWt & \ac{gpl} versie 2 \\
-    SVNKit & TMate Open Source Licence$^{\decimal{footnote}}$ \\
     \end{tabular}
   \end{center}
   \caption{Open-source projecten binnen de serverapplicatie.}
 \end{table}
 
-\paragraph{Licentie} Om een licentie te kiezen moeten we nauwgezet analyseren met welke projecten die licentie compatibel is.  We willen bijvoorbeeld naagaan of we ons project kunnen licentiëren onder de \ac{gpl}. Als we kijken naar de Apache License versie 2.0 zien we in de \makeurl{https://www.gnu.org/licenses/license-list.html}{compatibiliteitslijst} gepubliceerd door de \ac{fsf} dat deze enkel te compatibel is met de versie 3.0 van de \ac{gpl}. De \makeurl{http://svnkit.com/license.html}{TMate Open Source License} is \emph{sterk} vergelijkbaar met de \ac{gpl}, met als enige toevoeging dat gebruik binnen een proprietair product de expliciete toestemming van TMate vereist. Aggregatie binnen een \ac{gpl} project is dus geen probleem. De \makeurl{http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt}{Indiana University Extreme! Lab Software License} is een permissive licenie waardoor ze zeker en vast compatibel is met de \ac{gpl}. Het is dus duidelijk dat we de serverapplicatie enkel onder versie 3 van de \ac{gpl} (of afgeleiden) kunnen distribueren.
+\paragraph{Licentie} Om een licentie te kiezen moeten we nauwgezet analyseren met welke projecten die licentie compatibel is.  We willen bijvoorbeeld nagaan of we ons project kunnen distribueren onder de \ac{gpl}. De Apache 2 licentie is enkel compatibel met versie 3.0 van de \ac{gpl} \citep{fsf:comments}, en de \makeurl{http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt}{Indiana University Extreme! Lab Software License} is een permissive licenie waardoor ze vast en zeker compatibel is met de \ac{gpl}. Het is dus duidelijk dat we de serverapplicatie enkel onder versie 3 van de \ac{gpl} (of afgeleiden) kunnen uitgeven.
 
-\paragraph{Herlicentiëren} Zoals beschreven in sectie \ref{ontwerp:licenties:commercialiseren:herlicentieren} willen we het mogelijk houden om onder betaling de code onder een proprietaire licentie te verkopen. Niet alle projecten die we hergebruiken zijn echter compatibel met een dergelijke licentie! Voor de projecten onder een permissive licentie (log4j, Tomcat, Apache Commons, XPP) is er geen probleem, we moeten enkel zorgen dat we voorzien in de tekst van de licentie, een copyright notice, en eventueel andere documenten. De overige twee projecten (JWt en SVNKit) vallen onder een strong copyleft licentie, wat niet compatibel is met een proprietaire licentie. Als we beter kijken zien we echter dat ze hetzelfde model hanteren als dat wij beschreven hebben in sectie \ref{ontwerp:licenties:commercialiseren:herlicentieren}: mits betaling is het mogelijk om dezelfde code te verkrijgen onder een proprietaire licentie. Mits aankoop van die twee softwareprojecten is het dus perfect mogelijk om onze serverapplicatie te verkopen onder een proprietaire licentie.
+\paragraph{Herlicentiëren} Zoals beschreven in sectie \ref{ontwerp:licenties:commercialiseren:herlicentieren} willen we het mogelijk houden om onder betaling de code onder een proprietaire licentie te verkopen. Niet alle projecten die we hergebruiken zijn echter compatibel met een dergelijke licentie! Voor de projecten onder een permissive licentie (log4j, Tomcat, Apache Commons, XPP) is er geen probleem, we moeten enkel zorgen dat we voorzien in de tekst van de licentie, een copyright notice, en eventueel andere documenten. Maar overige project, JWt, valt onder de strong copyleft \ac{gpl} die niet compatibel is met een proprietaire licentie. Als we beter kijken zien we echter dat ze hetzelfde model hanteren als dat wij beschreven hebben in sectie \ref{ontwerp:licenties:commercialiseren:herlicentieren}: mits betaling is het mogelijk om dezelfde code te verkrijgen onder een proprietaire licentie. Als we dus de code van JWt aankopen is het perfect mogelijk om onze serverapplicatie te verkopen onder een proprietaire licentie.
 
 \subsubsection{Kioskapplicatie}
 
@@ -676,7 +676,7 @@ De firmware maakt maar gebruik van 1 extern project: V-USB. Dit project valt opn
 
 \paragraph{Licentie} De situatie is hier vrij eenvoudig: we moeten enkel compatibel zijn met de \ac{gpl} waaron het V-USB project valt. Daarom zullen we zelf ook kiezen om gebruik te maken van de \ac{gpl}.
 
-\paragraph{Herlicentiëren} Net zoals bij SVNKit en JWt valt V-USB onder een duale licentie waardoor gebruik binnen een proprietair project enkel mogelijk is mits aankoop van de code onder een compatibele licentie.
+\paragraph{Herlicentiëren} Net zoals bij JWt valt V-USB onder een duale licentie waardoor gebruik binnen een proprietair project enkel mogelijk is mits aankoop van de code onder een compatibele licentie.
 
 \subsection{Hardware inputmodule}
 
