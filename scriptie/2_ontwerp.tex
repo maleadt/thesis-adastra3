@@ -351,11 +351,9 @@ Opnieuw bestaan er verschillende mogelijkheden die ons essentieel de middelen aa
 
 \subsection{Hergebruik}
 
-\subsection{Repository}
+\subsubsection{Repository}
 
 De originele opzet was om via de serverside-bindings in de \ac{svn} bibliotheek te voorzien in een \ac{svn}-compatibele repository die volledig overkoepeld zou zijn door de serverapplicatie. Hierdoor zou het geheel een enkel monolitisch geheel vormen dat geen extra configuratie zou vereisen en niet zou berusten op externe applicaties. Om niet te moeten interfacen met de C-library zouden we daarvoor gebruik maken van de enige Java-wrapper voor de serverside-bindings die er bestaat: \makeurl{http://code.google.com/p/svnj/}{SVN-J}. Jammer genoeg bleek deze library niet stabiel genoeg te zijn, en ontbraken er verschillende features. Daarom hebben we jammer genoeg moeten kiezen voor een externe \ac{svn} repository, niet overkoepeld door de serverapplicatie.
-
-Maar dat is niet alles: een externe \ac{svn} instantie moet altijd overkoepeld worden door een webserver, zoals Apache. Hierdoor zitten we nu met twee webservers: enerzijds Apache, en anderszijds de servlet engine binnen onze serverapplicatie. Om toch enige redundantie te vermijden zullen we Apache gebruiken om onze serverapplicatie te overkoepelen. Dit heeft verschillende voordelen: voor beide servers kunnen we nu de standaardpoort 80 gebruiken, alsook zal het in een later stadium eenvoudiger zijn om hier eventueel een authenticatie- of verificatiesysteem aan toe te voegen. Om de binding tussen Apache en Tomcat te bekomen, zullen we gebruik maken van \code{mod\_jk}, de officiële \makeurl{https://tomcat.apache.org/connectors-doc/}{Apache Tomcat connector}. Hierbij verloopt de communicatie tussen beide over het binaire \ac{ajp} protocol.
 
 \subsubsection{Netwerk}
 
