@@ -2,6 +2,7 @@
 \label{voorstellingen}
 
 \chapter{Prototype}
+\label{voorstellingen:prototype}
 
 Hoewel het uiteindelijk de taak van een designer is om voorstellingen te ontwerpen die ten volste gebruik maken van het framework, zullen we toch een aantal voorstellingen ontwerpen die gebruikt zullen worden in de eerste toepassing van het systeem. De eerste daarvan zal gebruikt worden binnen de prorotype kiosk, en zal dienen als demonstratie van de mogelijkheden die het nieuwe framework biedt. Dat kunnen we best doen met een specifiek daarvoor ontworpen demo, zoals er wel veel zijn sinds de opkomst van het \emph{Web 2.0} (een term die duidt op webpagina's gemaakt in \ac{html} versie 5, \ac{css} en Javascript).
 
@@ -10,18 +11,21 @@ Omdat het past binnen de situering van ons project, zullen we gebruik maken van 
 Hoewel we op vlak van technologie geen aanpassingen hebben moeten doorvoeren, was dit wel nodig om compatibel te zijn met de methode van gebruikersinput die wij hanteren. Zo zullen de kiosken niet uitgerust zijn met een muis, maar enkel met 4 pijltjestoetsen. Gelukkig kon het gros van de demo reeds overweg met pijltjestoetsen, we hebben enkel moeten toevoegen dat de twee verticale pijltjestoetsen ervoor zorgden dat de taal van de pagina veranderde, en dat na het laden van de pagina direct overgegaan werd tot het perspectief waarin de demo overweg kan met de horizontale pijltjestoetsen (standaard startte de pagina immers in een overzichtsperspectief).
 
 \chapter{Meta voorstelling}
+\label{voorstellingen:metavoorstelling}
 
 De tweede voorstelling die we voorzien hebben is eerder een hulpmiddel dan effectieve voorstelling, en dient er enkel toe om de bestaande voorstellingen te kunnen gebruiken binnen het nieuwe framework. Zoals beschreven in sectie \ref{ontwerp:applicatie:voorstellingen} zullen we daartoe eerst de bestaande videofragmenten comprimeren met een videocodec waardoor transmissie over het netwerk toch al iets efficiënter verloopt. De keuze van videocodec is dan uiteindelijk gevallen op WebM, om zo toe te laten om eenvoudig te videofragmenten zonder extra plugins te kunnen afspelen uit \ac{html} 5 code via het \code{<video>} element.
 
 Maar er is meer nodig dan een methode om de fragmenten af te spelen. Zo moet het mogelijk zijn om verschillende fragmenten aan te bieden, en de bezoeker er uit te laten kiezen. Ook moet het mogelijk zijn een fragment te voorzien van ondertitels, waarbij dan natuurlijk ook moet geselecteerd worden in welke taal die moeten zijn.
 
 \section{Template pagina}
+\label{voorstellingen:metavoorstelling:template}
 
 Om dit te realiseren hebben we eerst een \emph{single-page} \ac{html} pagina ontworpen waarbij alle basiselementen aanwezig zijn: een header die het logo van de MIRA en de titel van de voorstelling bevat, een footer waarin een hint kan staan voor de bezoeker (zoals op welke knop hij moet duwen om een keuze te bevestigen), en tenslotte het centrale gedeelte van de pagina waarin de effectieve inhoud zal komen.
 
 Die inhoud wordt per sectie onderverdeeld via het \ac{html} \code{<div>} element. Elk van die onderverdelingen heeft een uniek id, waardoor er vanuit de code kan naar verwezen worden. Die code zal ervoor moeten zorgen dat eerst de taalselectie-pagina zichtbaar is, er na keuze van een taal doorgegaan wordt naar de pagina waar de bezoeker een fragment kan kiezen, om vervolgens dan ook het fragment daadwerkelijk te tonen.
 
 \section{Applicatielogica}
+\label{voorstellingen:metavoorstelling:logica}
 
 Om die logica te implementeren zullen we Javascript code moeten schrijven die uitgevoerd wordt wanneer de pagina geladen wordt, en wanneer de bezoeker bepaalde acties onderneemt. Om het schrijven van Javascript code specifiek gericht op \ac{html} pagina's te vereenvoudigen, maken we gebruik van de \makeurl{http://jquery.com/}{jQuery} bibliotheek. Hiermee wordt het onder andere veel eenvoudiger om specifieke \ac{html} elementen op te halen en op events te reageren, zoals geïllustreerd is in fragment \ref{lst:jquery:selector}.
 \begin{lstlisting}[language=Javascript, float, caption=Ophalen van een element met en zonder hulp van JQuery., label=lst:jquery:selector]
@@ -50,12 +54,14 @@ function countCheckedElements()
 Met behulp van jQuery hebben we vervolgens een aantal functies geschreven die toelaten om de template pagina die we daarnet gedefinieerd hebben, in te vullen. Zo hebben we bijvoorbeeld voorzien in een \code{setTitle} methode die toelaat de titel van de pagina in te vullen, of \code{setStatus} om het statusbericht dat in de footer terecht komt te veranderen. Hiermee wordt het een pak aangenamer om de uiteindelijke applicatielogica te implementeren.
 
 \section{Taalkeuze en internationalisering}
+\label{voorstellingen:metavoorstelling:taal}
 
 Het eerste dat we de bezoeker moeten vragen, is in welke taal de volgende pagina's en het uiteindelijke fragment moeten gepresenteerd worden. Hoewel dit een niet meer is dan een aantal eenvoudige checkboxes, heeft de keuze verregaande implicaties. We zouden er zo voor kunnen kiezen om afhankelijk van de taalkeuze door te gaan naar verschillende pagina's, maar dat impliceert veel dubbel werk aangezien we nu pagina's met dezelfde inhoud en logica zullen moeten dupliceren per mogelijke taalkeuze.
 
 Daarom hebben we er voor gekozen om gebruik te maken van \makeurl{http://keith-wood.name/localisation.html}{een jQuery plugin} die de bibliotheek uitbreidt met een aantal vertalingsfuncties. Die functies zijn eigenlijk heel eenvoudig: aan de hand van een uniek id kunnen ze gebruikt worden om een gelocaliseerde string op te halen. Dit zou wel betekenen dat we bij het laden van elke pagina manueel de inhoud van elk vertaalbaar element moeten vervangen door het resultaat van een aanroep naar die plugin, wat veel extra regels code zou betekenen. Daarom hebben we voor een andere aanpak gekozen, waarbij we elk element voorzien van een uniek id en bij het inladen van de pagina een jQuery selector nu de hele pagina automatisch overloopt om voor elk element te kijken of zijn id overeen komt met een geregistreerd id binnen de vertalingsplugin. Is dit het geval, dan zal de inhoud van dat element gelijk gesteld worden aan de vertaling die de plugin teruggegeven heeft.
 
 \section{Playback en ondertiteling}
+\label{voorstellingen:metavoorstelling:playback}
 
 Nu dez taal vastligt moet de bezoeker kunnen kiezen uit de verschillende fragmenten, die vervolgens moeten afgespeeld worden met ondertitels in de taal die hij gekozen heeft. Afspelen van een video is relatief eenvoudig, we moeten enkel het ``src'' attribuut van het video-element wijzigen zodat het gekozen fragment ingeladen wordt en er tenslotte de \code{play()} functie op aanroepen.
 

@@ -550,16 +550,19 @@ Een derde optie is om gebruik te maken van een \strong{microcontroller met \ac{u
 %
 
 \chapter{Licenties}
+\label{ontwerp:licenties}
 
 De keuze van een goede licentie is een element waar we niet te snel mogen over gaan. Elke licentie heeft immers verschillende vereisten en gevolgen, en ook ons eigen eisen verschillen van component tot component. Terzelfdertijd moet de gekozen licentie compatibel zijn met de verschillende bibliotheken die we gebruiken binnen de verschillende componenten. Ook willen we het eindresultaat openstellen voor open-source gebruik, waar zouden we anders staan moesten anderen dit nooit gedaan hebben. Tenslotte willen we ook de piste naar eventuele commercialisering open houden.
 
 Het lijkt misschien moeilijk, al dan niet onmogelijk om hier allemaal rekening mee te houden, vooral als we tegelijk spreken over eventuele commercialisering en het product open-source maken. Toch is dit perfect mogelijk, en zijn er genoeg succesverhalen om dat mee te illustreren.
 
 \section{Types licenties}
+\label{ontwerp:licenties:type}
 
 Vooraleer dieper in te gaan op hoe we open-source licenties kunnen gebruiken, is het interessant om een grove indeling te maken en zo enkele terugkerende eigenschappen te beschrijven. Hierbij identificeren we drie soorten open-source software: die in het publieke domein, die onder een permissive licentie, en die onder een copyleft licentie \citep{fsf:categories}.
 
 \subsection{Copyleft licenties}
+\label{ontwerp:licenties:type:copyleft}
 
 Bij dergelijke licenties wordt het copyright van de auteur gebruikt om te zorgen dat het herdistribueren van het product of een gewijzigde versie daarvan enkel gebeurt onder dezelfde of een compatibele licentie. Hiermee kan een auteur bijvoorbeeld erop toezien dat software die hij vrijgeeft, ook altijd vrij zal blijven. Bekende voorbeelden van deze licentie zijn de \ac{gpl}, of de \ac{cc-sa} licentie.
 
@@ -569,16 +572,19 @@ Dit onderscheid is vooral van belang bij libraries: als die onder een weak copyl
 Net zoals de \ac{lgpl} specificeert dat afgeleid werk niet onder de copyleft clausule valt, bestaat ook de \ac{agpl} waarbij men de copyleft eis laat vallen voor applicaties die gebruik maken van de gelicentieerde code via het netwerk. Dit is vooral interessant voor webservices, moesten deze immers onder de \ac{gpl} vallen dan zou ook elke applicatie die evvan gebruik maakt onder een \ac{gpl} compatibele licentie moeten vrijgegeven worden.
 
 \subsection{Permissive licenties}
+\label{ontwerp:licenties:type:permissive}
 
 Hierbij is het niet langer vereist om wijzigingen aan de code vrij te geven. Hierdoor kan het dus zijn dat projecten die onder deze licentie gebruikt worden binnen proprietaire producten, en dit zelfs zonder eventuele wijzigingen aan die code te moeten vrijgeven. Vaak komen de licenties echter wel met een extra vereiste, maar die houdt vaak niet veel in. Zo stelt de \ac{mit} licentie dat de tekst ervan moet meegeleverd worden met het eindproduct, de Apache licentie eist datzelfde van een copyright notice en de disclaimer.
 
 \subsection{Licenties zonder copyright}
+\label{ontwerp:licenties:type:public}
 
 Hoewel permissive licenties weinig of geen restricties stelden aan het gebruik van de code, blijft het copyright steeds in handen van de originele auteur. Indien we ook dit afstaan kan iedereen om het even wat mag doen met de code. Volledig het copyright afstaan, waarbij de code in het \emph{public domain} terechtkomt, is echter een complexe zaak: de situatie moet bekenen worden van land tot land, en soms is het zelf onmogelijk om de auteursrechten volledig af te staan.
 
 Er bestaan verschillende licenties die code toekennen tot het public domain, waaronder de CreativeCommons Zero licentie en de \ac{wtfpl}.
 
 \section{Open-source software commercialiseren}
+\label{ontwerp:licenties:commercialiseren}
 
 Vaak wordt er met schrik gekeken naar open-source licenties omdat ze maar moeilijk passen binnen conventionele businessmodellen. Toch is het perfect mogelijk om dergelijke software te commercialiseren, mits een geschikte aanpak. We gaan nu twee dergelijke schema's beschrijven, elk een bedrijf die dit ook succesvol toegepast heeft als illustratie.
 
@@ -609,8 +615,10 @@ Hoe men net die conversie naar een commerciële licentie bekomt, kan op verschil
 Merk op dat dit model enkel mogelijk is wanneer de code geen gebruik maakt van strong copylefted code. Als dit wel het geval is, kan de software nooit onder een proprietaire licentie verspreid worden.
 
 \section{Keuze van licenties}
+\label{ontwerp:licenties:keuze}
 
 \subsection{Software}
+\label{ontwerp:licenties:keuze:software}
 
 Voor de applicaties die we ontwerpen voor dit project hebben we steeds gekozen voor een gepaste copyleft licentie. Door de code zomaar gratis op het internet te zetten krijgt het project extra visibiliteit en is het voor een derde partij gemakkelijker om het project op te pikken en te kijken of het wel past binnen zijn omgeving. Als die partij ook uiteindelijk besluit om met onze applicaties aan de slag te gaan, kan het daarbij verschillende pistes volgen:
 \begin{enumerate}
@@ -621,6 +629,7 @@ Voor de applicaties die we ontwerpen voor dit project hebben we steeds gekozen v
 Elk van deze mogelijkheden komen het project ten goede: of er wordt code teruggegeven, of er wordt betaald voor bepaalde diensten. Wanneer het moment komt dat een externe partij code wil toedragen aan het project zullen we wel moeten zorgen voor een gepaste contribution agreement of zelfs copyright assignment, zodat het voor ons mogelijk blijft de code uit te geven onder een gesloten licentie voor propreitair gebruik.
 
 \subsubsection{Serverapplicatie}
+\label{ontwerp:licenties:keuze:software:server}
 
 Voor deze applicatie lijkt een strong copyleft licentie de beste keuze. Een uitzonderingsmodule voor netwerkgebruik is hier niet echt nuttig aangezien de serverapplicatie eigenlijk methodes aanroept op de kioskapplicatie en zelf geen interface aanbiedt. Wanneer we later gebruik maken van een serverside \ac{svn} library om de repository te integreren binnen de serverapplicatie, zullen we wel nood hebben aan deze uitzonderingsmodule.
 
@@ -651,6 +660,7 @@ Laten we eerst kijken naar de externe projecten die we gebruiken binnen de appli
 \paragraph{Herlicentiëren} Zoals beschreven in sectie \ref{ontwerp:licenties:commercialiseren:herlicentieren} willen we het mogelijk houden om onder betaling de code onder een proprietaire licentie te verkopen. Niet alle projecten die we hergebruiken zijn echter compatibel met een dergelijke licentie! Voor de projecten onder een permissive licentie (log4j, Tomcat, Apache Commons, XPP) is er geen probleem, we moeten enkel zorgen dat we voorzien in de tekst van de licentie, een copyright notice, en eventueel andere documenten. Maar overige project, JWt, valt onder de strong copyleft \ac{gpl} die niet compatibel is met een proprietaire licentie. Als we beter kijken zien we echter dat ze hetzelfde model hanteren als dat wij beschreven hebben in sectie \ref{ontwerp:licenties:commercialiseren:herlicentieren}: mits betaling is het mogelijk om dezelfde code te verkrijgen onder een proprietaire licentie. Als we dus de code van JWt aankopen is het perfect mogelijk om onze serverapplicatie te verkopen onder een proprietaire licentie.
 
 \subsubsection{Kioskapplicatie}
+\label{ontwerp:licenties:keuze:software:kiosk}
 
 Opnieuw zullen we kijken in welke mate we een strong copyleft licentie kunnen toepassen op onze code. Aangezien de kioskapplicatie een \ac{upnp} service aanbiedt, zullen we nu echter wel aandacht moeten besteden aan de \ac{agpl}, die een copyleft uitzonderingsclausule voor netwerkgebruik aan boord heeft.
 
@@ -676,6 +686,7 @@ Maar aangezien de applicatie een webservice aanbiedt wouden we gebruik maken van
 \paragraph{Herlicentiëren} Ook dit aspect is gemakkelijker voor de kioskapplicatie. Een proprietaire licentie is immers toegelaten door de permissive licentie waaronder Log4Qt valt, en de overige projecten gebruiken een weak copyleft licentie die expliciet stelt dat copyleft niet van toepassing is indien we enkel linken met de code. Wijzigingen aan de code zelf moeten wel vrijgegeven worden, maar dat hebben we ook gedaan (zie deel \ref{kiosk}).
 
 \subsubsection{Firmware inputmodule}
+\label{ontwerp:licenties:keuze:software:inputmodule}
 
 De firmware maakt maar gebruik van 1 extern project: V-USB. Dit project valt opnieuw onder een duale licentie: enerzijds de \ac{gpl}, en anderzijds een licentie die mits betaling gebruik binnen een proprietair project toelaat.
 
@@ -684,6 +695,7 @@ De firmware maakt maar gebruik van 1 extern project: V-USB. Dit project valt opn
 \paragraph{Herlicentiëren} Net zoals bij JWt valt V-USB onder een duale licentie waardoor gebruik binnen een proprietair project enkel mogelijk is mits aankoop van de code onder een compatibele licentie.
 
 \subsection{Hardware inputmodule}
+\label{ontwerp:licenties:keuze:hardware}
 
 Aangezien veel van de termen die gebruik worden binnen software-georienteerde licenties zoals de \ac{gpl} niet van toepassing zijn op hardware (zo is het bij software al moeilijk genoeg om ``afgeleid werk'' nauwkeurig te omschrijven), kiezen we ervoor om gebruik te maken van een licentie die specifiek ontworpen is voor open-source hardware. Toch willen we niet teveel afwijken van het strong copyleft principe, aangezien dat een elementair deel is van het business model achter dit project. Daarom maken we gebruik van \makeurl{http://www.ohwr.org/attachments/662/CERNOHLv1\_1.pdf}{versie 1.1 van de CERN \ac{ohl}}, een strong copyleft licentie specifiek ontworpen voor hardware. We halen snel de belangrijkste elementen van de licentie aan:
 
@@ -696,6 +708,7 @@ Aangezien veel van de termen die gebruik worden binnen software-georienteerde li
 Hoewel commercialisering van dit product hiermee mogelijk is, zoals altijd kunnen we de licentie veranderen naar iets dat compatibel is met proprietair gebruik, is de kans klein dat we dit ooit zullen moeten doen. Het product is immers zo specifiek aan de situatie waarbinnen het gebruikt wordt dat het wellicht weinig nut zal hebben buiten de MIRA.
 
 \subsection{Scriptie}
+\label{ontwerp:licenties:keuze:scriptie}
 
 Het laatste item waar we een gepaste licentie moeten voor vinden, is dit document zelf. Hierbij hebben we een ander doel voor ogen dan bij de software en hardware: eventuele commercialisering is niet relevant. Het zou ook interessant zijn om gequote te kunnen worden zonder dat daarbij het werk waarin de quote terecht komt onder dezelfde termen moet vrijgegeven worden. Een copyleft licentie is dus niet gewenst, maar ook de meeste perimssive licenties zijn te software georienteerd om op een zinnige manier toegepast te kunnen worden op dit document.
 

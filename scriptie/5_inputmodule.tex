@@ -79,6 +79,7 @@ Het invoegen van een \ac{isp} header is niet veel werk: we dienen gewoon te voor
 \end{figure}
 
 \section{Schakelaars}
+\label{inputmodule:hardware:schakelaars}
 
 De schakelaars bevinden zich fysiek niet op de input module, maar zijn reeds ingebouwd in de bestaande kasten. Daarom zullen we een systeem moeten bedenken om de bestaande schakelaars op een handige manier op de module aan te sluiten. Tevens moeten we de knoppen zodanig verbinden dat er uitbreidingsmogelijkheden zijn.
 
@@ -120,6 +121,7 @@ De finale versie van het circuit is te vinden in figuur \ref{fig:circuit}. Voora
 \end{figure}
 
 \section{Productie}
+\label{inputmodule:hardware:productie}
 
 De finale stap bestaat eruit om het ontworpen schema te realiseren en een fysieke printplaat te laten maken, ofte een \ac{pcb}. Hierbij moeten we manueel een fysieke layout aanmaken en baantjes trekken waar er stroom moet kunnen vloeien. De plaatsing van die componenten is echter niet louter willekeurig. Zo is het bijvoorbeeld interessant om de componenten efficiënt te plaatsen zodat de uiteindelijke printplaat zo klein mogelijk is. Maar er zijn ook andere zaken waarmee we moeten rekening houden. Zo is er bijvoorbeeld de kwestie van plaatsing van de ontkoppelingscondesatoren: die worden best zo dicht mogelijk bij de bron van de spanningsoscillaties geplaatst.
 
@@ -165,8 +167,10 @@ Het genereren van deze bestanden kunnen we uitvoeren met Eagle's CAM Processor. 
 
 
 \chapter{Firmware}
+\label{inputmodule:firmware}
 
 \section{Geheugengebruik}
+\label{inputmodule:firmware:geheugengebruik}
 
 Bij het schrijven van de firmware moesten we rekening houden met de mogelijkheden van de chip. Deze eigenschappen, vermeld in sectie \ref{inputmodule:hardware:microcontroller}, waren vaak sterk beperkend. Zo hadden we maar 4 kilobytes tot onze beschikking, waardoor het moeilijk zou worden om (een subset van) C++ te gebruiken: de overhead teweeggebracht door het gebruik van klassen is immers te groot. Ook moesten we erop letten om geen \emph{floating-point} berekeningen uit te voeren: aangezien de AtTiny45 geen \ac{fpu} bevat, zou het gebruik ervan resulteren in het meelinken van een \ac{fpu}-emulator (die ruim 2 kilobytes groot is).
 
@@ -233,6 +237,7 @@ Zoals te zien is in fragment \ref{lst:avr:preprocessor} berust de preprocessor o
 Het grote probleem met al deze preprocessor-logica is dat statische analyse-tools er vaak niet goed mee overweg kunnen. Het is ook geen oplossing om eerst de preprocessor zijn werk te laten doen omdat de code dan vaak niet meer herkenbaar is en het voor de programmeur dan niet te doen is om de output van de analysetools correct te interpreteren. Daarom hebben we, zeker gezien de beperkte grootte van de firmware (nog geen 250 regels code) besloten om niet verder te zoeken naar analysetools en gewoon zelf de code eens extra grondig te controleren.
 
 \section{Compilatie}
+\label{inputmodule:firmware:compilatie}
 
 Het grote probleem bij het compileren van de firmware is dat de machinecode die de AVR microcontroller vereist niet compatibel is met de x86-machinecode die een compiler op onze computers gegenereerd. We zullen dus een compiler moeten gebruiken die specifiek geconfigureerd is om machinecode te genereren die kan draaien op een ander systeem dan hetgeen waar de compiler op uitgevoerd wordt. Dit proces heet \emph{cross compiling}.
 
