@@ -210,14 +210,65 @@ Het is wellicht duidelijk dat het samenstellen van een basissysteem geen eenvoud
 
 Een van de sterktes van Debian is zijn krachtig pakketbeheersysteem. Aangezien we libraries en applicaties gebruiken die zich niet in de standaard Debian repositories bevinden (zoals de kioskapplicatie zelf), hebben we moeten zelf moeten voorzien in een repository met daarin onze eigen pakketten. Hoewel dit niet absoluut vereist was, zo zou het mogelijk geweest zijn om de libraries en applicaties buiten het pakketbeheersysteem om te installeren, heeft dit twee grote voordelen: we kunnen er eenvoudig de software op de kiosken mee updaten, en het laat toe om het genereren van een volwaardig besturingssysteem volledig te automatiseren met de scripts die we geschreven hebben voor het genereren van het basissysteem.
 
-Vooraleer we een repository kunnen maken, hebben we Debian pakketten nodig voor elk van de projecten die we gebruiken en zich nog niet in de officiële repositories bevinden. Daarvoor hebben we moeten voorzien in verschillende bestanden, elk met een specifieke functie. Het \code{control} bestand bijvoorbeeld bevat essentiële informatie over het pakket: naam, beschrijving, versie, afhankelijkheden, \ldots Een ander belangrijk bestand is het \code{rules} bestand, dat voorschrijft hoe het project geconfigureerd en gecompileerd moet worden. Voor de volledige lijst aan bestanden verwijzen we naar de \makeurl{http://www.debian.org/doc/debian-policy/ch-source.html}{Debian Policy Manual}. Met al deze bestanden op zijn plaats kunnen we de \code{dpkg-buildpackage} tool gebruiken om een pakket te genereren.
+Vooraleer we een repository kunnen maken, hebben we Debian pakketten nodig voor elk van de projecten die we gebruiken en zich nog niet in de officiële repositories bevinden. Daarvoor hebben we moeten voorzien in verschillende bestanden, elk met een specifieke functie. Zo bevat het \code{control} bestand (zoals er een te zien is in fragment \ref{lst:debian:rules}) essentiële informatie over het pakket: naam, beschrijving, versie, afhankelijkheden, \ldots Een ander belangrijk bestand is het \code{rules} bestand, dat voorschrijft hoe het project geconfigureerd en gecompileerd moet worden. Voor de volledige lijst aan bestanden verwijzen we naar de \makeurl{http://www.debian.org/doc/debian-policy/ch-source.html}{Debian Policy Manual}. Met al deze bestanden op zijn plaats kunnen we de \code{dpkg-buildpackage} tool gebruiken om een pakket te genereren.
 
-% todo: control file
+\begin{lstlisting}[float, caption=Debian control packaging bestand., label=lst:debian:rules]
+Source: aa3client
+Maintainer: Tim Besard <tim.besard@gmail.com>
+Homepage: https://sites.google.com/site/miraadastraiii/
+Priority: extra
+Build-Depends: debhelper (>= 7.0.50~),
+  qt4-qmake, libqt4-dev, libbrisa-dev,
+  liblog4qt-dev, libsvnqt2-dev, pkg-config
+Standards-Version: 3.8.4
+Vcs-Git: git://github.com/MIRAvzw/adastra3-client.git
+Vcs-Browser: https://github.com/MIRAvzw/adastra3-client
 
-Om de gegenereerde pakketten toegankelijk te maken voor het Debian pakketbeheersysteem, moeten we ze onderbrengen in een repository. Dit is eigenlijk niet meer dan een heel exacte bestandshiërarchie, uitgebreid met enkele metabestanden die informatie bevatten over de aanwezige pakketten. Er bestaan verschillende tools om een repository aan te maken, waarbij er enorme verschillen zijn in de mogelijkheden. Omdat we hier een repository gaan samenstellen puur voor intern gebruik met slechts enkele pakketten erin, kiezen we voor een van de meest eenvoudige tools: \code{apt-ftparchive}. Deze tool doet eigenlijk niet veel meer dan het aanmaken van de nodige metabestanden, gebaseerd op een configuratiebestand met alle instellingen erin. Het aanmaken van de exacte bestandshiërarchie met de pakketten op de juiste plaats is de verantwoordelijkheid van de gebruiker.
+Package: aa3client
+Section: lib
+Architecture: any
+Depends: libqt4-core, libqt4-gui, libqt4-webkit,
+  libbrisa, liblog4qt, libsvnqt2, ${misc:Depends},
+  ${shlibs:Depends}
+Description: Ad-Astra III client application
+
+Package: aa3client-dbg
+Section: libdevel
+Architecture: any
+Depends: libbrisa (= ${binary:Version}), ${misc:Depends}
+Description: Ad-Astra III client application
+  (debug symbols)
+\end{lstlisting}
+
+Om de gegenereerde pakketten toegankelijk te maken voor het Debian pakketbeheersysteem, moeten we ze onderbrengen in een repository. Dit is eigenlijk niet meer dan een heel exacte bestandshiërarchie, uitgebreid met enkele metabestanden die informatie bevatten over de aanwezige pakketten. Er bestaan verschillende tools om een repository aan te maken, waarbij er enorme verschillen zijn in de mogelijkheden. Omdat we hier een repository gaan samenstellen puur voor intern gebruik met slechts enkele pakketten erin, kiezen we voor een van de meest eenvoudige tools: \code{apt-ftparchive}. Deze tool doet eigenlijk niet veel meer dan het aanmaken van de nodige metabestanden, gebaseerd op een configuratiebestand met alle instellingen erin. Het aanmaken van de exacte bestandshiërarchie met de pakketten op de juiste plaats is de verantwoordelijkheid van de gebruiker. Het resultaat ervan is te zien in fragment \ref{lst:debian:repo}.
 Tenslotte moeten we de repository nog publiceren, wat kan via een aantal protocollen. We hebben gekozen voor het \ac{ftp} protocol, omdat dergelijke functionaliteit reeds ingebouwd is in het besturingssysteem van de Synology DS207+, de \ac{nas} die we gebruiken als server.
 
-% todo: repo hierarchie
+\begin{lstlisting}[float, caption=Bestandshiërarchie in een Debian repository., label=lst:debian:repo]
+debian
+|-- dists
+|   +-- squeeze
+|       |-- Release
+|       |-- dev
+|       |   |-- binary-armel
+|       |   |   |-- Packages
+|       |   +-- source
+|       |       |-- Packages
+|       |       +-- Sources
+|       +-- main
+|           |-- binary-armel
+|           |   |-- Packages
+|           +-- source
+|               |-- Packages
+|               +-- Sources
++-- pool
+    |-- dev
+    |   |-- aa3client-dbg_0.1-1_armel.deb
+    +-- main
+        |-- aa3client_0.1-1.dsc
+        |-- aa3client_0.1-1.tar.gz
+        |-- aa3client_0.1-1_armel.changes
+        +-- aa3client_0.1-1_armel.deb
+\end{lstlisting}
 
 Het proces om een repository samen te stellen is dus opnieuw vrij complex en foutgevoelig. Daarom hebben we weer zoveel mogelijk proberen te automatiseren met \makeurl{https://github.com/MIRAvzw/adastra3-scripts/tree/master/packages}{een aantal scripts scripts}, die volledig autonoom broncode van projecten kunnen ophalen, er pakketten van maken, ze bundelen in een repository, en finaal die repository kan kopiëren naar een externe server.
 
