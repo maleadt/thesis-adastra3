@@ -58,8 +58,9 @@ Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze 
 
 \begin{table}[h!]
   \begin{center}
-    \begin{tabular}{p{3cm} p{4cm} p{4cm}}
-    & \acs{dvd}-bronbestanden & Compressie \\
+    \begin{tabular}{p{3cm} | p{4cm} p{4cm}}
+    & \textbf{\acs{dvd}-bronbestanden} & \textbf{Compressie} \\
+    \hline
     \hline
     Compatibiliteit & Volledig compatibel & Mits conversie \\
     Efficiëntie & Inefficiënt & Inefficiënt \\
@@ -67,7 +68,8 @@ Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze 
     Externe weergave & Eenvoudig & Eenvoudig \\
     Complexiteit & Relatief eenvoudig & Relatief eenvoudig \\
     \\    
-    & Presentatieformaten & \ac{html} en Javascript \\
+    & \textbf{Presentatieformaten} & \textbf{\ac{html} en Javascript} \\
+    \hline
     \hline
     Compatibiliteit & Embedden & Embedden na conversie \\
     Efficiëntie & Efficiënt & Zeer efficiënt \\
@@ -140,7 +142,7 @@ Van zodra we echter begonnen aan de effectieve implementatie van de applicaties,
 
 \begin{lstlisting}[language=XML, float, caption=Voorbeeld van een kiosk configuratiebstand., label=lst:config]
 <?xml version="1.0"?>
-<kiosk xmlns="http://www.mira.be">
+<configuration xmlns="http://www.mira.be" type="kiosk">
   <target>
     0026b900-926f-1000-8000-000000000000
   </target>
@@ -149,13 +151,11 @@ Van zodra we echter begonnen aan de effectieve implementatie van de applicaties,
       <volume>255</volume>
     </sound>
   </device>
-  <application>
-    <media id="manen" />
-  </application>
-</kiosk>
+  <media id="manen" />
+</configuration>
 \end{lstlisting}
 
-De specificatie van de \ac{xml} bestanden is zodanig gemaakt dat het eenvoudig te mappen valt over de services waarmee de server een kiosk kan controleren (zie later).
+De specificatie van de \ac{xml} bestanden is zodanig gemaakt dat het eenvoudig te mappen valt over de services waarmee de server een kiosk kan besturen (zie later).
 
 \subsubsection{Verwerking}
 
@@ -254,11 +254,11 @@ Aangezien deze taak zal verzorgd worden door een applicatie geschreven in C++ (d
 
 \paragraph{Functionele opdeling}
 
-Om een overvloed aan functies binnen een enkele service te vermijden, hebben we ervoor gekozen om een functionele opdeling door te voeren. Zo hebben we de service die toelaat om het toestel te controleren, met functies zoals \code{Shutdown} en \code{SetVolume}. Een tweede service staat vervolgens in voor acties die een impact hebben op de applicatie, zoals \code{LoadMedia}. Een bijkomend voordeel van deze scheiding is dat alle platform- of hardwareafhankelijke code geïsoleerd is binnen een enkele service, wat de implementatie ervan vereenvoudigt.
+Om een overvloed aan functies binnen een enkele service te vermijden, hebben we ervoor gekozen om een functionele opdeling door te voeren. Zo hebben we de service die toelaat om het toestel te controleren, met functies zoals \code{Shutdown} en \code{SetVolume}. De tweede service kan gebruikt worden om in te stellen welke media weergegeven wordt, door gebruik te maken van acties zoals \code{SetLocation}. Een bijkomend voordeel van deze scheiding is dat alle platform- of hardwareafhankelijke code geïsoleerd is binnen een enkele service, wat de implementatie ervan vereenvoudigt.
 
 \begin{table}[h!]
   \begin{center}
-    \begin{tabular}{p{4,5cm} p{5cm}}
+    \begin{tabular}{p{5cm} p{5cm}}
     \multicolumn{2}{c}{\strong{Device service}} \\
     \hline
     \hline
@@ -269,12 +269,13 @@ Om een overvloed aan functies binnen een enkele service te vermijden, hebben we 
     \code{void SetVolume(uint)} & Volume instellen. \\
     \code{uint GetVolume()} & Volume ophalen. \\
     \\
-    \multicolumn{2}{c}{\strong{Application service}} \\
+    \multicolumn{2}{c}{\strong{Media service}} \\
     \hline
     \hline
     Functie & Beschrijving \\
     \hline
-    \code{void LoadMedia(string)} & Presentatie inladen. \\
+    \code{void SetLocation(string)} & URL instellen. \\
+    \code{void GetLocation(string)} & URL ophalen. \\
     \end{tabular}
   \end{center}
   \caption{Enkele functies uit beide services.}
