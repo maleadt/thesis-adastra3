@@ -1,3 +1,8 @@
+%
+% Conclusie
+%
+
+
 \chapter{Conclusie}
 
 % todo: mag niet teveel op abstract lijken
@@ -16,6 +21,35 @@ Vervolgens worden de voorstellingen opgeslaan in een \ac{svn} repository, waardo
 
 % conclusie
 
+
+
+
+%
+% Lijst met afbeeldingen
+%
+
+\listoffigures
+
+\clearpage
+
+
+%
+% Lijst met fragmenten
+%
+
+\renewcommand{\lstlistlistingname}{Lijst van fragmenten}
+\renewcommand{\lstlistingname}{Fragment}
+\markboth{List van fragmenten}{Lijst van fragmenten}
+\addcontentsline{toc}{chapter}{Lijst van fragmenten}
+\lstlistoflistings
+% TODO: probleem als meer dan 1 pagina aan fragmenten
+
+\clearpage
+
+
+%
 % Bibliografie
+%
+
 \bibliographystyle{plainnat}
 \bibliography{verslag}

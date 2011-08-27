@@ -33,11 +33,18 @@ Copyright © 2011 Tim Besard
 
 \selectlanguage{dutch}
 \begin{abstract}
-Het doel van deze thesis is de ontwikkeling van een modern multimediaframework ter vervanging van het verouderde systeem in de volkssterrenwacht MIRA. Het framework moet instaan voor de opslag, distributie, en weergave van multimediafragmenten, alsook de nodige middelen bieden zodat een designer er aantrekkelijke en veelzijdige presentaties kan voor ontwerpen.
+Het doel van deze thesis is de ontwikkeling van een modern multimediaframework ter vervanging van het verouderde systeem in de volkssterrenwacht MIRA. Het framework moet instaan voor de opslag, distributie, en weergave van multimediafragmenten, alsook de nodige middelen bieden zodat een designer er aantrekkelijke en veelzijdige voorstellingen kan voor ontwerpen.
 
-Eerst en vooral wordt het systeem ingedeeld in de nodige deelsystemen, en hebben we na een grondige studie vastgelegd hoe die deelsystemen met elkaar communiceren. Zo zal de opslag en distributie gerealiseerd worden door een centrale server, die de kiosken zal detecteren en configureren via \acs{upnp}. Dataopslag en -overdracht zal gerealiseerd worden door gebruik te maken van een \acs{svn} repository, waarbij de presentaties opgemaakt zullen zijn in \acs{html} en Javascript.
+Eerst en vooral wordt het systeem ingedeeld in de nodige deelsystemen, en hebben we na een grondige studie vastgelegd hoe die deelsystemen met elkaar communiceren. Zo zal de opslag en distributie gerealiseerd worden door een centrale server, die de kiosken zal detecteren en configureren via Zeroconf netwerkprotocollen. Dataopslag en -overdracht zal gerealiseerd worden door gebruik te maken van een versiebeheersysteem, waarbij de voorstellingen zullen gebruik maken van moderne webtechnologieën.
 
-Vervolgens worden alle deelsystemen geïmplementeerd. Waar we voor de server enkel voorzien in een Java-applicatie die alle vereiste taken uitvoert, zorgen we voor de kiosken naast de Qt-applicatie tevens voor de nodige hardware. Hiervoor selecteren we een gepaste embedded computer en stellen we een besturingssysteem samen die de applicatie adequaat kan uitvoeren. Ook voorzien we in een inputmodule die instaat voor het verwerken van gebruikersinvoer, waarvoor we een printplaat ontwerpen en zorgen voor de bijhorende firmware.
+Vervolgens worden alle deelsystemen geïmplementeerd, wat inhoudt dat we een client- en serverapplicatie schrijven, deze laatste tevens uitgerust met een webinterface om het beheer te vereenvoudigen. Ook zorgen we voor de nodige hardware om beide applicaties op uit te voeren, waarbij we steeds een gepast besturingssysteem samenstellen. Om gebruikersinvoer op de kiosken te kunnen verwerken ontwikkelen we een inputmodule, waarvoor we een printplaat ontwerpen en zorgen voor de bijhorende firmware.
+
+Tenslotte voorzien we ook nog in een speciale voorstelling waarmee de huidige media kan hergebruikt worden binnen het nieuwe framework.
+
+\ 
+
+\textbf{Sleutelwoorden}: multimediaframework; museumkiosk; opslag; distributie; versiebeheer; weergave; webtechnologieën.
+
 \end{abstract}
 
 \clearpage
@@ -46,21 +53,29 @@ Vervolgens worden alle deelsystemen geïmplementeerd. Waar we voor de server enk
 \begin{abstract}
 The purpose of this applied dissertation is to develop a modern multimedia framework replacing an outdated system in the astronomy museum MIRA. The framework has to take care of data storage, distribution, and visualisation. It should also offer the means for a designer to develop visually appealing and versatile presentations.
 
-Before all else, we divide the system in several subcomponents, and determine the exact interface between them. In order to do this, we carefully select the best technologies to accomplish each task: storage and distribution shall be taken care of by a central server, discovering and configuring any clients using the \acs{upnp} protocol. To accomplish efficient storage and distribution, a \acs{svn} repository will be used. Finally, the presentations will be formatted using \acs{html} and Javascript.
+Before all else, we divide the system in several subcomponents, and determine the exact interface between them. In order to do this, we carefully select the best technologies to accomplish each task: storage and distribution shall be taken care of by a central server, discovering and configuring any clients using Zeroconf network protocols. To accomplish efficient storage and distribution, a version control system will be used. Finally, the presentations will be built using modern web technologies.
 
-Thereafter we proceed to the actual implementation of each subsystem. While the server-application will only consist of a single Java application, the clients need some more work. Not only do we create a Qt-based application to perform all necesary tasks, we also need to select the proper hardware to run that application on. This means selecting an appropriate embedded computer, and compiling an operation system capable of running our application. We also develop the \acs{pcb} and firmware for an input module to take care of any user input.
+Subsequently we proceed to the actual implementation of each subsystem, consisting of a client and serverapplication to perform all of the neccesary tasks, the latter one extended with a web interface to ease administration. To run these applications, we select appropriate hardware and compile an operation system. We also provide the kiosks with an input module to take care of any user input, which includes designing a printed circuit board and developing the proper firmware.
+
+Finally we take care of a special presentation allowing us to reuse the current presentations within the new framework.
+
+\ 
+
+\textbf{Keywords}: multimedia framework; museum kiosk; storage; distribution; version control; visualisation; web technologies.
+
 \end{abstract}
 
 \selectlanguage{dutch}
 
 \clearpage
 
+
 %
-% Voorwoord
+% Woord vooraf
 %
 
-\chapter*{Voorwoord}
-\addcontentsline{toc}{chapter}{Voorwoord}
+\chapter*{Woord vooraf}
+\addcontentsline{toc}{chapter}{Woord vooraf}
 
 \textit{Hier komt het voorwoord.}
 
@@ -68,34 +83,34 @@ Thereafter we proceed to the actual implementation of each subsystem. While the 
 
 
 %
-% Inhoudstafel
+% Inleiding
+%
+
+\chapter{Inleiding}
+\label{inleiding}
+
+De volkssterrenwacht MIRA biedt zijn bezoekers een uitgebreide rondleiding over sterrenkunde en aanverwanten. Aangezien het overgrote deel van de bezoekers bestaat uit kinderen (de sterrenwacht wordt vaak in schoolverband of door families bezocht), doet men sinds jaar en dag moeite om de rondleiding zo interessant mogelijk te maken, ook wanneer er geen gids is om daarvoor te zorgen. Daartoe heeft men enkele jaren geleden een project gelanceerd, genaamd \emph{Ad-Astra I}. Het doel van dit project was om multimediale kiosken te introduceren, waarbij de bezoeker via een aanraak-interface een keuze kan maken tussen verschillende multimediafragmenten. Zo staat er bijvoorbeeld bij de zaal over maanlanding een kiosk die de gebruiker toelaat om naar geluidsfragmenten van de Apollo 11 bemanning te luisteren.
+
+Hoewel de kiosken professioneel ogen en hun werk degelijk uitvoeren, zijn er enkele problemen met het huidige systeem. De multimediafragmenten bevinden zich namelijk op een \ac{dvd} en worden verwerkt door een \acs{dvd}-speler, waarbij de gebruikersinterface bestaat uit 4 grote knoppen intern doorverbonden met de afstandsbediening.
+Het grote probleem met deze opzet is de levensduur: een \acs{dvd}-speler die continu actief is, verslijt snel. Vervanging van de \acs{dvd}-speler is ook niet eenvoudig, omdat het model dat indertijd aangekocht is niet meer verkocht wordt en nieuwe modellen niet altijd compatibel zijn met de afstandsbediening in de kiosk.
+Ook zijn de mogelijkheden die het systeem biedt, sterk beperkt. Alle interactiviteit moet immers geïmplementeerd worden via \acs{dvd}-menu's, wat niet veel meer toe laat dan eenvoudige selectie van het multimediafragment.
+
+Vandaar dit project, wat de interne naam \emph{Ad-Astra III} heeft meegekregen. Voorafgegaan door Ad-Astra I (introductie van de kiosken) en II (vernieuwing van het telescopenpark), zal het instaan voor de vernieuwing van de kiosken. Het uiterlijk zal hetzelfde blijven: een kiosk zal nog steeds aangestuurd worden met 4 grote knoppen, en de voorstellingen zullen weergegeven worden op het (niet aanraakgevoelige) LCD scherm dat nu al gebruikt wordt, eventueel uitgebreid met een set aan luidsprekers.
+Intern zal het systeem echter volledig anders werken. Een duurzame en energiezuinige chip haalt de voorstellingen op van een centrale server, waardoor het makkelijker zal zijn wijzigingen aan te brengen en die ook direct weer te geven op de kiosken. Ook zal elke kiosk continu in verbinding staan met het netwerk, wat beter beheer en weergave van dynamisch materiaal toelaat. Tenslotte zullen de voorstellingen opgebouwd zijn in een flexibel framework, wat toelaat veel rijkere inhoud weer te geven.
+
+Deze scriptie zal beginnen met een uiteenzetting over het algemeen ontwerp in deel \ref{ontwerp}: hoe wordt het systeem gemodelleerd, voor welke technologieën is er gekozen, welke eisen worden aan de hardware gesteld, enzovoort.
+Vervolgens wordt de realisatie van elk van de deelsystemen uit de doeken gedaan: de server in deel \ref{server}, de kiosk in deel \ref{kiosk}, en de ontwikkeling van de interface module in \ref{inputmodule}.
+Tenslotte wordt er aandacht besteed aan de voorstellingen die het systeem zal weergeven in deel \ref{voorstellingen}. Hierbij zullen we spreken over de mogelijkheden die het systeem biedt, de code die op het prototype draait om die mogelijkheden te demonstreren, en het mechanisme dat gebruikt wordt om oudere voorstellingen zonder al te veel werk te kunnen importeren in het nieuwe systeem.
+
+\clearpage
+
+
+%
+% Inhoudsopgave
 %
 
 \setlength\cftpartnumwidth{2em}
 \tableofcontents
-
-\clearpage
-
-
-%
-% Lijst met afbeeldingen
-%
-
-\listoffigures
-
-\clearpage
-
-
-%
-% Lijst met fragmenten
-%
-
-\renewcommand{\lstlistlistingname}{Lijst van fragmenten}
-\renewcommand{\lstlistingname}{Fragment}
-\markboth{List van fragmenten}{Lijst van fragmenten}
-\addcontentsline{toc}{chapter}{Lijst van fragmenten}
-\lstlistoflistings
-% TODO: probleem als meer dan 1 pagina aan fragmenten
 
 \clearpage
 
