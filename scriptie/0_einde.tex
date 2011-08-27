@@ -2,26 +2,39 @@
 % Conclusie
 %
 
-
 \chapter{Conclusie}
 
-% todo: mag niet teveel op abstract lijken
-% http://www.dissertationswriting.co.uk/dissertation_conclusion.htm 
+% TODO: nog wat meer vermelden wat beperkingen zijn, zodat we in finale conclusie kunnen zeggen van ``basisfunctionaliteit is er, maar kan nog aan afgewerkt worden''
 
-Het doel van deze thesis was de ontwikkeling van een modern multimediaframework dat zorgt voor de opslag, distributie en weergave van multimediafragmenten op de kiosken van de volkssterrenwacht MIRA. Daarbij is belangrijk dat een beheerder elk van die processen voldoende kan opvolgen en beïnvloeden, zonder al teveel technische kennis nodig te hebben. Ook moet het mogelijk zijn om mooie voorstellingen te realiseren met de middelen die het platform aanbiedt, en tegelijk compatibel te zijn met de voorstellingen die momenteel gebruikt worden.
+% TODO: besturingssysteem
 
-We hebben ervoor gekozen om de voorstellingen op te maken in \ac{html} en Javascript, waarmeer we zeer rijke gebruikerservaringen kunnen ontwerpen. Ook compatibiliteit met de huidige voorstellingen is ermee mogelijk: na conversie naar het WebM formaat kunnen we de fragmenten gebruiken binnen \ac{html}. Om daarbij dynamisch de taalkeuze van de gebruiker in te verwerken hebben we voorzien in een kleine webapplicatie, opgebouwd met behulp van JQuery.
-Vervolgens worden de voorstellingen opgeslaan in een \ac{svn} repository, waardoor efficiënte overdracht bekomen wordt en een beheerder relatief eenvoudig wijzigingen kan doorvoeren aan de inhoud van de voorstellingen.
+% Introductie
+Het doel van deze thesis was de ontwikkeling van een modern multimediaframework dat zorgt voor de opslag, distributie en weergave van multimediafragmenten op de kiosken van de volkssterrenwacht MIRA. Daarbij was belangrijk dat een beheerder elk van die processen voldoende kan opvolgen en beïnvloeden, zonder al teveel technische kennis nodig te hebben. Ook moest het mogelijk zijn om mooie voorstellingen te realiseren met de middelen die het platform aanbiedt, en tegelijk compatibel te zijn met de voorstellingen die momenteel gebruikt worden.
 
-% server
+% Voorstellingen
+We hebben ervoor gekozen om de voorstellingen op te maken in \ac{html} en Javascript, waarmeer we zeer rijke gebruikerservaringen kunnen ontwerpen. De keuze voor zulke recente technologieën was wel niet altijd een voordeel, zo beperkt het huidige gebrek aan gebruiksvriendelijke applicaties om content te maken voor die technologieën, ons om mensen zonder opleiding in te zetten voor voorstellingen te maken. Langs de andere kant is compatibiliteit met de huidige voorstellingen er zeer eenvoudig mee: na conversie naar het WebM formaat kunnen we de fragmenten direct gebruiken binnen een \ac{html} pagina. Om daarbij dynamisch de taalkeuze van de gebruiker in te verwerken hebben we voorzien in een kleine webapplicatie, gebouwd met behulp van het JQuery framework.
 
-% client
+% Repository
+Vervolgens worden de voorstellingen opgeslaan in een \ac{svn} repository, waardoor efficiënte overdracht bekomen wordt en een beheerder relatief eenvoudig wijzigingen kan doorvoeren aan de inhoud van de voorstellingen. Bij gebrek aan goed geïntegreerde Java bindings voor de \ac{svn} bibliotheek hebben we moeten gebruik maken van een externe \ac{svn} server, waardoor de complexiteit van het systeem nodeloos toeneemt. We hopen daarom dat we in een latere versie de repository volledig zullen kunnen integreren, waardoor de applicatie een alleenstaand geheel zal vormen.
 
-% inputmodule
+% Configuratie
+Om de instellingen van elke kiosk niet op het toestel zelf te moeten opslaan, hebben we er voor gekozen om ze ook in de repository op te slaan. De bestanden zijn daarbij opgemaakt als een \ac{xml} document, een krachtig formaat dat we eenvoudig kunnen valideren en verwerken. Momenteel kunnen instellingen enkel persistent gewijzigd worden door die bestanden handmatig te bewerken, maar hiervoor kunnen we later eventueel een applicatie ontwerpen om dit proces gebruiksvriendelijker te maken.
 
-% conclusie
+% Server
+De serverapplicatie hebben we geschreven in Java, waardoor we toegang hadden tot verschillende uitgebreide bibliotheken om de implementatie van verschillende objectieven sterk te vereenvoudigen. Hoewel we daarbij verschillende problemen hebben gehad, zoals met de slecht functionerende JmDNS bibliotheek, en uiteindelijk code hebben moeten herschrijven wegens de incompatibiliteit met Java 1.5, kunnen we uiteindelijk spreken van een goed functionerende serverapplicatie die zijn taken op een robuuste manier uitvoert.
 
+% Client
+Om een compacte maar toch cross-platform clientapplicatie te onwikkelen, hebben we gebruik gemaakt van het Qt framework. Hierdoor hebben we ook meerde bestaande bibliotheken kunnen hergebruiken, al hebben we aan verschillende bibliotheken daarvan wijzigingen moeten doorvoeren om een goed werkende applicatie te bekomen. Om een compactere codebase te bekomen hebben we er ook voor gekozen om de hele applicatie-interface op te bouwen in \ac{html}, aangezien we voor de voorstellingen weer te geven toch al moesten voorzien in een \ac{html} engine. Dit bleek een interessant concept te zijn, waarmee het mogelijk werd om in weinig tijd een mooie interface op te bouwen die achteraf ook eenvoudig aan te passen was.
 
+% Inputmodule
+Om gebruikersinput op de knoppen van de kiosk te kunnen verwerken, hebben we een inputmodule gemaakt die de signalen doorstuurt naar de applicatie via de \ac{usb} poort. Om die communicatie te realiseren, maken we gebruik van de V-USB bibliotheek, die we kunnen gebruiken met een minimum aan componenten, waardoor we de prijs van een individuele chip sterk hebben kunnen drukken.
+Om de chip eenvoudig te kunnen gebruiken, hebben we ervoor gekozen om de chip zichzelf te laten registreren als een toetsenbord, en de signalen door te sturen als toetsaandrukken. Zo hebben we geen extra drivers nodig op de kioskhardware, en kunnen we de gebruikersinvoer eenvoudig verwerken via standaardfunctionaliteit in Qt.
+
+% Beperkingen
+
+% Reflectie
+
+\clearpage
 
 
 %
