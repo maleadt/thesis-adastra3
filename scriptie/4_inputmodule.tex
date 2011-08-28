@@ -42,11 +42,12 @@ De eerste stap bestaat uit het kalibreren van de interne oscillator tot een freq
 
 Aangezien de kloksnelheid waarop onze microcontroller zal draaien, 16.5 MHz, groter is dan 10 MHz, zullen we geen gebruik kunnen maken van de low-voltage versie. Meer nog: om een kloksnelheid groter dan 10 MHz te bekomen, zal de voedingsspanning zelfs tussen de 4.5 en 5.5 volt moeten bedragen. Op het eerste zicht vormt dit geen probleem, we kunnen immers de \ac{usb} voedingslijn (mits ontkoppeling) direct gebruiken om de microcontroller te voeden. Maar zoals uit de volgende paragraaf zal blijken, zou het zo ook zijn voordelen kennen moesten we de microcontroller kunnen voeden met een lagere spanning.
 
-Natuurlijk zullen we ook de voedingsspanning ontkoppelen, en dit op twee vlakken. Om de hoogfrequente schakelpieken van de digitale microcontroller af te vlakken, plaatsen we een 100 nanofarad condensator tussen de voedingslijn en de grondplaat. Het valt op te merken dat we die condensator zo dicht mogelijk tegen de voedingspin van de microcontroller willen plaatsen, dit om parasitaire capaciteiten te vermijden. Vervolgens willen we ook eventuele onregelmatigheden afvlakken (hetzij van de spanningsbron uit, hetzij veroorzaakt door een plotse toename in verbruik), waarvoor we een 10 microfarad condensator plaatsen aan de kant van de \ac{usb} connector. De waarde van 10 microfarad is niet uit de lucht gegrepen: ze is relatief hoog om de typisch laagfrequentere pieken die een spanningsbron genereert af te vlakken, en tegelijk is het ook het maximum dat de \ac{usb} specificatie toelaat \citep{usbnutshell}.
+Natuurlijk zullen we ook de voedingsspanning ontkoppelen (zoals te zien is in figuur \ref{fig:inputmodule:voeding}), en dit op twee vlakken. Om de hoogfrequente schakelpieken van de digitale microcontroller af te vlakken, plaatsen we een 100 nanofarad condensator tussen de voedingslijn en de grondplaat. Het valt op te merken dat we die condensator zo dicht mogelijk tegen de voedingspin van de microcontroller willen plaatsen, dit om parasitaire capaciteiten te vermijden. Vervolgens willen we ook eventuele onregelmatigheden afvlakken (hetzij van de spanningsbron uit, hetzij veroorzaakt door een plotse toename in verbruik), waarvoor we een 10 microfarad condensator plaatsen aan de kant van de \ac{usb} connector. De waarde van 10 microfarad is niet uit de lucht gegrepen: ze is relatief hoog om de typisch laagfrequentere pieken die een spanningsbron genereert af te vlakken, en tegelijk is het ook het maximum dat de \ac{usb} specificatie toelaat \citep{usbnutshell}.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_voeding}
 	\caption{Voedingscircuit}
+	\label{fig:inputmodule:voeding}
 \end{figure}
 
 \subsection{Signalen}
@@ -62,20 +63,22 @@ Jammer genoeg kunnen we geen van deze oplossingen gebruiken, omdat de microcontr
 
 Een alternatief bestaat eruit om het \textbf{spanningsniveau van de signaalpinnen te reguleren}. Hiertoe raadt de \makeurl{http://vusb.wikidot.com/hardware}{V-USB wiki} bijvoorbeeld aan om gebruik te maken van 3.6 volt zenerdioden. Zenerdioden hebben immers de eigenschap dat ze ook in sperstand kunnen geleiden, wanneer de zenerspanning bereikt is. Daarbij is de spanningsval over de diode dan ook relatief constant, los van de spanning die er aan gelegd wordt. Meer concreet houdt dit in dat indien we de signaalpinnen via een zenerdiode in sper verbinden met de grondplaat, de spanning van het signaal gereduceerd wordt tot 3.6 volt. Deze opzet kent echter ook enkele problemen. Zo kan het moeilijk zijn om de exacte combinatie van parameters vast te leggen, zenerdiodes komen immers in soorten en maten. Een ander nadeel zijn de hoge stromen veroorzaakt door de zenerdiode. Wanneer de diode immers een hoog 5 volt signaal reduceert tot 3.6 volt, zal de overige 1.4 volt over de 68 ohm weerstanden tussen de microcontroller en de \ac{usb} host komen te staan, wat zorgt voor liefst 20 milliampères over de signaaldrager.
 
-Tenslotte moeten we nog voorzien in een \emph{setting weerstand} die een spanning plaatst op de negatieve signaaldrager. Deze pull-up weerstand maakt aan de \ac{usb} host duidelijk dat er een \ac{usb} 1.1 toestel aangesloten is (weliswaar actief in \emph{low speed} modus). Voor een 5 volt lijn kan dit gerealiseerd worden met een 1k8 of 2k2 ohm weerstand.
+Tenslotte moeten we nog voorzien in een \emph{setting weerstand} die een spanning plaatst op de negatieve signaaldrager. Deze pull-up weerstand maakt aan de \ac{usb} host duidelijk dat er een \ac{usb} 1.1 toestel aangesloten is (weliswaar actief in \emph{low speed} modus). Voor een 5 volt lijn kan dit gerealiseerd worden met een 1k8 of 2k2 ohm weerstand. Het resultaat van dit alles is te zien in figuur \ref{fig:inputmodule:signaalconversie}.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_signaal}
 	\caption{Signaalconversie}
+	\label{fig:inputmodule:signaalconversie}
 \end{figure}
 
 \subsection{\acs{isp}}
 
-Het invoegen van een \ac{isp} header is niet veel werk: we dienen gewoon te voorzien in een connector, en de pinnen ervan correct doorverbinden met de juiste pinnen van de microcontroller.
+Het invoegen van een \ac{isp} header is niet veel werk: we dienen gewoon te voorzien in een connector, en de pinnen ervan correct doorverbinden met de juiste pinnen van de microcontroller (figuur \ref{fig:inputmodule:isp}).
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_isp}
 	\caption{\acs{isp} connector}
+	\label{fig:inputmodule:isp}
 \end{figure}
 
 \section{Schakelaars}
@@ -89,11 +92,12 @@ Om de aansluitingen op de printplaat eenvoudig te houden, zullen we werken met e
 
 Er is echter een bijkomend probleem: we hebben maar 3 poortpinnen tot onze beschikking, waardoor het niet mogelijk is elke knop door te verbinden met een eigen poortpin. De eenvoudige oplossing hierbij is het gebruik van een multiplexer: 2 select-lijnen en 1 datalijn maakt het mogelijk om 4 schakelaars uit te lezen. We willen echter meer knoppen kunnen aansluiten, zonder daarbij extra poortpinnen nodig te hebben. Daarom zullen we zelf het signaal multiplexen, waarbij we meer schakelaars kunnen toelaten door geen gebruik te maken van een selectiemechanisme, maar de signalen direct door te linken naar de poortpinnen. Het nadeel aan deze opzet is dat de signalen kunnen overlappen, zo zullen we bij het indrukken van meerdere knoppen tegelijkertijd niet kunnen uitmaken welke knoppen juist ingedrukt zijn.
 
-De realisatie van een dergelijke multiplexer lijkt eenvoudig, maar er is een belangrijk detail dat we moeten opmerken. Aangezien de verschillende poortpinnen verbonden zijn met verschillende knoppen, kan er bij het indrukken van een enkele schakelaar stroom terugvloeien via de contactpunten van diens signaallijnen met andere knoppen van een totaal ongerelateerde poortpin. Om dit te vermijden moeten we overal waar er twee signaallijnen met elkaar verbonden zijn, een diode plaatsen zodat er geen stroom kan terugvloeien naar een vorig verbindingspunt. Hiervoor hebben we een reguliere diode nodig, waarbij geen speciale eisen gesteld worden. Daarom kiezen we voor de 1N4148, een populaire diode die vaak gebruikt wordt voor het schakelen van digitale signalen. Zoals we kunnen opzoeken in het stroom-spanningsdiagram van deze diode, zorgt ze bij een stroom tussen $0.1$ en $0.25$ milliampères (gegenereerd door de pull-up weerstand binnen de microcontroller) voor een spanningsval van $0.5$ volt.
+De realisatie van een dergelijke multiplexer lijkt eenvoudig, maar er is een belangrijk detail dat we moeten opmerken. Aangezien de verschillende poortpinnen verbonden zijn met verschillende knoppen, kan er bij het indrukken van een enkele schakelaar stroom terugvloeien via de contactpunten van diens signaallijnen met andere knoppen van een totaal ongerelateerde poortpin. Om dit te vermijden moeten we overal waar er twee signaallijnen met elkaar verbonden zijn, een diode plaatsen zodat er geen stroom kan terugvloeien naar een vorig verbindingspunt. Hiervoor hebben we een reguliere diode nodig, waarbij geen speciale eisen gesteld worden. Daarom kiezen we voor de 1N4148, een populaire diode die vaak gebruikt wordt voor het schakelen van digitale signalen. Zoals we kunnen opzoeken in het stroom-spanningsdiagram van deze diode, zorgt ze bij een stroom tussen $0.1$ en $0.25$ milliampères (gegenereerd door de pull-up weerstand binnen de microcontroller) voor een spanningsval van $0.5$ volt. Het schema dat dit alles realiseert is te vinden in figuur \ref{fig:inputmodule:schakelaars}.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_schakelaars}
 	\caption{Circuit en connector voor schakelaars}
+	\label{fig:inputmodule:schakelaars}
 \end{figure}
 
 \section{Productie}
@@ -115,12 +119,12 @@ Om een printplaat of \ac{pcb} te ontwerpen hebben we natuurlijk gepaste software
 
 Nu we alle nodige specificaties vergaard hebben en een softwarepakket geselecteerd hebben, kunnen we beginnen aan het produceren van de fysieke layout. Hierbij hebben we ervoor gekozen om een printplaat te maken die bestaat uit twee lagen, namelijk de boven en onderkant. Deze optie is niet veel duurder dan een 1-laags printplaat, en het geeft ons de nodige flexibiliteit om de componenten goed te kunnen plaatsen. Moesten we gekozen hebben voor een 1-laags printplaat dan zou de kost misschien zelfs hoger kunnen liggen door soms onnatuurlijke plaatsing om toch de nodige verbindingen te kunnen realiseren. 
 
-De finale versie van de 2-laags printplaat is te vinden in figuur \ref{fig:printplaat}. Hierbij zijn een aantal zaken waard om te vermelden. Zo is er de plaatsing van de 100 nanofarad condensator die instaat voor het ontkoppelen van de hoogfrequente ruis: aangezien dergelijke ruis veroorzaakt wordt door het schakelen van de transistoren binnen de microcontroller, hebben we de condensator zo dicht mogelijk geplaatst bij de bron van die ruis. Ook hebben we, zoals het de gewoonte is bij het ontwerpen van een schema, de vrije ruimte van elke laag gebruikt om een volledig geleidend vlak te maken. Daarbij zal de fill op de bovenste layer gebruikt worden om de positieve voedingsspanning $Vcc$ te geleiden, en de fill op de onderste layer om de elektronische grond te verdelen. Hoewel dit bij een hoogfrequent-circuit niet zou aan te raden is wegens de parasitaire capaciteiten die gepaard gaan met dergelijke \emph{plane fills}, is dit bij ons relatief laagfrequent schema niet van toepassing.
+De finale versie van de 2-laags printplaat is te vinden in figuur \ref{fig:inputmodule:pcb}. Hierbij zijn een aantal zaken waard om te vermelden. Zo is er de plaatsing van de 100 nanofarad condensator die instaat voor het ontkoppelen van de hoogfrequente ruis: aangezien dergelijke ruis veroorzaakt wordt door het schakelen van de transistoren binnen de microcontroller, hebben we de condensator zo dicht mogelijk geplaatst bij de bron van die ruis. Ook hebben we, zoals het de gewoonte is bij het ontwerpen van een schema, de vrije ruimte van elke laag gebruikt om een volledig geleidend vlak te maken. Daarbij zal de fill op de bovenste layer gebruikt worden om de positieve voedingsspanning $Vcc$ te geleiden, en de fill op de onderste layer om de elektronische grond te verdelen. Hoewel dit bij een hoogfrequent-circuit niet zou aan te raden is wegens de parasitaire capaciteiten die gepaard gaan met dergelijke \emph{plane fills}, is dit bij ons relatief laagfrequent schema niet van toepassing.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_pcb}
 	\caption{Finale versie van de printplaat}
-	\label{fig:printplaat}
+	\label{fig:inputmodule:pcb}
 \end{figure}
 
 De laatste stap voor de effectieve productie is de conversie van ons schema naar het bestandsformaat dat vereist is door Eurocircuits. Hoewel dit verschilt van producent tot producent, moeten we meestal voorzien in de volgende bestanden (met het formaat steeds tussen haakjes):
@@ -133,12 +137,12 @@ De laatste stap voor de effectieve productie is de conversie van ons schema naar
   \item Drill File (Excellon): waar en hoe er geboord moet worden op de printplaat.
 \end{itemize}
 
-Het genereren van deze bestanden kunnen we uitvoeren met Eagle's CAM Processor. Hiertoe hebben we ons gebaseerd op een voorbeeld CAM job van Sparkfun, aangepast aan de specifieke eisen die Eurocircuit stelt. Na het insturen van deze bestanden, selectie van de benodigde materialen en processen, kregen we na enkele weken een afgewerkte printplaat in de bus. Vervolgens zijn we overgegaan tot aankoop van de benodigde componenten, waarna we die er op gesoldeerd hebben om dan eindelijk een afgewerkte print te bekomen zoals te zien in figuur \ref{fig:inputmodule}.
+Het genereren van deze bestanden kunnen we uitvoeren met Eagle's CAM Processor. Hiertoe hebben we ons gebaseerd op een voorbeeld CAM job van Sparkfun, aangepast aan de specifieke eisen die Eurocircuit stelt. Na het insturen van deze bestanden, selectie van de benodigde materialen en processen, kregen we na enkele weken een afgewerkte printplaat in de bus. Vervolgens zijn we overgegaan tot aankoop van de benodigde componenten, waarna we die er op gesoldeerd hebben om dan eindelijk een afgewerkte print te bekomen zoals te zien in figuur \ref{fig:inputmodule:afgewerkt}.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/inputmodule_afgewerkt}
 	\caption{Finale versie van de inputmodule}
-	\label{fig:inputmodule}
+	\label{fig:inputmodule:afgewerkt}
 \end{figure}
 
 
@@ -170,10 +174,9 @@ static void handleKeyPress(uchar key)
 }
 \end{lstlisting}
 
-Tenslotte gebruiken we ook nog 1 byte uit het \ac{eeprom} geheugen om het resultaat van een succesvolle kalibratie in op te slaan. Die kalibratie is, zoals beschreven in sectie \ref{inputmodule:hardware:microcontroller}, nodig omdat we geen oscillator gebruikt hebben op de printplaat. Omdat die kalibratie echter enige tijd in beslag neemt, slaan we het resultaat ervan op zodat na een heropstart de kalibratie niet opnieuw moet uitgevoerd worden.
+Tenslotte gebruiken we ook nog 1 byte uit het \ac{eeprom} geheugen om het resultaat van een succesvolle kalibratie in op te slaan. Die kalibratie is, zoals beschreven in sectie \ref{inputmodule:hardware:microcontroller}, nodig omdat we geen oscillator gebruikt hebben op de printplaat. Omdat die kalibratie echter enige tijd in beslag neemt, slaan we het resultaat ervan op zodat na een heropstart de kalibratie niet opnieuw moet uitgevoerd worden. Een overzicht van het totale geheugengebruik na deze optimalisaties is te vinden in tabel \ref{tbl:inputmodule:geheugengebruik}.
 
-Na verschillende optimalisaties ziet het geheugengebruik er als volgt uit:
-\begin{table}[h!]
+\begin{table}
   \begin{center}
     \begin{tabular}{c c c}
     Geheugen & Gebruik & Limiet \\
@@ -184,6 +187,7 @@ Na verschillende optimalisaties ziet het geheugengebruik er als volgt uit:
     \end{tabular}
   \end{center}
   \caption{Geheugengebruik van de firmware voor de inputmodule}
+  \label{tbl:inputmodule:geheugengebruik}
 \end{table}
 
 \section{Codeanalyse}

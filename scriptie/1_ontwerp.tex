@@ -56,7 +56,7 @@ Daarom hebben we het over een andere boeg gegooid en gekeken naar \strong{specia
 
 Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze implementeren met \strong{\ac{html} en Javascript}, een veelgebruikte combinatie bij het maken van moderne websites. Hierbij is het nog steeds mogelijk om complexe voorstellingen te realiseren, en worden die efficiënt opgeslagen. Alle code wordt immers opgeslagen in tekstformaat, en de ondersteunde video- en audiostandaarden zijn steeds gekozen wegens hun efficiënte netwerkoverdracht. Verder kunnen ook afbeeldingen en video's efficiënt gemaakt worden door ze te realiseren in een vectorformaat\footnote{Afbeeldingen via het \code{<svg>} element, en video's via \code{<canvas>} en Javascript code.}. Ook biedt \ac{html} sinds versie 5 de mogelijkheid om multimediabestanden weer te geven (via de \code{<video>} en \code{<audio>} tags), waardoor we de terugwaartse compatibiliteit met het huidige systeem bekomen. Een ander voordeel is dat er enorm veel Javascript codebibliotheken bestaan, waardoor het via hergebruik daarvan mogelijk wordt om zeer dynamische voorstellingen te realiseren. Tenslotte is het ook eenvoudig om dergelijke bestanden weer te geven in een externe applicatie, door gebruik te maken van bestaande rendering engines. Een minpunt is wel de manier waarop de logica geïmplementeerd is: de designer moet steeds een notie van Javascript hebben. Het is wellicht mogelijk om zoveel mogelijk te abstraheren in een externe Javascript bibliotheek, maar toch blijft de scheiding tussen design en code vager dan bij de andere systemen. Ook bestaan er (nog) geen bruikbare \ac{wysiwyg} editors, waardoor het steeds nodig is om \ac{html} code, hoe laagdrempelig die ook is, handmatig te schrijven.
 
-\begin{table}[h!]
+\begin{table}
   \begin{center}
     \begin{tabular}{p{3cm} | p{4cm} p{4cm}}
     & \textbf{\acs{dvd}-bronbestanden} & \textbf{Compressie} \\
@@ -79,9 +79,10 @@ Om toch de voordelen van speciale presentatieformaten te benutten, zullen we ze 
     \end{tabular}
   \end{center}
   \caption{Vergelijking van verschillende formaten}
+  \label{tbl:voorstellingen:formaten}
 \end{table}
 
-Na zorgvuldig afwegen van de voor- en nadelen hebben we gekozen voor de combinatie van \ac{html} en Javascript, aangezien het als enigste systeem voldoet aan alle functionele eisen. Het grote minpunt, de moeilijkheid om voorstellingen te wijzigen wegens de mindere duidelijke scheiding tussen design en code, zal immers verbeteren na verloop van tijd. Zo zullen er wellicht Javascript-bibliotheken ontwikkeld worden om presentatielogica te abstraheren, en kan het best zijn dat er binnenkort betere \ac{wysiwyg}-editors voor moderne \ac{html} zullen verschijnen.\footnote{Op het moment van schrijven heeft Adobe zonet Adobe Edge aangekondigd, een editor om eenvoudig animaties met \ac{html} en \ac{css} te maken.}
+Na zorgvuldig afwegen van de voor- en nadelen (op een rijtje gezet in tabel \ref{tbl:voorstellingen:formaten}) hebben we gekozen voor de combinatie van \ac{html} en Javascript, aangezien het als enigste systeem voldoet aan alle functionele eisen. Het grote minpunt, de moeilijkheid om voorstellingen te wijzigen wegens de mindere duidelijke scheiding tussen design en code, zal immers verbeteren na verloop van tijd. Zo zullen er wellicht Javascript-bibliotheken ontwikkeld worden om presentatielogica te abstraheren, en kan het best zijn dat er binnenkort betere \ac{wysiwyg}-editors voor moderne \ac{html} zullen verschijnen.\footnote{Op het moment van schrijven heeft Adobe zonet Adobe Edge aangekondigd, een editor om eenvoudig animaties met \ac{html} en \ac{css} te maken.}
 
 \subsection{Repository}
 
@@ -223,9 +224,9 @@ Om een \ac{upnp} client na het ontdekken van een toestel en diens services toe t
 
 \subsubsection{Device description}
 
-Om ons toestel te laten voldoen aan de \ac{upnp} specificatie voorzien we de gegevens opgesomd in tabal \ref{tbl:upnp:device}.
+Om ons toestel te laten voldoen aan de \ac{upnp} specificatie voorzien we de gegevens opgesomd in tabel \ref{tbl:upnp:device}.
 
-\begin{table}[h!]
+\begin{table}
   \begin{center}
     \begin{tabular}{r l}
     \hline
@@ -253,9 +254,9 @@ Aangezien deze taak zal verzorgd worden door een applicatie geschreven in C++ (d
 
 \paragraph{Functionele opdeling}
 
-Om een overvloed aan functies binnen een enkele service te vermijden, hebben we ervoor gekozen om een functionele opdeling door te voeren. Zo hebben we de service die toelaat om het toestel te controleren, met functies zoals \code{Shutdown} en \code{SetVolume}. De tweede service kan gebruikt worden om in te stellen welke media weergegeven wordt, door gebruik te maken van acties zoals \code{SetLocation}. Een bijkomend voordeel van deze scheiding is dat alle platform- of hardwareafhankelijke code geïsoleerd is binnen een enkele service, wat de implementatie ervan vereenvoudigt.
+Om een overvloed aan functies binnen een enkele service te vermijden, hebben we ervoor gekozen om een functionele opdeling door te voeren. Zo hebben we de service die toelaat om het toestel te controleren, met functies zoals \code{Shutdown} en \code{SetVolume}. De tweede service kan gebruikt worden om in te stellen welke media weergegeven wordt, door gebruik te maken van acties zoals \code{SetLocation}. Een bijkomend voordeel van deze scheiding is dat alle platform- of hardwareafhankelijke code geïsoleerd is binnen een enkele service, wat de implementatie ervan vereenvoudigt. Enkele functies uit beide services zijn te zien in tabel \ref{tbl:netwerk:upnp:opdeling}.
 
-\begin{table}[h!]
+\begin{table}
   \begin{center}
     \begin{tabular}{p{5cm} p{5cm}}
     \multicolumn{2}{c}{\strong{Device service}} \\
@@ -278,6 +279,7 @@ Om een overvloed aan functies binnen een enkele service te vermijden, hebben we 
     \end{tabular}
   \end{center}
   \caption{Enkele functies uit beide services}
+  \label{tbl:netwerk:upnp:opdeling}
 \end{table}
 
 \paragraph{\ac{scpd} bestanden}
@@ -475,37 +477,46 @@ Zoals uit de vorige paragraaf blijkt, is embedded hardware de meest geschikte ke
 
 Zo hebben we gekeken naar de populaire \strong{\makeurl{http://beagleboard.org/}{BeagleBoard}}, een compacte en vrij performante computer, met al de benodigde features en maar weinig meer. De computer komt ook met een speciale \ac{dsp}, alsook een \ac{gpu} die door Qt te gebruiken valt om de performantie te verhogen. Na echter contact opgenomen te hebben met de fabrikant, was die niet geïnteresseerd in de oplage die we zouden bestellen. Het bleek immers dat de BeagleBoard niet bedoeld is voor bedrijven, maar voor beginnende hardware-developers die voor weinig geld willen experimenteren met embedded development.
 
-Daarom zijn we van de BeagleBoard afgestapt, om gelukkig een vergelijkbaar maar wel iets duurder geprijsd alternatief te vinden: de \strong{\makeurl{http://www.igep.es/index.php}{IGEPv2}}. Lange tijd hebben we dan ook gedacht dat dit de uiteindelijke keuze zou worden. Maar gezien dat iets hogere kostenplaatje, en het feit dat alle extra toebehoren (zoals een voeding, HDMI kabel, omhulsel) nog los moeten aangekocht worden, zijn we toch blijven uitkijken naar een alternatief.
+Daarom zijn we van de BeagleBoard afgestapt, om gelukkig een vergelijkbaar maar wel iets duurder geprijsd alternatief te vinden: de \strong{\makeurl{http://www.igep.es/index.php}{IGEPv2}} (te zien in figuur \ref{fig:hw:kiosk:igepv2}). Lange tijd hebben we dan ook gedacht dat dit de uiteindelijke keuze zou worden. Maar gezien dat iets hogere kostenplaatje, en het feit dat alle extra toebehoren (zoals een voeding, HDMI kabel, omhulsel) nog los moeten aangekocht worden, zijn we toch blijven uitkijken naar een alternatief.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/IGEPv2}
 	\caption{IGEPv2 embedded computer}
+	\label{fig:hw:kiosk:igepv2}
+	\legend{(\url{www.igep.es}, 2011)}
 \end{figure}
 
-Dat hebben we gevonden in de vorm van de \strong{\makeurl{http://www.globalscaletechnologies.com/t-guruplugdisplaydetails.aspx}{GuruPlug Display}}. Deze computer is misschien minder krachtig (vooral acceleratiemogelijkheden zijn een prominente afwezige), maar wordt geleverd als een sluitend geheel waarbij het standaardpakket tevens voorziet van alle nodige kabels.
+Dat hebben we gevonden in de vorm van de \strong{\makeurl{http://www.globalscaletechnologies.com/t-guruplugdisplaydetails.aspx}{GuruPlug Display}}. Deze computer is misschien minder krachtig (vooral acceleratiemogelijkheden zijn een prominente afwezige), maar wordt geleverd als een sluitend geheel (een foto van een sterk vergelijkbaar model is te vinden in figuur \ref{fig:hw:kiosk:guruplug}) waarbij het standaardpakket tevens voorziet van alle nodige kabels.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{afbeeldingen/GuruPlug_Display}
-	\caption{GuruPlug Display}
+	\begin{center}
+	\includegraphics[width=0.75 \textwidth]{afbeeldingen/GuruPlug}	
+	\end{center}
+	\caption{GuruPlug}
+	\label{fig:hw:kiosk:guruplug}
+	\legend{(\url{www.plugcomputers.eu}, 2010)}
 \end{figure}
 
 Verschillende maanden hebben we dan ook gedacht dat we de GuruPlug Display zouden gebruiken, meer nog: we waren reeds begonnen met de ontwikkeling van een besturingssysteem voor deze hardware. Er doken echter problemen op toen we besloten de hardware aan te kopen. Vooreerst werd bij aankoop van het eerste device meer dan \euro 40 aan portkosten aangerekend, wat een significante meerkost betekende. Vervolgens liet het bedrijf achter de GuruPlugs weten dat er geen Europese modellen zouden gemaakt worden, waardoor we steeds een conversiestekker zouden moeten aankopen. Aangezien de hardware reeds niet al te performant was, hebben we wegens deze twee meerkosten besloten om opnieuw uit te gaan kijken naar een alternatieve oplossing, ondanks het feit dat we al begonnen waren met de effectieve implementatie.
 
-Daarom zijn we op zoek gegaan naar een vergelijkbare plug-computer (zodat we niet veel werk zouden moeten herdoen), die beter leverbaar is, en dat liefst ook binnen Europa. Zo zijn we gestuit op de \strong{\makeurl{http://www.genesi-usa.com/products/efika}{EFIKA MX}} Smarttop computer, een computer vergelijkbaar met de GuruPlug. Meer zelfs, bepaalde elementen (zoals de \ac{cpu} generatie en de \ac{gpu}) hebben zelfs betere specificaties. Daartegenover staat dat er geen Bluetooth aanwezig is, alsook de prijs ietwat hoger ligt. Maar omdat Genesis een verdeler in het Verenigd Koninkrijk heeft, verdwijnt die meerkost daar we geen portkosten moeten betalen bij de uiteindelijke bestelling.
+Daarom zijn we op zoek gegaan naar een vergelijkbare plug-computer (zodat we niet veel werk zouden moeten herdoen), die beter leverbaar is, en dat liefst ook binnen Europa. Zo zijn we gestuit op de \strong{\makeurl{http://www.genesi-usa.com/products/efika}{EFIKA MX}} Smarttop computer (zie figuur \ref{fig:hw:kiosk:efika}), een computer vergelijkbaar met de GuruPlug. Meer zelfs, bepaalde elementen (zoals de \ac{cpu} generatie en de \ac{gpu}) hebben zelfs betere specificaties. Daartegenover staat dat er geen Bluetooth aanwezig is, alsook de prijs ietwat hoger ligt. Maar omdat Genesi een verdeler in het Verenigd Koninkrijk heeft, verdwijnt die meerkost daar we geen portkosten moeten betalen bij de uiteindelijke bestelling.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/EFIKA_MX}
-	\caption{Genesis EFIKA MX}
+	\caption{Genesi EFIKA MX}
+	\label{fig:hw:kiosk:efika}
+	\legend{(\url{www.techscreens.com}, 2011)}
 \end{figure}
 
 \section{Inputmodule}
 \label{ontwerp:hardware:input}
 
-De gebruiksinterface wordt gerealiseerd door 4 grote drukknoppen ingebouwd in de kast van elke kiosk. Momenteel worden deze knoppen intern doorverbonden met een afstandsbediening, waardoor de gebruiker via het indrukken van de knoppen indirect de \acs{dvd}-speler kan besturen om zo een fragment te selecteren.
+De gebruiksinterface wordt gerealiseerd door 4 grote drukknoppen ingebouwd in de kast van elke kiosk. Momenteel worden deze knoppen intern doorverbonden met een afstandsbediening, waardoor de gebruiker via het indrukken van de knoppen indirect de \acs{dvd}-speler kan besturen om zo een fragment te selecteren (zie figuur \ref{fig:hw:kiosk:knoppen}).
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{afbeeldingen/kiosk_knoppen}
 	\caption{Huidige aansluitingsmethode knoppen}
+	\label{fig:hw:kiosk:knoppen}
 \end{figure}
 
 Nu we echter de \acs{dvd}-spelers gaan vervangen door een computer, zullen we ook voor deze inputmodule een compatibel alternatief moeten vinden. Aan deze module worden enkele specifieke eisen gesteld:
@@ -622,7 +633,6 @@ Elk van deze mogelijkheden komt het project ten goede: of er wordt code teruggeg
 
 Voor deze applicatie lijkt een strong copyleft licentie de beste keuze. Een uitzonderingsmodule voor netwerkgebruik is hier niet echt nuttig aangezien de serverapplicatie eigenlijk methodes aanroept op de kioskapplicatie en zelf geen interface aanbiedt. Wanneer we later gebruik maken van een serverside \ac{svn} library om de repository te integreren binnen de serverapplicatie, zullen we wel nood hebben aan deze uitzonderingsmodule.
 
-Laten we eerst kijken naar de externe projecten die we gebruiken binnen de applicatie:
 \addtocounter{footnote}{1}
 \footnotetext[\value{footnote}]{Dit is een permissive licentie die vereist dat naast een copyright notice en de disclaimer ook de documentatie steeds ter beschikking is.}
 \addtocounter{footnote}{1}
@@ -642,9 +652,10 @@ Laten we eerst kijken naar de externe projecten die we gebruiken binnen de appli
     \end{tabular}
   \end{center}
   \caption{Open-source projecten binnen de serverapplicatie}
+  \label{tbl:licenties:server:projecten}
 \end{table}
 
-\paragraph{Licentie} Om een licentie te kiezen moeten we nauwgezet analyseren met welke projecten die licentie compatibel is.  We willen bijvoorbeeld nagaan of we ons project kunnen distribueren onder de \ac{gpl}. De Apache 2 licentie is enkel compatibel met versie 3.0 van de \ac{gpl} \citep{fsf:comments}, en de \makeurl{http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt}{Indiana University Extreme! Lab Software License} is een permissive licentie waardoor ze vast en zeker compatibel is met de \ac{gpl}. Het is dus duidelijk dat we de serverapplicatie enkel onder versie 3 van de \ac{gpl} (of afgeleiden) kunnen uitgeven.
+\paragraph{Licentie} Om een licentie te kiezen moeten we nauwgezet analyseren met welke projecten die licentie compatibel is (zie tabel \ref{tbl:licenties:server:projecten} voor een opsomming van alle projecten en hun licenties).  We willen bijvoorbeeld nagaan of we ons project kunnen distribueren onder de \ac{gpl}. De Apache 2 licentie is enkel compatibel met versie 3.0 van de \ac{gpl} \citep{fsf:comments}, en de \makeurl{http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt}{Indiana University Extreme! Lab Software License} is een permissive licentie waardoor ze vast en zeker compatibel is met de \ac{gpl}. Het is dus duidelijk dat we de serverapplicatie enkel onder versie 3 van de \ac{gpl} (of afgeleiden) kunnen uitgeven.
 
 \paragraph{Herlicentiëren} Zoals beschreven in sectie \ref{ontwerp:licenties:commercialiseren:herlicentieren} willen we het mogelijk houden om onder betaling de code onder een proprietaire licentie te verkopen. Niet alle projecten die we hergebruiken zijn echter compatibel met een dergelijke licentie! Voor de projecten onder een permissive licentie (log4j, Tomcat, Apache Commons, XPP) is er geen probleem, we moeten enkel zorgen dat we voorzien in de tekst van de licentie, een copyright notice, en eventueel andere documenten. Maar het laatste project, JWt, valt onder de strong copyleft \ac{gpl} die niet compatibel is met een proprietaire licentie. Als we beter kijken zien we echter dat ze hetzelfde model hanteren als dat wij beschreven hebben in sectie \ref{ontwerp:licenties:commercialiseren:herlicentieren}: mits betaling is het mogelijk om dezelfde code te verkrijgen onder een proprietaire licentie. Als we dus de code van JWt aankopen is het perfect mogelijk om onze serverapplicatie te verkopen onder een proprietaire licentie.
 
@@ -653,8 +664,7 @@ Laten we eerst kijken naar de externe projecten die we gebruiken binnen de appli
 
 Opnieuw zullen we kijken in welke mate we een strong copyleft licentie kunnen toepassen op onze code. Aangezien de kioskapplicatie een \ac{upnp} service aanbiedt, zullen we nu echter wel aandacht moeten besteden aan de \ac{agpl}, die een copyleft uitzonderingsclausule voor netwerkgebruik aan boord heeft.
 
-Vooreerst kijken we naar de licenties van externe projecten die we gebruiken:
-\begin{table}[h!]
+\begin{table}
   \begin{center}
     \begin{tabular}{c c}
     Project & Licentie \\
@@ -666,9 +676,10 @@ Vooreerst kijken we naar de licenties van externe projecten die we gebruiken:
     \end{tabular}
   \end{center}
   \caption{Open-source projecten binnen de kioskapplicatie}
+  \label{tbl:licenties:kiosk:projecten}
 \end{table}
 
-\paragraph{Licentie} De situatie is hier iets eenvoudiger dan bij de serverapplicatie. Door het gebruik van een project dat valt onder versie 2.0 van de Apache License, kunnen we eigenlijk al maar enkel gebruik maken van versie 3.0 van de \ac{gpl}. Die licentie is vervolgens compatibel met de overige licenties waarvan we gebruik maken.
+\paragraph{Licentie} De situatie is hier iets eenvoudiger dan bij de serverapplicatie, zoals duidelijk gemaakt wordt door tabel \ref{tbl:licenties:kiosk:projecten}. Door het gebruik van een project dat valt onder versie 2.0 van de Apache License, kunnen we eigenlijk al maar enkel gebruik maken van versie 3.0 van de \ac{gpl}. Die licentie is vervolgens compatibel met de overige licenties waarvan we gebruik maken.
 
 Maar aangezien de applicatie een webservice aanbiedt wilden we gebruik maken van de \ac{agpl}. Als we in detail kijken naar de tekst van die licentie zien we dat vanaf versie 3 er in beide licenties een expliciete clausule \citetext{\citealp[sectie 13]{fsf:gpl}; \citealp[sectie 13]{fsf:agpl}} is opgenomen die ze compatibel maakt. Daardoor kunnen we zonder probleem de code onder versie 3 van de \ac{agpl} laten vallen.
 
