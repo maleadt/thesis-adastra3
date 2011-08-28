@@ -113,8 +113,6 @@ Hoewel we nu gekozen hebben voor een bestandsgeoriënteerde \ac{svn}-repository,
   +-configurations/
   | |
   | +-kiosk1.xml
-  | |
-  | +-kiosk2.xml
   |
   +-media/
     |
@@ -295,9 +293,6 @@ Zoals reeds gezegd zijn dit \ac{xml} bestanden die elk een service tot in alle d
   </specVersion>
   <actionList>
     <action>
-      <name>Shutdown</name>
-    </action>
-    <action>
       <name>SetVolume</name>
       <argumentList>
         <argument>
@@ -337,13 +332,7 @@ Daarom hebben we gekozen voor een tweede piste, namelijk het gebruik van een \st
 \section{Server}
 \label{ontwerp:applicatie:server}
 
-Zoals reeds vermeld, is de centrale server van essentieel belang in het systeem. Zo verzorgt de server:
-\begin{itemize}
-\item Configuratie van de kiosken;
-\item Opslag en distributie van de voorstellingen.
-\end{itemize}
-
-Naast deze elementaire taken, vereenvoudigt de server tevens de werklast van een administrator. We zullen immers voorzien in een beheerinterface die niet alleen een overzicht van het systeem biedt, maar ook toelaat om acties te ondernemen om eventuele problemen te verhelpen.
+Zoals reeds vermeld, is de centrale server van essentieel belang in het systeem. Zo verzorgt het de configuratie van de kiosken, en de opslag en distributie van de voorstellingen. Ook vereenvoudigt de server tevens de werklast van een administrator. We zullen immers voorzien in een beheerinterface die niet alleen een overzicht van het systeem biedt, maar ook toelaat om acties te ondernemen om eventuele problemen te verhelpen.
 
 \subsection{Ontwikkelplatform}
 
@@ -386,11 +375,7 @@ Tevens zullen we gebruik maken van het \makeurl{http://logging.apache.org/log4j/
 \section{Kiosk}
 \label{ontwerp:applicatie:kiosk}
 
-Naast de server vormen de kiosken het tweede type toestel in het systeem. Een kiosk staat in voor:
-\begin{itemize}
-\item Weergave van voorstellingen;
-\item Verwerken van gebruikersinvoer.
-\end{itemize}
+Naast de server vormen de kiosken het tweede type toestel in het systeem, die instaan voor de weergave van voorstellingen en het verwerken van eventuele gebruikersinvoer.
 
 \subsection{Ontwikkelplatform}
 
@@ -410,7 +395,7 @@ Een volgende kandidaat is de \makeurl{http://www.herqq.org/}{Herqq} bibliotheek,
 
 Daarom hebben we er uiteindelijk voor gekozen om de C++ \ac{upnp} bibliotheek van het \makeurl{http://brisa.garage.maemo.org/}{BRisa project} te gebruiken. Hoewel het in eerste instantie misschien minder duidelijk was wat de sterktes zijn van deze bibliotheek, maakte een eerste test al snel duidelijk dat ze niet moest onderdoen voor de Herqq \ac{upnp} bibliotheek. Omdat het bij deze bibliotheek wél mogelijk was om dynamisch devicegegevens door te spelen hebben we ervoor gekozen om het te gebruiken binnen de uiteindelijke applicatie.
 
-\paragraph{Data uitwisseling} De kiosk moet in staat zijn een \ac{svn} repository te klonen indien de locatie ervan doorgespeeld geweest is. Hoewel we dit zouden kunnen doen door gebruik te maken van de \ac{svn} binary, is dit geen platform-onafhankelijke oplossing, die bovendien niet mooi te integreren valt binnen een applicatie. Daarom zijn we op zoek gegaan naar een C++ bibliotheek, liefst specifiek voor het Qt framework, die ons toelaat gegevens van een \ac{svn} repository binnen te halen zonder daarbij te berusten op een lokaal geïnstalleerde \ac{svn} applicatie. Zo zijn we terecht gekomen bij het \makeurl{http://kdesvn.alwins-world.de/}{KDESvn} project, een KDE frontend voor \ac{svn} repositories. We zijn natuurlijk niet geïnteresseerd in die applicatie, maar in de code die het gebruikt om toegang te krijgen tot \ac{svn} repositories. Daartoe heeft het KDESvn project een bibliotheek ontwikkeld, namelijk \makeurl{http://kdesvn.alwins-world.de/browser/trunk/src/svnqt}{svnqt}. Die bibliotheek is vrijwel volledig losgekoppeld van de KDESvn code, wat integratie binnen andere applicaties eenvoudig maakt (hiervan getuige bijvoorbeeld het \makeurl{http://www.anrichter.net/projects/qsvn}{QSvn} project).
+\paragraph{Data uitwisseling} De kiosk moet in staat zijn een \ac{svn} repository te klonen indien de locatie ervan doorgespeeld geweest is. Hoewel we dit zouden kunnen doen door gebruik te maken van de \ac{svn} binary, is dit geen platform-onafhankelijke oplossing, die bovendien niet mooi te integreren valt binnen een applicatie. Daarom zijn we op zoek gegaan naar een C++ bibliotheek, liefst specifiek voor het Qt framework, die ons toelaat gegevens van een \ac{svn} repository binnen te halen zonder daarbij te berusten op een lokaal geïnstalleerde \ac{svn} applicatie. Zo zijn we terecht gekomen bij het \makeurl{http://kdesvn.alwins-world.de/}{KDESvn} project, een KDE frontend voor \ac{svn} repositories. We zijn natuurlijk niet geïnteresseerd in die applicatie, maar in de code die het gebruikt om toegang te krijgen tot \ac{svn} repositories. Daartoe heeft het KDESvn project een bibliotheek ontwikkeld, namelijk svnqt (onderdeel van de KDESvn codebase). Die bibliotheek is vrijwel volledig losgekoppeld van de KDESvn code, wat integratie binnen andere applicaties eenvoudig maakt (hiervan getuige het \makeurl{http://www.anrichter.net/projects/qsvn}{QSvn} project).
 
 \subsubsection{Weergave voorstellingen}
 
