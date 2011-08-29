@@ -56,10 +56,7 @@ LogPage::LogPage(QObject *parent) : QWebPage(parent)
 
 \begin{lstlisting}[language=JavaScript, float, caption=Gebruik van een geregistreerde C++ klasse., label=lst:expose_js]
 // Gebruik van een signaal
-function showMessage(message)
-{
-	...
-}
+function showMessage(message) { }
 application.newMessage.connect(showMessage);
 
 // Gebruik van een property
