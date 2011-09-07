@@ -17,8 +17,6 @@ body {
   display: block;
   overflow: hidden;
   background: #778;
-  background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#01386b));
-  background: -moz-linear-gradient(top, #fff, #01386b);
 }
 
 .slides {
@@ -43,9 +41,10 @@ body {
   left: 50%;
   top: 50%;
   margin-top: -350px;
-  border-radius: 10px;
-  border: 2px solid #aaa;
-  background-color: #fff;
+  background-color: #eee;
+  background: -webkit-gradient(linear, left bottom, left top, from(#bbd), to(#fff));
+  background: -moz-linear-gradient(bottom, #bbd, #fff);
+  background: linear-gradient(bottom, #bbd, #fff);
   -webkit-transition: margin 0.25s ease-in-out;
   -moz-transition: margin 0.25s ease-in-out;
   -o-transition: margin-left 0.25s ease-in-out;
@@ -53,13 +52,23 @@ body {
 }
 
 .slide:nth-child(even) {
+  -moz-border-radius: 20px 0;
+  -khtml-border-radius: 20px 0;
+  border-radius: 20px 0; /* includes Opera 10.5+ */
+  -webkit-border-top-left-radius: 20px;
+  -webkit-border-bottom-right-radius: 20px;
 }
 
 .slide:nth-child(odd) {
+  -moz-border-radius: 0 20px;
+  -khtml-border-radius: 0 20px;
+  border-radius: 0 20px;
+  -webkit-border-top-right-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
 }
 
 .slide p, .slide textarea {
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .slide .counter {
@@ -68,7 +77,7 @@ body {
   left: 20px;
   bottom: 20px;
   display: block;
-  font-size: 12px;
+  font-size: 20px;
   width: 100%;
 }
 
@@ -84,34 +93,6 @@ body {
   opacity: 0.25;
 }
 
-.offline-storage .counter:after {
-  background-image: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Offline_Storage_32.png);
-}
-
-.realtime-communication .counter:after {
-  background-image: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Connectivity_32.png);
-}
-
-.performance .counter:after {
-  background-image: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Performance_32.png);
-}
-
-.semantics .counter:after {
-  background-image: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Semantics_32.png);
-}
-
-.multimedia .counter:after {
-  background: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_MultiMedia_32.png);
-}
-
-.effects .counter:after {
-  background: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_3D_Effects_32.png);
-}
-
-.styling .counter:after {
-  background: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Styling_32.png);
-}
-
 .slide.title > .counter,
 .slide.segue > .counter,
 .slide.mainTitle > .counter {
@@ -121,7 +102,7 @@ body {
 .slide.transitionSlide h2 {
   font-size: 40px;
   margin: 0;
-  line-height: 10px;
+  line-height: 25px;
 }
 .slide.transitionSlide p {
   margin: 0;
@@ -242,11 +223,11 @@ body.three-d div.slides {
 }
 
 header {
-  color: #0055ab;
+  font-family: 'Droid Sans';
   font-weight: normal;
-  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;  
-  font-family: Arial;
   letter-spacing: -.05em;
+  color: black;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
   position: absolute;
   left: 30px;
   top: 25px;
@@ -264,9 +245,9 @@ h1 {
 }
 
 h2 {
-  font-family: Arial;
+  font-family: 'Droid Sans';
   color: black;
-  font-size: 20px;
+  font-size: 32px;
   padding: 0;
   margin: 15px 0 5px 0;
 }
@@ -276,7 +257,7 @@ h2:first-child {
 }
 
 section, footer {
-  font-family: Arial;
+  font-family: 'Droid Sans';
   color: #3f3f3f;
   text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
   margin: 100px 30px 0;
@@ -285,7 +266,7 @@ section, footer {
 }
 
 footer {
-  font-size: 12px;
+  font-size: 20px;
   margin: 20px 0 0 30px;
 }
 
@@ -319,8 +300,8 @@ pre button {
   font-size: 30px;
 }
 
-.bullets {
-  font-size: 40px;
+li {
+  font-size: 30px;
 }
 
 section.left {
@@ -352,14 +333,14 @@ section.middle {
 
 pre {
   text-align: left;
-  font-family: 'Inconsolata', Courier;
+  font-family: 'Droid Sans Mono', Courier;
   padding: 10px 20px;
-  -webkit-border-radius: 10px;
-  -khtml-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  background: rgba(255, 150, 60, 0.08);
-  border: 2px solid rgba(255, 200, 0, 0.3);
+  background: rgba(255, 0, 0, 0.05);
+  -webkit-border-radius: 8px;
+  -khtml-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 0, 0, 0.2);
 }
 
 pre select {
@@ -428,7 +409,7 @@ video {
 .js,
 .html,
 .key {
-  font-family: Arial;
+  font-family: 'Droid Sans';
   color: black;
   display: inline-block;
   padding: 6px 10px 3px 10px;

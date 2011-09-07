@@ -1,8 +1,3 @@
-/**
- * HTML5 Slide Deck Theme - Moon
- * Author: Eric Bidelman <ericbidelman@html5rocks.com>
- */
-
 body {
   font: 16px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
   padding: 0;
@@ -11,7 +6,6 @@ body {
   height: 100%;
   position: absolute;
   left: 0px; top: 0px;
-  -webkit-font-smoothing: antialiased;
 }
 
 .presentation {
@@ -22,9 +16,9 @@ body {
   top: 0px;
   display: block;
   overflow: hidden;
-  background: #000;
-  background: -webkit-gradient(linear, left top, left bottom, from(#444), to(black));
-  background: -moz-linear-gradient(top, #444, black);
+  background: #778;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#01386b));
+  background: -moz-linear-gradient(top, #fff, #01386b);
 }
 
 .slides {
@@ -34,10 +28,10 @@ body {
   top: 0;
   position: absolute;
   display: none;
-  -webkit-transition: -webkit-transform 1.5s ease-in-out;
-  -moz-transition: -moz-transform 1.5s ease-in-out;
-  -o-transition: -o-transform 1.5s ease-in-out;
-  transition: transform 1.5s ease-in-out;
+  -webkit-transition: -webkit-transform 1s ease-in-out;
+  -moz-transition: -moz-transform 1s ease-in-out;
+  -o-transition: -o-transform 1s ease-in-out;
+  transition: transform 1s ease-in-out;
 }
 
 .slide {
@@ -49,47 +43,23 @@ body {
   left: 50%;
   top: 50%;
   margin-top: -350px;
-  background-color: #eee;
   border-radius: 10px;
-  -moz-border-radius: 10px;
-  opacity: 0.35;
-
-  -webkit-transform: scale(0.8) translateZ(0);
-  -moz-transform: scale(0.8);
-  -o-transform: scale(0.8);
-
-  -webkit-transition-property: margin, -webkit-transform, opacity;
-  -webkit-transition-duration: 0.3s, 0.3s, 0.3s;
-  -webkit-transition-timing-function: ease-in-out;
-
-  -moz-transition-property: margin, -moz-transform, opacity;
-  -moz-transition-duration: 0.3s, 0.3s, 0.3s;
-  -moz-transition-timing-function: ease-in-out;
-
-  -o-transition-property: margin, -moz-transform, opacity;
-  -o-transition-duration: 0.3s, 0.3s, 0.3s;
-  -o-transition-timing-function: ease-in-out;
-
-  /* NOTE(slightlyoff): simpler animations for slower boxes */
-  /*
-  -webkit-transition: margin 0.3s ease-in-out;
-  -moz-transition: margin 0.3s ease-in-out;
-  -o-transition: margin 0.3s ease-in-out;
-  */
+  border: 2px solid #aaa;
+  background-color: #fff;
+  -webkit-transition: margin 0.25s ease-in-out;
+  -moz-transition: margin 0.25s ease-in-out;
+  -o-transition: margin-left 0.25s ease-in-out;
+  transition: margin 0.25s ease-in-out;
 }
 
 .slide:nth-child(even) {
-  border-radius: 10px 30px 10px 30px;
-  -moz-border-radius: 10px 20px 10px 20px;
 }
 
 .slide:nth-child(odd) {
-  border-radius: 20px 10px 20px 10px;
-  -moz-border-radius: 20px 10px 20px 10px;
 }
 
 .slide p, .slide textarea {
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .slide .counter {
@@ -98,7 +68,7 @@ body {
   left: 20px;
   bottom: 20px;
   display: block;
-  font-size: 12px;
+  font-size: 20px;
   width: 100%;
 }
 
@@ -114,34 +84,6 @@ body {
   opacity: 0.25;
 }
 
-.offline-storage .counter:after {
-  background-image: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Offline_Storage_32.png);
-}
-
-.realtime-communication .counter:after {
-  background-image: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Connectivity_32.png);
-}
-
-.performance .counter:after {
-  background-image: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Performance_32.png);
-}
-
-.semantics .counter:after {
-  background-image: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Semantics_32.png);
-}
-
-.multimedia .counter:after {
-  background: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_MultiMedia_32.png);
-}
-
-.effects .counter:after {
-  background: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_3D_Effects_32.png);
-}
-
-.styling .counter:after {
-  background: url(http://www.html5rocks.com/static/images/identity/classes_32/HTML5_Styling_32.png);
-}
-
 .slide.title > .counter,
 .slide.segue > .counter,
 .slide.mainTitle > .counter {
@@ -151,7 +93,7 @@ body {
 .slide.transitionSlide h2 {
   font-size: 40px;
   margin: 0;
-  line-height: 10px;
+  line-height: 25px;
 }
 .slide.transitionSlide p {
   margin: 0;
@@ -224,10 +166,6 @@ body {
   visibility: visible;
   display: block;
   margin-left: -450px;
-  -webkit-transform: scale(1.0);
-  -moz-transform: scale(1.0);
-  -o-transform: scale(1.0);
-  opacity: 1.0;
 }
 
 .slide.future {
@@ -261,39 +199,26 @@ body.three-d div.slides {
 */
 
 @font-face {
-  font-family: 'Yanone Kaffeesatz';
-  font-style: normal;
-  font-weight: 400;
-  src: url('/src/fonts/yanone/YanoneKaffeesatz-Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Inconsolata';
-  font-style: normal;
+  font-family: 'JunctionRegular';
+  src: url('/src/fonts/junction02/junction02-webfont.eot');
+  src: local('☺'), url('/src/fonts/junction02/junction02-webfont.woff') format('woff'), url('/src/fonts/junction02/junction02-webfont.ttf') format('truetype'), url('/src/fonts/junction02/junction02-webfont.svg#webfontwzJOjWvv') format('svg');
   font-weight: normal;
-  src: url('/src/fonts/inconsolata/Inconsolata.ttf') format('truetype');
+  font-style: normal;
 }
 @font-face {
-	font-family: 'JunctionRegular';
-	src: url('/src/fonts/junction02/junction02-webfont.eot');
-	src: local('☺'), url('/src/fonts/junction02/junction02-webfont.woff') format('woff'), url('/src/fonts/junction02/junction02-webfont.ttf') format('truetype'), url('/src/fonts/junction02/junction02-webfont.svg#webfontwzJOjWvv') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'LeagueGothicRegular';
-	src: url('/src/fonts/leaguegothic/leaguegothic-webfont.eot');
-	src: local('☺'), url('/src/fonts/leaguegothic/leaguegothic-webfont.woff') format('woff'), url('/src/fonts/leaguegothic/leaguegothic-webfont.ttf') format('truetype'), url('/src/fonts/leaguegothic/leaguegothic-webfont.svg#webfontWgfhmMGx') format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'LeagueGothicRegular';
+  src: url('/src/fonts/leaguegothic/leaguegothic-webfont.eot');
+  src: local('☺'), url('/src/fonts/leaguegothic/leaguegothic-webfont.woff') format('woff'), url('/src/fonts/leaguegothic/leaguegothic-webfont.ttf') format('truetype'), url('/src/fonts/leaguegothic/leaguegothic-webfont.svg#webfontWgfhmMGx') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 header {
+  color: #0055ab;
+  font-weight: normal;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;  
   font-family: Arial;
-  font-weight: normal;
   letter-spacing: -.05em;
-  color: #0054AB;
-  font-weight: normal;
-  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
   position: absolute;
   left: 30px;
   top: 25px;
@@ -313,7 +238,7 @@ h1 {
 h2 {
   font-family: Arial;
   color: black;
-  font-size: 20px;
+  font-size: 32px;
   padding: 0;
   margin: 15px 0 5px 0;
 }
@@ -323,17 +248,16 @@ h2:first-child {
 }
 
 section, footer {
-  font: Arial;
-  font-weight: normal;
+  font-family: Arial;
   color: #3f3f3f;
-  text-shadow: white 0px 1px 0px, rgba(0, 0, 0, 0.2) 0 2px 5px;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
   margin: 100px 30px 0;
   display: block;
   overflow: hidden;
 }
 
 footer {
-  font-size: 12px;
+  font-size: 20px;
   margin: 20px 0 0 30px;
 }
 
@@ -367,8 +291,8 @@ pre button {
   font-size: 30px;
 }
 
-.bullets {
-  font-size: 40px;
+li {
+  font-size: 30px;
 }
 
 section.left {
@@ -399,14 +323,15 @@ section.middle {
 }
 
 pre {
-  font: 'Inconsolata';
-  color: #000;
   text-align: left;
+  font-family: 'Inconsolata', Courier;
   padding: 10px 20px;
+  -webkit-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
-  background: rgba(255, 204, 0, 0.05);
-  border: 2px solid rgba(255, 204, 0, 0.3);
-  /*text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;*/
+  background: rgba(255, 150, 60, 0.08);
+  border: 2px solid rgba(255, 200, 0, 0.3);
 }
 
 pre select {
@@ -475,7 +400,7 @@ video {
 .js,
 .html,
 .key {
-  font-family: 'Inconsolata';
+  font-family: Arial;
   color: black;
   display: inline-block;
   padding: 6px 10px 3px 10px;
@@ -546,18 +471,14 @@ video {
 }
 
 #presentation-counter {
-  color: #fff;
-  font: 100px 'Yanone Kaffeesatz';
+  color: #ccc;
+  font-size: 100px;
   letter-spacing: 1px;
-  position: relative;
+  position: absolute;
   top: 40%;
+  left: 0;
   width: 100%;
   text-align: center;
-}
-
-.hsl-value {
-  display: inline-block;
-  width: 50px;
 }
 
 [data-build] > * {
