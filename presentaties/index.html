@@ -171,7 +171,6 @@
                     <header>Huidige situatie</header>
                     <section>
                         <p>
-                        	Realisatie:
                         	<ul>
 								<li><strong>Voorstellingen</strong>: DVD videobestanden</li>
 								<li><strong>Interactie</strong>: menu van de film</li>
@@ -197,7 +196,7 @@
                     <header>Problemen</header>
                     <section>
                     	<p>
-                    		<strong>Robuustheid</strong>: DVD-spelers verslijten snel.
+                    		<strong>Robuustheid</strong>: DVD-spelers verslijten snel
                     	</p>
                     	<p>
                     		<strong>Flexibiliteit</strong>:
@@ -207,7 +206,7 @@
                           	</ul>
                     	</p>
                     	<p>
-                    		<strong>Beheer</strong>: alles verloopt manueel.
+                    		<strong>Beheer</strong>: alles verloopt manueel
                     	</p>
                     </section>
                 </div>
@@ -390,14 +389,13 @@
                     <header>Opslag & distributie</header>
                     <section>
                     	<p>
-                    		Eisen:
                         	<ul>
                         		<li><strong>Toegankelijk</strong>: eenvoudig aan te passen door beheerder</li>
                         		<li><strong>Efficiënt</strong>: lage netwerkbelasting</li>
                           	</ul>
                     	</p>
                     	<p>
-                    		Subversion repository:
+                    		Subversion repository
                         	<ul>
                         		<li><strike><strong>Binnen applicatie</strong></strike>: omvat in serverapplicatie</li>
                         		<li><strong>Externe server</strong>: beheerd door serverapplicatie</li>
@@ -413,18 +411,10 @@
                     <header>Configuratie kiosken</header>
                     <section>
                     	<p>
-                    		Eisen:
                         	<ul>
                         		<li><strong>Toegankelijk</strong>: eenvoudig aan te passen door beheerder</li>
                         		<li><strong>Dynamisch</strong>: automatische (her)configuratie</li>
                         		<li><strong>Persistentie</strong></li>
-                          	</ul>
-                    	</p>
-                    	<p>
-                    		Gesplitste aanpak:
-                        	<ul>
-                        		<li><strong>Server</strong>: beheert en verwerkt configuratiebestanden</li>
-                        		<li><strong>Client</strong>: biedt configuratieinterface aan</li>
                           	</ul>
                     	</p>
                     </section>
@@ -433,6 +423,9 @@
                 <div class="slide" id="server-configuratie-slide2">
                     <header>Configuratie kiosken</header>
                     <section>
+                    	<p>
+                    		<strong>Gesplitste aanpak</strong>: server configureert de kiosken.
+                    	</p>
                     	<p>
                     		XML bestanden in de Subversion repository:
                         	<ul>
@@ -474,7 +467,7 @@
                     <header>Hardware</header>
                     <section>
                     	<p>
-                    		Synology DS207+:
+                    		Synology DS207+
                         	<ul>
                         		<li><strong>Goedkoop</strong></li>
                         		<li><strong>Robuust</strong>: meerdere schijven met RAID-1, gemaakt om 24/7 te draaien</li>
@@ -510,7 +503,7 @@
                           	</ul>
                     	</p>
                     	<p>
-                    		Lokale interface ook in HTML:
+                    		Lokale interface ook in HTML → uniforme codebase
                         	<ul class="bullets">
                         		<li>Progress indicators</li>
                         		<li>Error messages</li>
@@ -527,7 +520,6 @@
                     <header>Gebruikersinvoer</header>
                     <section>
                     	<p>
-                    		Eisen:
                         	<ul>
                         		<li><strong>Goedkoop</strong></li>
                         		<li><strong>Gebruiksvriendelijk</strong>: eenvoudige installatie</li>
@@ -543,15 +535,15 @@
                     <header>Gebruikersinvoer</header>
                     <section>
                     	<p>
-                    		Inputmodule:
+                    		Inputmodule
                         	<ul class="bullets">
-                        		<li>Minimaal aantal componenten</li>
-                        		<li>Eenvoudig aansluiten knoppen (maximaal 7)</li>
+                        		<li>Klein aantal componenten</li>
+                        		<li>Maximaal 7 knoppen, aansluiten op jumper headers</li>
                         		<li>Aansluiten via USB poort</li>
                           	</ul>
                     	</p>
                     	<p>
-                    		Firmware → USB toetsenbord:
+                    		Firmware: USB toetsenbord
                         	<ul class="bullets">
                         		<li>Vereist geen driver</li>
                         		<li>Signalen eenvoudig te verwerken in applicatie</li>
@@ -580,8 +572,22 @@
                 <div class="slide" id="kiosk-hardware-slide1">
                     <header>Hardware</header>
                     <section>
-                    	<p>
-                    	</p>
+                        <p>
+                    		Genesi EFIKA MX
+                        	<ul>
+                        		<li><strong>Relatief goedkoop</strong>: €110</li>
+                        		<li><strong>Performant</strong>: 800 MHz ARM, OpenGL ES 2.0 GPU</li>
+                        		<li><strong>Flexibel</strong>: booten van SD, JTag</li>
+                        		<li><strong>Robuust</strong>: geen bewegende componenten (inwendige SSD)</li>
+                          	</ul>
+                        </p>
+                        <p>
+                        	Besturingssysteem: Embedded Debian
+                        	<ul>
+                        		<li><strong>Compact</strong></li>
+                        		<li><strong>Eenvoudig beheer</strong>: repository met eigen applicaties</li>
+                          	</ul>
+                        </p>
                     </section>
                 </div>
 
