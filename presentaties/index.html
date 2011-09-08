@@ -394,8 +394,9 @@
                         		<li><strong>Efficiënt</strong>: lage netwerkbelasting</li>
                           	</ul>
                     	</p>
+                    	
+                		<h2>Subversion repository</h2>
                     	<p>
-                    		Subversion repository
                         	<ul>
                         		<li><strike><strong>Binnen applicatie</strong></strike>: omvat in serverapplicatie</li>
                         		<li><strong>Externe server</strong>: beheerd door serverapplicatie</li>
@@ -424,10 +425,10 @@
                     <header>Configuratie kiosken</header>
                     <section>
                     	<p>
-                    		<strong>Gesplitste aanpak</strong>: server configureert de kiosken.
+                    		Gesplitste aanpak: server configureert de kiosken
                     	</p>
                     	<p>
-                    		XML bestanden in de Subversion repository:
+                    		<strong>Server</strong>: verwerkt XML bestanden in de Subversion repository
                         	<ul>
                         		<li><strong>Validatie</strong>: XSchema bestand</li>
                         		<li><strong>Wijzigingen detecteren</strong>: clientside Subversion bindings</li>
@@ -435,7 +436,7 @@
                           	</ul>
                     	</p>
                     	<p>
-                    		UPnP interface:
+                    		<strong>Kiosk</strong>: biedt een UPnP interface aan
                         	<ul>
                         		<li><strong>Discovery</strong>: UUID (hardware gebaseerd) identificeert kiosk</li>
                         		<li><strong>Services</strong>: toepassen van instellingen, ondernemen acties</li>
@@ -451,11 +452,14 @@
                     <header>Beheer</header>
                     <section>
                     	<p>
-                    		Technologieën:
+                    		Technologieën
                         	<ul>
                         		<li><strong>Jetty</strong>: embeddable servlet engine</li>
                         		<li><strong>Java Web Toolkit (JWt)</strong>: Qt-interface voor webapplicaties</li>
                           	</ul>
+                    	</p>
+                    	<p>
+                    		Gesplitste configuratie → acties via webinterface 
                     	</p>
                     </section>
                 </div>
@@ -470,7 +474,7 @@
                     		Synology DS207+
                         	<ul>
                         		<li><strong>Goedkoop</strong></li>
-                        		<li><strong>Robuust</strong>: meerdere schijven met RAID-1, gemaakt om 24/7 te draaien</li>
+                        		<li><strong>Robuust</strong>: RAID-1 configuratie, gemaakt om 24/7 te draaien</li>
                         		<li><strong>Flexibel</strong>: Linux-based, met package manager</li>
                           	</ul>
                     	</p>
@@ -496,7 +500,7 @@
                     <header>Weergave</header>
                     <section>
                     	<p>
-                    		WebKit rendering engine:
+                    		WebKit rendering engine: weergeven voorstellingen
                         	<ul>
                         		<li><strong>Embeddable</strong>: zeer eenvoudig met QtWebKit</li>
                         		<li><strong>QtWebKit Bridge</strong>: connectie tussen JavaScript en applicatie</li>
@@ -534,16 +538,18 @@
                 <div class="slide" id="kiosk-inputmodule-slide2">
                     <header>Gebruikersinvoer</header>
                     <section>
+                    	<h2>Printplaat</h2>
                     	<p>
-                    		Inputmodule
                         	<ul class="bullets">
                         		<li>Klein aantal componenten</li>
                         		<li>Maximaal 7 knoppen, aansluiten op jumper headers</li>
                         		<li>Aansluiten via USB poort</li>
                           	</ul>
                     	</p>
+                    	
+                    	<h2>Firmware</h2>
                     	<p>
-                    		Firmware: USB toetsenbord
+                    		Identificatie als USB toetsenbord
                         	<ul class="bullets">
                         		<li>Vereist geen driver</li>
                         		<li>Signalen eenvoudig te verwerken in applicatie</li>
@@ -611,9 +617,7 @@
 
                 <div class="slide" id="end-title">
                     <section class="middle">
-                        <p>
-                        	Vragen?
-                        </p>
+                        <h2>Vragen?</h2>
                     </section>
                 </div>
 
