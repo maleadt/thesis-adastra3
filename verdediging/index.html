@@ -414,14 +414,14 @@
                         		</div>
                           	</ul>
                     	</p>
-                    	<h2>Verbetering: compressie videobestanden</h2>
-                    	<p>
-                        	<ul>
-                        		<div class="groep middelmatig">
-                        			<li><strong>Distributie</strong>: nog steeds inefficiënt (x264: 2.5 MB/s)</li>
-                        		</div>
-                          	</ul>
-                    	</p>
+	                	<h2>Verbetering: compressie videobestanden</h2>
+	                	<p>
+	                    	<ul>
+	                    		<div class="groep middelmatig">
+	                    			<li><strong>Distributie</strong>: nog steeds inefficiënt (x264: 2.5 MB/s)</li>
+	                    		</div>
+	                      	</ul>
+	                	</p>
                     </section>
                 </div>
                 
@@ -494,8 +494,8 @@
                     	
                 		<h2>Subversion repository</h2>
                     	<p>
-                        	<ul>
-                        		<li><strike><strong>Binnen applicatie</strong></strike>: omvat in serverapplicatie</li>
+                        	<ul data-build>
+                        		<li><strong>Binnen de applicatie</strong></li>
                         		<li><strong>Externe server</strong>: beheerd door serverapplicatie</li>
                           	</ul>
                     	</p>
@@ -567,14 +567,21 @@
                 <div class="slide" id="server-hardware-slide1">
                     <header><span class="key server">SERVER</span> <h1>Hardware</h1></header>
                     <section>
+                    	<h2>Synology DS207+ Network Attached Storage</h2>
                     	<p>
-                    		Synology DS207+ Network Attached Storage
                         	<ul>
-                        		<li><strong>Goedkoop</strong></li>
                         		<li><strong>Robuust</strong>: RAID-1 configuratie, gemaakt om 24/7 te draaien</li>
                         		<li><strong>Flexibel</strong>: Linux-based, met package manager</li>
                           	</ul>
                     	</p>
+                        <div>
+                            <figure>
+                                <img id="photo" src="res/Synology_DS207+.jpg" width="45%" />
+                                <figcaption>
+                                    Genesi EFIKA MX.
+                                </figcaption>
+                            <figure>
+                        </div>
                     </section>
                 </div>
 
@@ -604,7 +611,7 @@
                           	</ul>
                     	</p>
                     	<p>
-                    		Lokale interface ook in HTML → uniforme codebase
+                    		<strong>Uniforme codebase</strong>: lokale interfaces in HTML
                         	<ul class="bullets">
                         		<li>Progress indicators</li>
                         		<li>Error messages</li>
@@ -612,7 +619,7 @@
                           	</ul>
                     	</p>
                     	<p>
-                    		Cachen van voorstellingen → werkt ook zonder server
+                    		<strong>Functioneren zonder server</strong>: cachen van voorstellingen
                     	</p>
                     </section>
                 </div>
@@ -637,16 +644,34 @@
                 
                 <div class="slide" id="kiosk-inputmodule-slide2">
                     <header><span class="key kiosk">KIOSK</span> <h1>Gebruikersinvoer</h1></header>
-                    <section>
+                    <section>   	
                     	<h2>Printplaat</h2>
-                    	<p>
-                        	<ul class="bullets">
-                        		<li>Klein aantal componenten</li>
-                        		<li>Maximaal 7 knoppen, aansluiten op jumper headers</li>
-                        		<li>Aansluiten via USB poort</li>
-                          	</ul>
-                    	</p>
-                    	
+                        <div>
+                            <figure>
+                                <img id="photo" src="res/inputmodule.jpg" width="75%" />
+                                <figcaption>
+                                    Afgewerkte inputmodule.
+                                </figcaption>
+                            <figure>
+                        </div>
+                    </section>
+					<aside class="note">
+						<section>
+							<p>
+								Eigenschappen van de printplaat:
+								<ul>
+									<li>Klein aantal componenten</li>
+									<li>Maximaal 7 knoppen, aansluiten op jumper headers</li>
+									<li>Aansluiten via USB poort</li>
+								</ul>
+							</p>
+						</section>
+					</aside> 
+                </div>
+                
+                <div class="slide" id="kiosk-inputmodule-slide3">
+                    <header><span class="key kiosk">KIOSK</span> <h1>Gebruikersinvoer</h1></header>
+                    <section>                    	
                     	<h2>Firmware</h2>
                     	<p>
                     		Identificatie als USB toetsenbord
@@ -658,37 +683,37 @@
                     </section>
                 </div>
                 
-                <div class="slide" id="kiosk-inputmodule-slide3">
-                    <header><span class="key kiosk">KIOSK</span> <h1>Gebruikersinvoer</h1></header>
-                    <section>
-                        <div>
-                            <figure>
-                                <img id="photo" src="res/inputmodule.jpg" width="75%" />
-                                <figcaption>
-                                    Afgewerkte inputmodule.
-                                </figcaption>
-                            <figure>
-                        </div>
-                    </section>
-                </div>
-                
                 
                 <!-- Hardware -->
                 
                 <div class="slide" id="kiosk-hardware-slide1">
                     <header><span class="key kiosk">KIOSK</span> <h1>Hardware</h1></header>
                     <section>
+                    	<h2>Genesi EFIKA MX</h2>
                         <p>
-                    		Genesi EFIKA MX
                         	<ul>
-                        		<li><strong>Relatief goedkoop</strong>: €110</li>
                         		<li><strong>Performant</strong>: 800 MHz ARM, OpenGL ES 2.0 GPU</li>
                         		<li><strong>Robuust</strong>: geen bewegende componenten (inwendige SSD)</li>
                         		<li><strong>Flexibel</strong>: booten van SD, JTag</li>
                           	</ul>
                         </p>
+                        <div>
+                            <figure>
+                                <img id="photo" src="res/EFIKA_MX.jpg" width="65%" />
+                                <figcaption>
+                                    Genesi EFIKA MX.
+                                </figcaption>
+                            <figure>
+                        </div>
+                    </section>
+                </div>
+                
+                <div class="slide" id="kiosk-hardware-slide2">
+                    <header><span class="key kiosk">KIOSK</span> <h1>Hardware</h1></header>
+                    <section>
+                    	<h2>Besturingssysteem</h2>
                         <p>
-                        	Besturingssysteem: Embedded Debian
+                        	<strong>Emdebian</strong>: Debian voor embedded devices
                         	<ul>
                         		<li><strong>Compact</strong></li>
                         		<li><strong>Eenvoudig beheer</strong>: repository met eigen applicaties</li>

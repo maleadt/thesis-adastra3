@@ -226,6 +226,11 @@
 			if (disableBuilds) { return; }
 			if (this._node) {
 				this._buildList = queryAll('[data-build] > *', this._node);
+				var selfBuildList = queryAll('[build]', this._node);	// TODO: not hidden
+				selfBuildList.forEach(function(el) {
+					addClass(el, 'data-build');
+				});
+				this._buildList = this._buildList.concat(selfBuildList);
 			}
 			this._buildList.forEach(function(el) {
 				addClass(el, 'to-build');
