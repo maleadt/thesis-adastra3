@@ -374,21 +374,52 @@
                 <!-- Formaat -->
                 
                 <div class="slide" id="media-formaat-slide1">
+                	<style>
+						.groep {
+							margin-bottom: 1em;
+						}
+						.goed li::before {
+							content: '+ ';
+							color: green;
+							font-family: "monospace";
+							font-weight: bold;
+						}
+						.middelmatig li::before {
+							content: '± ';
+							color: tomato;
+							font-family: "monospace";
+							font-weight: bold;
+						}
+						.slecht li::before {
+							content: '− ';
+							color: darkred;
+							font-family: "monospace";
+							font-weight: bold;
+						}
+                	</style>
                     <header><span class="key media">MEDIA</span> <h1>Formaat</h1></header>
                     <section>
                     	<h2>Huidig formaat: DVD videobestanden</h2>
                     	<p>
                         	<ul>
-                        		<li><font color="green">Embeddability</font></li>
-                        		<li><font color="orange">Complexiteit</font>: relatief laagdrempelig, veel GUI applicaties</li>
-                        		<li><font color="red">Distributie</font>: zeer inefficiënt (10 MB/s piekbitrate)</li>
-                        		<li><font color="red">Flexibiliteit</font>: omslachtig, weinig mogelijkheden</li>
+                        		<div class="groep goed">
+                        			<li><strong>Embeddability</strong></li>
+                        		</div>
+                        		<div class="groep middelmatig">
+                        			<li><strong>Complexiteit</strong>: GUI applicaties niet ideaal</li>
+                        		</div>
+                        		<div class="groep slecht">
+                        			<li><strong>Distributie</strong>: zeer inefficiënt (10 MB/s piekbitrate)</li>
+                        			<li><strong>Flexibiliteit</strong></li>
+                        		</div>
                           	</ul>
                     	</p>
-                    	<h2>Tussenoplossing: compressie videobestanden</h2>
+                    	<h2>Verbetering: compressie videobestanden</h2>
                     	<p>
                         	<ul>
-                        		<li><font color="orange">Distributie</font>: nog steeds inefficiënt (x264: 2.5 MB/s)</li>
+                        		<div class="groep middelmatig">
+                        			<li><strong>Distributie</strong>: nog steeds inefficiënt (x264: 2.5 MB/s)</li>
+                        		</div>
                           	</ul>
                     	</p>
                     </section>
@@ -401,11 +432,15 @@
                     	<p>
                     		Powerpoint, ...
                         	<ul>
-                        		<li><font color="green">Compatibiliteit</font></li>
-                        		<li><font color="green">Complexiteit</font></li>
-                        		<li><font color="green">Flexibiliteit</font></li>
-                        		<li><font color="orange">Embeddability</font>: moeilijker, en zeker niet compact</li>
-                        		<li><font color="orange">Distributie</font>: alles wordt steeds opnieuw verstuurd</li>
+                        		<div class="groep goed">
+		                    		<li><strong>Compatibiliteit</strong></li>
+		                    		<li><strong>Complexiteit</strong></li>
+		                    		<li><strong>Flexibiliteit</strong></li>
+		                    	</div>
+                        		<div class="groep middelmatig">
+		                    		<li><strong>Embeddability</strong>: moeilijker, en zeker niet compact</li>
+		                    		<li><strong>Distributie</strong>: alles wordt steeds opnieuw verstuurd</li>
+		                    	</div>
                           	</ul>
                     	</p>
                     </section>
@@ -418,11 +453,15 @@
                     	<p>
                     		HTML5 en JavaScript
                         	<ul>
-                        		<li><font color="green">Compatibiliteit</font>: mits conversie (WebM, H264)</li>
-                        		<li><font color="green">Flexibiliteit</font>: heel krachtig formaat</li>
-                        		<li><font color="green">Embeddability</font>: eenvoudig (rendering engine)</li>
-                        		<li><font color="green">Distributie</font>: gesplitste bronbestanden, tekstformaat</li>
-                        		<li><font color="orange">Complexiteit</font>: momenteel nog geen applicaties</li>
+                        		<div class="groep goed">
+				                		<li><strong>Flexibiliteit</strong></li>
+				                		<li><strong>Compatibiliteit</strong>: mits conversie (WebM, H264)</li>
+				                		<li><strong>Embeddability</strong>: eenvoudig (rendering engine)</li>
+				                		<li><strong>Distributie</strong>: gesplitste bronbestanden, tekstformaat</li>
+		                    		</div>
+                        		<div class="groep middelmatig">
+                        			<li><strong>Complexiteit</strong>: momenteel nog geen applicaties</li>
+                        		</div>
                           	</ul>
                     	</p>
                     </section>
