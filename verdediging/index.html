@@ -31,6 +31,7 @@
         <link href="css/sea_wave.css" class="theme" rel="stylesheet" />
         <link href="css/default.css" class="theme" rel="stylesheet" media="screen" />
 		<link href="css/common.css" rel="stylesheet" media="screen" />
+		<link href="css/auxiliary.css" rel="stylesheet" media="screen" />
     </head>
     <body>
 		<nav id="helpers">
@@ -48,51 +49,31 @@
 		
         <div class="presentation">
             <div id="presentation-counter">Loading...</div>
-            <!--
-                Auxiliary styles
-            -->
-
-            <!-- Nice style to include photos and pictures -->
-            <style>
-              #photo {
-                margin: 0 auto;
-                display: block;
-                border: 3px solid #ccc;
-              }
-              figure {
-                display: block;
-                text-align: center;
-              }
-              figcaption {
-                display: block;
-              }
-            </style>
-            
-            <!-- Header spans -->
-            <style>
-			.media {
-			  background: -webkit-gradient(linear, left top, left bottom, from(#ff4), to(#ffa));
-			  background-color: #ff4;
-			  background: -moz-linear-gradient(left top, #ff4, #ffa);
-			}
-			.server {
-			  background: -webkit-gradient(linear, left top, left bottom, from(#4f4), to(#afa));
-			  background-color: #4f4;
-			  background: -moz-linear-gradient(left top, #4f4, #afa);
-			}
-			.kiosk {
-			  background: -webkit-gradient(linear, left top, left bottom, from(#e88), to(#fee));
-			  background-color: #e88;
-			  background: -moz-linear-gradient(left top, #e88, #fee);
-			}
-            </style>
-
-
-            <!--
-                Actual slides
-            -->
 
             <div class="slides">
+            	<!-- Header kleuren -->
+            	<style>
+            	.media {
+					background: -webkit-gradient(linear, left top, left bottom, from(#ff4), to(#ffa));
+					background-color: #ff4;
+					background: -moz-linear-gradient(left top, #ff4, #ffa);
+				}
+				.server {
+					background: -webkit-gradient(linear, left top, left bottom, from(#4f4), to(#afa));
+					background-color: #4f4;
+					background: -moz-linear-gradient(left top, #4f4, #afa);
+				}
+				.kiosk {
+					background: -webkit-gradient(linear, left top, left bottom, from(#e88), to(#fee));
+					background-color: #e88;
+					background: -moz-linear-gradient(left top, #e88, #fee);
+				}
+				</style>
+				
+		        <!--
+		            Vaste slides
+		        -->
+		        
                 <div class="slide" id="landing-slide">
                     <style>
                         #landing-slide p {
@@ -374,29 +355,6 @@
                 <!-- Formaat -->
                 
                 <div class="slide" id="media-formaat-slide1">
-                	<style>
-						.groep {
-							margin-bottom: 1em;
-						}
-						.goed li::before {
-							content: '+ ';
-							color: green;
-							font-family: "monospace";
-							font-weight: bold;
-						}
-						.middelmatig li::before {
-							content: '± ';
-							color: tomato;
-							font-family: "monospace";
-							font-weight: bold;
-						}
-						.slecht li::before {
-							content: '− ';
-							color: darkred;
-							font-family: "monospace";
-							font-weight: bold;
-						}
-                	</style>
                     <header><span class="key media">MEDIA</span> <h1>Formaat</h1></header>
                     <section>
                     	<h2>Huidig formaat: DVD videobestanden</h2>

@@ -1,0 +1,44 @@
+/*
+ * Foto's en afbeeldingen
+ */
+
+#photo {
+	margin: 0 auto;
+	display: block;
+	border: 3px solid #ccc;
+}
+figure {
+	display: block;
+	text-align: center;
+}
+figcaption {
+	display: block;
+}
+
+
+/*
+ * Fancy opsommingen
+ */
+
+.groep {
+	margin-bottom: 1em;
+}
+.goed li::before {
+	content: '+ ';
+	color: green;
+	font-family: "monospace";
+	font-weight: bold;
+}
+.middelmatig li::before {
+	content: '± ';
+	color: tomato;
+	font-family: "monospace";
+	font-weight: bold;
+}
+.slecht li::before {
+	content: '− ';
+	color: darkred;
+	font-family: "monospace";
+	font-weight: bold;
+}
+
