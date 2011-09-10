@@ -30,8 +30,22 @@
         <link href="css/sand.css" class="theme" rel="stylesheet" />
         <link href="css/sea_wave.css" class="theme" rel="stylesheet" />
         <link href="css/default.css" class="theme" rel="stylesheet" media="screen" />
+		<link href="css/common.css" rel="stylesheet" media="screen" />
     </head>
     <body>
+		<nav id="helpers">
+			<button title="Vorige slide" id="nav-prev" class="nav-prev">⇽</button> 
+			<button title="Spring naar een willekeurige slide" id="slide-no">5</button> 
+			<button title="Volgende slide" id="nav-next" class="nav-next">⇾</button>
+
+			<menu>
+				<button type="checkbox" data-command="toc" title="Inhoudstafel" class="toc">TOC</button>
+				<button type="checkbox" data-command="notes" title="Bekijk notities">✏</button>
+				<button type="checkbox" data-command="source" title="Bekijk broncode">↻</button>
+				<button type="checkbox" data-command="help" title="Bekijk help">?</button>
+			</menu>
+		</nav>
+		
         <div class="presentation">
             <div id="presentation-counter">Loading...</div>
             <!--
@@ -53,6 +67,25 @@
                 display: block;
               }
             </style>
+            
+            <!-- Header spans -->
+            <style>
+			.media {
+			  background: -webkit-gradient(linear, left top, left bottom, from(#ff4), to(#ffa));
+			  background-color: #ff4;
+			  background: -moz-linear-gradient(left top, #ff4, #ffa);
+			}
+			.server {
+			  background: -webkit-gradient(linear, left top, left bottom, from(#4f4), to(#afa));
+			  background-color: #4f4;
+			  background: -moz-linear-gradient(left top, #4f4, #afa);
+			}
+			.kiosk {
+			  background: -webkit-gradient(linear, left top, left bottom, from(#e88), to(#fee));
+			  background-color: #e88;
+			  background: -moz-linear-gradient(left top, #e88, #fee);
+			}
+            </style>
 
 
             <!--
@@ -70,6 +103,11 @@
                         <p>Deze presentatie is opgebouwd in HTML5</p>
                         <p>Druk op de <span id="left-init-key" class="key">&rarr;</span> toets om verder te gaan.</p>
                     </section>
+					<aside class="note">
+						<section>
+							Welkom! (Dit veld is voor notities en commentaar.)
+						</section>
+					</aside> 
                 </div>
 
                 <div class="slide" id="controls-slide">
@@ -79,14 +117,18 @@
                         }
                     </style>
                     <section>
-                        <p>Presentatie controles:</p>
-                        <ul>
+                    	<h2>Presentatiecontroles</h2>
+                    	<p>
+                        	<ul>
+		                        <li><span class="key">&larr;</span> en <span class="key">&rarr;</span> om van slide te wisselen.</li>
+		                        <li><span class="key">Ctrl/Command</span> en <span class="key">+</span> of <span class="key">-</span> om in en uit te zoomen.</li>
 
-                            <li><span class="key">&larr;</span> en <span class="key">&rarr;</span> om van slide te wisselen.</li>
-                            <li><span class="key">Ctrl/Command</span> en <span class="key">+</span> of <span class="key">-</span> om in en uit te zoomen.</li>
-
-                            <li><span class="key">T</span> om het thema te veranderen.</li>
-                        </ul>
+		                        <li><span class="key">T</span> om het thema te veranderen.</li>
+								<li><span class="key">3</span> om het 3D effect in te schakelen.</li>              
+								<li><span class="key">N</span> om de notities bij een slide te bekijken.</li>
+								<li><span class="key">0</span> om de hulptekst te lezen.</li>
+                        	</ul>
+                        </p>
                     </section>
                 </div>
 
@@ -301,20 +343,20 @@
 
 
                 <!--
-                    Voorstellingen
+                    Media
                 -->
 
-                <div class="slide transitionSlide" id="voorstellingen-title">
+                <div class="slide transitionSlide" id="media-title">
                     <section class="middle">
-                        <h2>Voorstellingen</h2>
+                        <h2>Media</h2>
                     </section>
                 </div>
                 
                 
                 <!-- Eisen -->
 
-                <div class="slide" id="voorstellingen-eisen-slide1">
-                    <header>Eisen</header>
+                <div class="slide" id="media-eisen-slide1">
+                    <header><span class="key media">MEDIA</span> <h1>Eisen</h1></header>
                     <section>
                     	<p>
                         	<ul>
@@ -331,20 +373,19 @@
                 
                 <!-- Formaat -->
                 
-                <div class="slide" id="voorstellingen-formaat-slide1">
-                    <header>Formaat</header>
+                <div class="slide" id="media-formaat-slide1">
+                    <header><span class="key media">MEDIA</span> <h1>Formaat</h1></header>
                     <section>
-                    	<h2>Originele DVD videobestanden</h2>
+                    	<h2>Huidig formaat: DVD videobestanden</h2>
                     	<p>
                         	<ul>
-                        		<li><font color="green">Compatibiliteit</font></li>
                         		<li><font color="green">Embeddability</font></li>
                         		<li><font color="orange">Complexiteit</font>: relatief laagdrempelig, veel GUI applicaties</li>
                         		<li><font color="red">Distributie</font>: zeer inefficiënt (10 MB/s piekbitrate)</li>
                         		<li><font color="red">Flexibiliteit</font>: omslachtig, weinig mogelijkheden</li>
                           	</ul>
                     	</p>
-                    	<h2>Gecomprimeerde DVD videobestanden</h2>
+                    	<h2>Tussenoplossing: compressie videobestanden</h2>
                     	<p>
                         	<ul>
                         		<li><font color="orange">Distributie</font>: nog steeds inefficiënt (x264: 2.5 MB/s)</li>
@@ -353,15 +394,16 @@
                     </section>
                 </div>
                 
-                <div class="slide" id="voorstellingen-formaat-slide2">
-                    <header>Formaat</header>
+                <div class="slide" id="media-formaat-slide2">
+                    <header><span class="key media">MEDIA</span> <h1>Formaat</h1></header>
                     <section>
-                    	<h2>Presentatieformaten</h2>
+                    	<h2>Tussenoplossing: presentatieformaten</h2>
                     	<p>
+                    		Powerpoint, ...
                         	<ul>
-                        		<li><font color="green">Compatibiliteit</font>: invoegen van videobestanden</li>
-                        		<li><font color="green">Complexiteit</font>: zeer gebruiksvriendelijke applicaties</li>
-                        		<li><font color="green">Flexibiliteit</font>: veel mogelijkheden</li>
+                        		<li><font color="green">Compatibiliteit</font></li>
+                        		<li><font color="green">Complexiteit</font></li>
+                        		<li><font color="green">Flexibiliteit</font></li>
                         		<li><font color="orange">Embeddability</font>: moeilijker, en zeker niet compact</li>
                         		<li><font color="orange">Distributie</font>: alles wordt steeds opnieuw verstuurd</li>
                           	</ul>
@@ -369,11 +411,12 @@
                     </section>
                 </div>
                 
-                <div class="slide" id="voorstellingen-formaat-slide3">
-                    <header>Formaat</header>
+                <div class="slide" id="media-formaat-slide3">
+                    <header><span class="key media">MEDIA</span> <h1>Formaat</h1></header>
                     <section>
-                    	<h2>Webtechnologieën: HTML5 en JavaScript</h2>
+                    	<h2>Finale oplossing: webtechnologieën</h2>
                     	<p>
+                    		HTML5 en JavaScript
                         	<ul>
                         		<li><font color="green">Compatibiliteit</font>: mits conversie (WebM, H264)</li>
                         		<li><font color="green">Flexibiliteit</font>: heel krachtig formaat</li>
@@ -400,8 +443,8 @@
                 
                 <!-- Opslag & distributie -->
                 
-                <div class="slide" id="server-voorstellingen-slide1">
-                    <header>Opslag & distributie</header>
+                <div class="slide" id="server-media-slide1">
+                    <header><span class="key server">SERVER</span> <h1>Opslag & distributie</h1></header>
                     <section>
                     	<p>
                         	<ul>
@@ -424,7 +467,7 @@
                 <!-- Configuratie kiosken -->
                 
                 <div class="slide" id="server-configuratie-slide1">
-                    <header>Configuratie kiosken</header>
+                    <header><span class="key server">SERVER</span> <h1>Configuratie kiosken</h1></header>
                     <section>
                     	<p>
                         	<ul>
@@ -437,7 +480,7 @@
                 </div>
                 
                 <div class="slide" id="server-configuratie-slide2">
-                    <header>Configuratie kiosken</header>
+                    <header><span class="key server">SERVER</span> <h1>Configuratie kiosken</h1></header>
                     <section>
                     	<p>
                     		Server initieert: kiosken worden geconfigureerd
@@ -464,7 +507,7 @@
                 <!-- Beheer -->
                 
                 <div class="slide" id="server-beheer-slide1">
-                    <header>Beheer</header>
+                    <header><span class="key server">SERVER</span> <h1>Beheer</h1></header>
                     <section>
                     	<p>
                     		Webinterface
@@ -483,7 +526,7 @@
                 <!-- Hardware -->
                 
                 <div class="slide" id="server-hardware-slide1">
-                    <header>Hardware</header>
+                    <header><span class="key server">SERVER</span> <h1>Hardware</h1></header>
                     <section>
                     	<p>
                     		Synology DS207+ Network Attached Storage
@@ -512,7 +555,7 @@
                 <!-- Weergave voorstellingen -->
                 
                 <div class="slide" id="kiosk-weergave-slide1">
-                    <header>Weergave voorstellingen</header>
+                    <header><span class="key kiosk">KIOSK</span> <h1>Weergave voorstellingen</h1></header>
                     <section>
                     	<p>
                     		WebKit rendering engine
@@ -539,7 +582,7 @@
                 <!-- Gebruikersinvoer -->
                 
                 <div class="slide" id="kiosk-inputmodule-slide1">
-                    <header>Gebruikersinvoer</header>
+                    <header><span class="key kiosk">KIOSK</span> <h1>Gebruikersinvoer</h1></header>
                     <section>
                     	<p>
                         	<ul>
@@ -554,7 +597,7 @@
                 </div>
                 
                 <div class="slide" id="kiosk-inputmodule-slide2">
-                    <header>Gebruikersinvoer</header>
+                    <header><span class="key kiosk">KIOSK</span> <h1>Gebruikersinvoer</h1></header>
                     <section>
                     	<h2>Printplaat</h2>
                     	<p>
@@ -577,7 +620,7 @@
                 </div>
                 
                 <div class="slide" id="kiosk-inputmodule-slide3">
-                    <header>Gebruikersinvoer</header>
+                    <header><span class="key kiosk">KIOSK</span> <h1>Gebruikersinvoer</h1></header>
                     <section>
                         <div>
                             <figure>
@@ -594,7 +637,7 @@
                 <!-- Hardware -->
                 
                 <div class="slide" id="kiosk-hardware-slide1">
-                    <header>Hardware</header>
+                    <header><span class="key kiosk">KIOSK</span> <h1>Hardware</h1></header>
                     <section>
                         <p>
                     		Genesi EFIKA MX
@@ -651,6 +694,51 @@
                 </div>
 
             </div> <!-- slides -->
+            
+            <!--
+            	Notities
+            -->
+            
+			<div id="speaker-note" class="invisible" style="display: none;">
+			</div> <!-- notities -->
+			
+			
+			<!--
+		    	Help
+			-->
+			
+			<aside id="help" class="sidebar invisible" style="display: hidden;">
+				<table>
+					<caption>Help</caption>
+					<tbody>
+						<tr>
+							<th>Slide veranderen</th>
+							<td>&larr;&nbsp;&rarr;</td>
+							</tr>
+						<tr>
+							<th>Bronbestand</th>
+							<td>s</td>
+						</tr>
+						<tr>
+							<th>Thema veranderen</th>
+							<td>t</td>
+						</tr>
+						<tr>
+							<th>Notities bekijken</th>
+							<td>n</td>
+						</tr>
+
+						<tr>
+							<th>3D effect</th>
+							<td>3</td>
+						</tr>
+						<tr>
+							<th>Help</th>
+							<td>0</td>
+						</tr>
+					</tbody>
+				</table>
+			</aside>
 
         </div> <!-- presentation -->
 
