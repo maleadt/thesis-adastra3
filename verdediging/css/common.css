@@ -1,3 +1,7 @@
+.note {
+  display: none;
+}
+
 #speaker-note {
   position:absolute;
   left: 0;

@@ -510,6 +510,29 @@
                           	</ul>
                     	</p>
                     </section>
+					<aside class="note">
+						<section>
+							<p>
+								Voor de servlet-engine: eerst gekozen voor Tomcat.
+								Probleem daarbij was dat enkel Tomcat 7 deftig te
+								embedden valt, en dat daarvoor Java 1.6 vereist was.
+								
+								Linux op de Synology kan niet om met OpenJDK, enkel
+								alternatieve JRE's zoals Kaffee of JamVM, die maximaal
+								Java 1.4 ondersteunen.
+								
+								Jetty's stable branch vereist enkel 1.4, en is
+								tegelijk eenvoudig te embedden.
+							</p>
+							<p>
+								Voor de high-level toolkit hadden we eerst gekeken
+								naar Vaadin, wat mooiere GUI's oplevert maar vervelend
+								is om mee te werken. Aangezien we Qt gebruiken voor de
+								kioskapplicatie hebben we daarom geswitcht naar JWt,
+								wat een vergelijkbare interface aanbiedt.
+							</p>
+						</section>
+					</aside>
                 </div>
                 
                 
@@ -521,8 +544,8 @@
                     	<h2>Synology DS207+ Network Attached Storage</h2>
                     	<p>
                         	<ul>
-                        		<li><strong>Robuust</strong>: RAID-1 configuratie, gemaakt om 24/7 te draaien</li>
-                        		<li><strong>Flexibel</strong>: Linux-based, met package manager</li>
+                        		<li><strong>Robuust</strong>: RAID-1, gemaakt om continu aan te staan</li>
+                        		<li><strong>Flexibel</strong>: Linux-based + package manager</li>
                           	</ul>
                     	</p>
                         <div>
@@ -558,7 +581,7 @@
                     	<p>
                         	<ul>
                         		<li><strong>Embeddable</strong>: zeer eenvoudig met QtWebKit</li>
-                        		<li><strong>QtWebKit Bridge</strong>: connectie tussen JavaScript en applicatie</li>
+                        		<li><strong>QtWebKit Bridge</strong>: link tussen JavaScript en C++</li>
                           	</ul>
                     	</p>
                     	<p>
@@ -641,7 +664,7 @@
                         <p>
                         	<ul>
                         		<li><strong>Performant</strong>: 800 MHz ARM, OpenGL ES 2.0 GPU</li>
-                        		<li><strong>Robuust</strong>: geen bewegende componenten (inwendige SSD)</li>
+                        		<li><strong>Robuust</strong>: geen bewegende componenten (SSD)</li>
                         		<li><strong>Flexibel</strong>: booten van SD, JTag</li>
                           	</ul>
                         </p>
