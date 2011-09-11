@@ -218,18 +218,27 @@
                 <div class="slide" id="inleiding-problemen-slide1">
                     <header>Problemen</header>
                     <section>
+                    	<h2>Robuustheid</h2>
                     	<p>
-                    		<strong>Robuustheid</strong>: DVD-spelers verslijten snel
+                        	<ul class="bullets">
+								<li>DVD-spelers verslijten snel</li>
+								<li>Geen fallback voor de media</li>
+                          	</ul>
                     	</p>
+                    	
+                    	<h2>Flexibiliteit</h2>
                     	<p>
-                    		<strong>Flexibiliteit</strong>:
                         	<ul class="bullets">
 								<li>Compatibiliteit afstandsbedieningen</li>
 								<li>Sterk beperkte voorstellingen</li>
                           	</ul>
                     	</p>
+                    	
+                    	<h2>Beheer</h2>
                     	<p>
-                    		<strong>Beheer</strong>: alles verloopt manueel
+                        	<ul class="bullets">
+								<li>Alles verloopt manueel</li>
+                          	</ul>
                     	</p>
                     </section>
                 </div>
@@ -248,28 +257,21 @@
                 </div>
 
 
-                <!-- Doel -->
+                <!-- Eisen -->
 
                 <div class="slide" id="project-doel-slide1">
-                    <header>Doel</header>
+                    <header>Eisen</header>
                     <section>
-                    	<h2>Robuustheid verbeteren</h2>
-                        <p>
+                    	<h2>Problemen oplossen</h2>
+                    	<p>
                         	<ul class="bullets">
-								<li>Hardware die lang meegaat</li>
-								<li>Functioneren in suboptimale omstandigheden</li>
+								<li>Robuustheid</li>
+								<li>Flexibiliteit</li>
+								<li>Beheer</li>
                           	</ul>
-                        </p>
-                        <p>
-                        	<h2>Flexibiliteit verhogen</h2>
-                        	<ul class="bullets">
-								<li>Hardware- en platformonafhankelijkheid</li>
-								<li>Rijke en dynamische voorstellingen</li>
-                          	</ul>
-                        </p>
-                        <p>
-                        	<h2>Beheer vereenvoudigen</h2>
-                        </p>
+                    	</p>
+                    	
+                    	<h2>Lage kostprijs</h2>
                     </section>
                 </div>
                 
@@ -302,21 +304,8 @@
                         		<li>Verwerken van gebruikersinput</li>
                           	</ul>
                         </p>
-                    </section>
-                </div>
-
-                <div class="slide" id="project-architectuur-slide2">
-                    <header>Architectuur</header>
-                    <section>
                         <p>
                         	Geen content op kiosken → identieke soft- en hardware
-                        </p>
-                        <p>
-                        	Server initieert alles, kiosken bieden interface aan
-                        	<ul class="bullets">
-                        		<li>Hergebruiken van die interfaces</li>
-                        		<li>Beter controleren van het netwerk (throttling, ...)</li>
-                          	</ul>
                         </p>
                     </section>
                 </div>
@@ -480,7 +469,7 @@
                     <header><span class="key server">SERVER</span> <h1>Configuratie kiosken</h1></header>
                     <section>
                     	<p>
-                    		Server initieert: kiosken worden geconfigureerd
+                    		<strong>Gesplitst mechanisme</strong>: server configureert de kiosken
                     	</p>
                     	<p>
                     		<strong>Server</strong>: verwerkt XML bestanden in de Subversion repository
@@ -491,7 +480,7 @@
                           	</ul>
                     	</p>
                     	<p>
-                    		<strong>Kiosk</strong>: biedt een UPnP interface aan
+                    		<strong>Kiosk</strong>: maakt gebruik van UPnP
                         	<ul>
                         		<li><strong>Discovery</strong>: UUID (hardware gebaseerd) identificeert kiosk</li>
                         		<li><strong>Services</strong>: toepassen van instellingen, ondernemen acties</li>
@@ -507,14 +496,18 @@
                     <header><span class="key server">SERVER</span> <h1>Beheer</h1></header>
                     <section>
                     	<p>
-                    		Webinterface
+                        	<ul>
+                        		<li><strong>Toegankelijk</strong>: eenvoudig te gebruiken door een beheerder</li>
+                        		<li><strong>Gebruiksvriendelijk</strong></li>
+                          	</ul>
+                    	</p>
+                    	
+                    	<h2>Webinterface</h2>
+                    	<p>
                         	<ul>
                         		<li><strong>Jetty</strong>: embeddable servlet engine</li>
                         		<li><strong>Java Web Toolkit</strong>: widget-georienteerde webapplicaties</li>
                           	</ul>
-                    	</p>
-                    	<p>
-                    		UPnP interface → acties via webinterface
                     	</p>
                     </section>
                 </div>
@@ -561,8 +554,8 @@
                 <div class="slide" id="kiosk-weergave-slide1">
                     <header><span class="key kiosk">KIOSK</span> <h1>Weergave voorstellingen</h1></header>
                     <section>
+                		<h2>WebKit rendering engine</h2>
                     	<p>
-                    		WebKit rendering engine
                         	<ul>
                         		<li><strong>Embeddable</strong>: zeer eenvoudig met QtWebKit</li>
                         		<li><strong>QtWebKit Bridge</strong>: connectie tussen JavaScript en applicatie</li>
@@ -575,9 +568,6 @@
                         		<li>Error messages</li>
                         		<li>Verborgen statusschermen</li>
                           	</ul>
-                    	</p>
-                    	<p>
-                    		<strong>Functioneren zonder server</strong>: cachen van voorstellingen
                     	</p>
                     </section>
                 </div>
@@ -664,6 +654,18 @@
                             <figure>
                         </div>
                     </section>
+					<aside class="note">
+						<section>
+							<p>
+								Eerst veel andere hardware overwogen:
+								<ul>
+									<li>Thinclients (niet performant genoeg, te duur als nieuw, beperkte levensduur als 2e hands)</li>
+									<li>GuruPlug (zeer handig, niet goed leverbaar, niet performant)</li>
+									<li>IGEPv2 (zeer performant, geen casing)</li>
+								</ul>
+							</p>
+						</section>
+					</aside> 
                 </div>
                 
                 <div class="slide" id="kiosk-hardware-slide2">
@@ -728,6 +730,16 @@
                 <div class="slide" id="conclusie-slide1">
                     <header>Conclusie</header>
                     <section>
+                    <p>
+                    	<strong>Doel bereikt</strong>: verbetering van huidige situatie
+                    </p>
+                    <p>
+                    	<strong>Impact</strong>
+                    	<ul>
+                    		<li><strong>Beheerders</strong></li>
+                    		<li><strong>Bezoekers</strong>: kan nog even duren</li>
+                    	</ul>
+                    </p>
                     </section>
                 </div>
 
