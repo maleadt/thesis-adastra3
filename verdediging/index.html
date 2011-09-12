@@ -425,8 +425,8 @@
                         	<ul>
                         		<div class="groep goed">
 				                		<li><strong>Flexibiliteit</strong></li>
-				                		<li><strong>Compatibiliteit</strong>: mits conversie (WebM, H264)</li>
-				                		<li><strong>Embeddability</strong>: eenvoudig (rendering engine)</li>
+				                		<li><strong>Compatibiliteit</strong>: mits conversie</li>
+				                		<li><strong>Embeddability</strong>: eenvoudig</li>
 				                		<li><strong>Distributie</strong>: gesplitste bronbestanden, tekstformaat</li>
 		                    		</div>
                         		<div class="groep middelmatig">
@@ -450,10 +450,10 @@
                 </div>
                 
                 
-                <!-- Opslag & distributie -->
+                <!-- Opslag & Distributie -->
                 
                 <div class="slide" id="server-media-slide1">
-                    <header><span class="key server">SERVER</span> <h1>Opslag & distributie</h1></header>
+                    <header><span class="key server">SERVER</span> <h1>Opslag & Distributie</h1></header>
                     <section>
                     	<p>
                         	<ul>
@@ -497,7 +497,7 @@
                     	<p>
                     		<strong>Server</strong>: verwerkt XML bestanden in de Subversion repository
                         	<ul>
-                        		<li><strong>Validatie</strong>: XSchema bestand</li>
+                        		<li><strong>Validatie</strong>: XSchema</li>
                         		<li><strong>Wijzigingen detecteren</strong>: clientside Subversion bindings</li>
                         		<li><strong>Toegankelijk</strong>: eenvoudig te wijzigen</li>
                           	</ul>
@@ -505,7 +505,7 @@
                     	<p>
                     		<strong>Kiosk</strong>: maakt gebruik van UPnP
                         	<ul>
-                        		<li><strong>Discovery</strong>: UUID (hardware gebaseerd) identificeert kiosk</li>
+                        		<li><strong>Discovery</strong>: UUID identificeert kiosk</li>
                         		<li><strong>Services</strong>: toepassen van instellingen, ondernemen acties</li>
                           	</ul>
                     	</p>
@@ -688,7 +688,7 @@
                         	<ul>
                         		<li><strong>Performant</strong>: 800 MHz ARM, OpenGL ES 2.0 GPU</li>
                         		<li><strong>Robuust</strong>: geen bewegende componenten (SSD)</li>
-                        		<li><strong>Flexibel</strong>: booten van SD, JTag</li>
+                        		<li><strong>Flexibel</strong>: ontwikkelen en testen eigen OS</li>
                           	</ul>
                         </p>
                         <div>
@@ -709,6 +709,17 @@
 									<li>GuruPlug (zeer handig, niet goed leverbaar, niet performant)</li>
 									<li>IGEPv2 (zeer performant, geen casing)</li>
 								</ul>
+							</p>
+							
+							<p>
+							    Ontwikkelen van eigen OS is eenvoudig door de flexibele bootloader (uBoot), waarmee
+							    het bijvoorbeeld mogelijk is om op te starten van een OS dat zich op de SD kaart bevindt.
+							    
+							    Ook is het mogelijk om in geval van een probleem het hele interne geheugen
+							    te reflashen door gebruik te maken van de interne JTag connector.
+							    
+							    Tenslotte voorziet men in een seriële debugconsole die het mogelijk maakt om snel
+							    en veel debuginformatie te zien.
 							</p>
 						</section>
 					</aside> 
