@@ -2,17 +2,17 @@
  * Foto's en afbeeldingen
  */
 
-#photo {
+.photo img {
 	margin: 0 auto;
 	display: block;
 	border: 3px solid #ccc;
 }
-figure {
+.photo figure {
+	display: block;
+}
+.photo figcaption {
 	display: block;
 	text-align: center;
-}
-figcaption {
-	display: block;
 }
 
 
