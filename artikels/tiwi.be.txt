@@ -1,0 +1,25 @@
+Ontwikkeling van een multimediaframework
+----------------------------------------
+
+# Informatie
+
+- Interne promotor: Leen Brouns
+- Externe promotor: Philippe Mollet
+- Bedrijf: volkssterrenwacht MIRA vzw (http://www.mira.be)
+
+
+# Inleiding
+
+Hoe fascinerend sterrenkunde ook kan zijn, het blijft belangrijk om de informatie op een interessante manier aan te bieden om zo een breed publiek aan te spreken. Daarom heeft de volkssterrenwacht MIRA enkele jaren geleden geïnvesteerd in een aantal museumkiosken om de rondleiding nog interessanter te maken. Maar de opstelling maakt gebruik van verouderde technologieën, waardoor de mogelijkheden beperkt blijven en het beheer van de kiosken veel tijd in beslag neemt.
+
+
+# Systeem
+
+Om deze situatie te verbeteren, hebben we een volledig nieuw multimediaframework van de grond af ontwikkeld. De belangrijkste eis hierbij was die van robuustheid; het systeem moet blijven functioneren, ook in suboptimale omstandigheden. Ook hebben we aandacht besteed aan de flexibiliteit die het systeem biedt, zo moet het mogelijk zijn om dynamische inhoud (zoals actuele informatie over de sterrenhemel) weer te geven, en om interactieve voorstellingen te maken. Tenslotte moest ook het beheer vereenvoudigd worden, zodat een beheerder gemakkelijk de status van kiosken kan bekijken om dan eventueel een actie te ondernemen.
+
+Vooraleer over te gaan tot de implementatie van het systeem, hebben we een grondige technologiestudie uitgevoerd. Hierbij zijn we op zoek gegaan naar bestaande codebibliotheken om de implementatie van de verschillende aspecten (zoals efficiënte netwerkoverdracht, verwerking gebruikersinvoer, gebruiksvriendelijk beheer) te vereenvoudigen. Daarbij was het steeds belangrijk dat de implementatie bruikbaar was binnen een open-source applicatie, omdat we van meet af aan besloten hadden om alle code te publiceren onder een open-source licentie. Dit heeft als voordeel dat het project toegankelijker is voor andere musea, commercialisering blijft mogelijk op vlak van installatie of ondersteuning.
+
+
+# Server
+
+Centraal in het nieuwe framework staat een server die verantwoordelijk is voor de opslag en distributie van alle gegevens. Om efficiënte netwerkoverdracht en eenvoudige toegang tot de bestanden toe te laten, hebben we gebruik gemaakt van een Subversion repository.
