@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sudo wodim -v -dao -eject -speed=16 dev=/dev/sg2 data.iso
+

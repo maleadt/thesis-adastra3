@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mkisofs -joliet-long -r -o data.iso data
+

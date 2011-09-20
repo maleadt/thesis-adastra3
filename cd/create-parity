@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cd data
+
+rm -rf archived
+mkdir archived
+
+tar -cvf archived/cd.tar *
+
+cd archived
+par2create -m512 -c16384 cd.tar
+
