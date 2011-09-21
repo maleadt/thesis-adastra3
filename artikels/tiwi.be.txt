@@ -10,16 +10,23 @@ Ontwikkeling van een multimediaframework
 
 # Inleiding
 
-Hoe fascinerend sterrenkunde ook kan zijn, het blijft belangrijk om de informatie op een interessante manier aan te bieden om zo een breed publiek aan te spreken. Daarom heeft de volkssterrenwacht MIRA enkele jaren geleden geïnvesteerd in een aantal museumkiosken om de rondleiding nog interessanter te maken. Maar de opstelling maakt gebruik van verouderde technologieën, waardoor de mogelijkheden beperkt blijven en het beheer van de kiosken veel tijd in beslag neemt.
+Hoe fascinerend sterrenkunde ook mag zijn, het blijft belangrijk om de informatie op een interessante manier aan te bieden en zo een breed publiek aan te spreken. Daarom heeft de volkssterrenwacht MIRA enkele jaren geleden geïnvesteerd in een aantal museumkiosken die de rondleiding nog interessanter moeten maken. Maar de opstelling maakt gebruik van verouderde technologieën, waardoor de mogelijkheden ervan beperkt blijven en het beheer van de kiosken veel tijd in beslag neemt.
 
 
 # Systeem
 
-Om deze situatie te verbeteren, hebben we een volledig nieuw multimediaframework van de grond af ontwikkeld. De belangrijkste eis hierbij was die van robuustheid; het systeem moet blijven functioneren, ook in suboptimale omstandigheden. Ook hebben we aandacht besteed aan de flexibiliteit die het systeem biedt, zo moet het mogelijk zijn om dynamische inhoud (zoals actuele informatie over de sterrenhemel) weer te geven, en om interactieve voorstellingen te maken. Tenslotte moest ook het beheer vereenvoudigd worden, zodat een beheerder gemakkelijk de status van kiosken kan bekijken om dan eventueel een actie te ondernemen.
+Om deze situatie te verbeteren hebben we een volledig nieuw multimediaframework van de grond af ontwikkeld, dat verschillende verbeteringen kent ten opzichte van de huidige situatie. Eerst en vooral is het nieuwe systeem veel robuuster, en blijft het functioneren in verschillende subobtimale opstandigheden. Ook de flexibiliteit is toegenomen, zo zal het mogelijk zijn om dynamische gegevens (zoals actuele informatie over de sterrenhemel) weer te geven, of om interactieve voorstellingen te maken. Tenslotte hebben we ook werk gemaakt van een verbeterd beheerssysteem, via een centrale interface kan een beheerder nu eenvoudig de status van kiosken bekijken en eventueel acties ondernemen.
 
-Vooraleer over te gaan tot de implementatie van het systeem, hebben we een grondige technologiestudie uitgevoerd. Hierbij zijn we op zoek gegaan naar bestaande codebibliotheken om de implementatie van de verschillende aspecten (zoals efficiënte netwerkoverdracht, verwerking gebruikersinvoer, gebruiksvriendelijk beheer) te vereenvoudigen. Daarbij was het steeds belangrijk dat de implementatie bruikbaar was binnen een open-source applicatie, omdat we van meet af aan besloten hadden om alle code te publiceren onder een open-source licentie. Dit heeft als voordeel dat het project toegankelijker is voor andere musea, commercialisering blijft mogelijk op vlak van installatie of ondersteuning.
+Maar vooraleer we tot de realisatie zijn overgegaan, hebben we een grondige technologiestudie uitgevoerd. Hierbij zijn we op zoek gegaan naar bestaande codebibliotheken om de implementatie van de verschillende aspecten (zoals efficiënte netwerkoverdracht, verwerking gebruikersinvoer, gebruiksvriendelijk beheer) te vereenvoudigen. Daarbij was het steeds belangrijk dat de code bruikbaar was binnen een open-source project, omdat we van meet af aan besloten hadden om de resulterende applicaties te publiceren onder een dergelijke licentie. Dit heeft als voordeel dat het geheel toegankelijker wordt voor andere musea, terwijl commercialisering mogelijk blijft op vlak van ondersteuning. Een andere eis was die van platform-onafhankelijkheid, om het zo opnieuw eenvoudiger te maken om de applicaties te gebruiken in een andere omgeving.
 
 
-# Server
+# Realisatie
 
-Centraal in het nieuwe framework staat een server die verantwoordelijk is voor de opslag en distributie van alle gegevens. Om efficiënte netwerkoverdracht en eenvoudige toegang tot de bestanden toe te laten, hebben we gebruik gemaakt van een Subversion repository.
+Centraal in het nieuwe framework staat een server die onder andere verantwoordelijk is voor de opslag en distributie van alle gegevens. Om efficiënte netwerkoverdracht te bekomen maken we gebruik van een Subversion repository, waar we alle voorstellingen in opslaan. Omdat de server tevens verantwoordelijk is voor de configuratie van alle toestellen in het netwerk, slaan we ook alle instellingen en parameters van het hele framework op als XML-configuratiebestanden binnen dezelfde repository. Tenslotte voorziet de server ook in een webinterface waarmee het hele systeem eenvoudig te beheren valt.
+
+Vervolgens zijn er de kiosken, met als belangrijkste taak de weergave van de voorstellingen. Die voorstellingen zijn geschreven in HTML5 en JavaScript, een relatief laagdrempelige maar toch zeer flexibele combinatie. Ook kunnen we er arbitraire objecten in embedden, waardoor we compatibiliteit met bestaande formaten bekomen. Om de voorstellingen weer te geven hebben we gebruik gemaakt van de WebKit rendering engine.
+
+
+# Conclusie
+
+Het nieuw platform dat we zo ontwikkeld hebben ...
