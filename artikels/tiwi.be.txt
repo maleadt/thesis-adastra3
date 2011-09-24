@@ -29,4 +29,5 @@ Vervolgens zijn er de kiosken, met als belangrijkste taak de weergave van de voo
 
 # Conclusie
 
-Het nieuw platform dat we zo ontwikkeld hebben ...
+Het nieuw platform dat we zo op enkele maanden ontwikkeld hebben, zal het voor de medewerkers van de volkssterrenwacht MIRA mogelijk maken om veel eenvoudiger nieuwe voorstellingen aan te maken en ze up-to-date te houden. Ook het beheer is erop vooruit gegaan en kan nu veel efficiënter uitgevoerd worden. De effectieve invoering in het museum zal wellicht nog even op zich laten wachten, zo moeten we de bestaande voorstellingen nog omzetten naar het nieuwe formaat en moet het geheel dan nog grondig getest worden. Voor dat laatste zal er normaal gezien in november 2011 een prototype-kiosk geïnstalleerd worden, waarmee bezoekers en medewerkers het framework in actie kunnen zien. Na verwerking van de feedback daarop zullen we dan ook de overige kiosken converteren.
+
