@@ -13,7 +13,7 @@ Ontwikkeling van een multimediaframework
 Hoe fascinerend sterrenkunde ook mag zijn, het blijft belangrijk om de informatie op een interessante manier aan te bieden en zo een breed publiek te bereiken. Daarom heeft de volkssterrenwacht MIRA enkele jaren geleden geïnvesteerd in een aantal museumkiosken die de rondleiding nog interessanter moeten maken. Maar de opstelling maakt gebruik van verouderde technologieën, waardoor de mogelijkheden ervan beperkt blijven en het beheer van de kiosken veel tijd in beslag neemt.
 
 
-# Systeem
+# Opzet
 
 Om die situatie te verbeteren hebben we een volledig nieuw multimediaframework van de grond af ontwikkeld, dat verschillende verbeteringen kent ten opzichte van de huidige situatie. Eerst en vooral is het nieuwe systeem veel robuuster, zodat het ook onder suboptimale omstandigheden blijft draaien. Tevens is de flexibiliteit toegenomen: zo zal het mogelijk zijn om dynamische gegevens (bijvoorbeeld actuele informatie over de sterrenhemel) weer te geven, of om interactieve voorstellingen te maken. Tenslotte hebben we ook werk gemaakt van een verbeterd beheerssysteem; via een centrale interface kan een beheerder nu eenvoudig de status van kiosken bekijken en eventueel acties ondernemen.
 
