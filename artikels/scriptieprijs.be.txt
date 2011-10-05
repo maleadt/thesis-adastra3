@@ -1,52 +1,32 @@
-                                     
 De sterrenwacht wacht niet langer...
+-------------------------------------
 
-Het zal je maar overkomen. Je bent gebeten door sterren, planeten en zonnestelsels. Je wil groot en klein hiervoor warm maken
-met een kijk-leer-experimenteer-ruimte. Maar aardse zaken zoals de naderende vervaldatum van je elektronica 
-bedreigen je tentoonstelling. Wat doe je dan? Dat is precies de vraag die de sterrenwacht MIRA in Grimbergen zich stelde. 
-"Wachten we tot de tijd ons inhaalt, of gaan we voor de toekomst?" Als VZW met beperkte financiële input 
-zocht zij een vervanging voor de huidige museumkiosken. Hierop kunnen de bezoekers zelf filmpjes opvragen over onderwerpen als de maanlandingen, het weer, ..XXinput gevraagd van Tim en PhilippeXX..
-De knoppen waarmee de kijker kan navigeren, zijn via bekabeling verbonden met een afstandsbediening die op zijn beurt een DVD-speler aanstuurt.
-Probleem: als de DVD-speler versleten is, moet je een nieuwe vinden die compatibel is met de afstandsbediening. Aan het huidige tempo van 
-elektronische updates, is dat echter niet houdbaar. Tim Bésard, (in de zomer nog) student Industrieel Ingenieur Informatica aan de Hogeschool Gent, nam
-de uitdaging aan: een totaal nieuw systeem, samengesteld op maat, aangepast aan de huidige technologische vereisten. De sterrenwacht wacht niet langer op de toekomst...
-maar is er met Tims prototype klaar voor!
+Het zal je maar overkomen. Je bent gebeten door sterren, planeten en zonnestelsels. Je wil groot en klein hiervoor warm maken met een kijk-leer-experimenteer-ruimte. Maar aardse zaken zoals de naderende vervaldatum van je elektronica bedreigen je tentoonstelling. Wat doe je dan? Dat is precies de vraag die de sterrenwacht MIRA in Grimbergen zich stelde. "Wachten we tot de tijd ons inhaalt, of gaan we voor de toekomst?"
 
-printplaatje
+Als VZW met beperkte financiële input zocht zij een vervanging voor de huidige museumkiosken. Hierop kunnen de bezoekers zelf filmpjes opvragen over onderwerpen als de maanlandingen, het weer, ..XXinput gevraagd van Tim en PhilippeXX.. De knoppen waarmee de kijker kan navigeren, zijn via bekabeling verbonden met een afstandsbediening die op zijn beurt een DVD-speler aanstuurt. Probleem: als de DVD-speler versleten is, moet je een nieuwe vinden die compatibel is met de afstandsbediening. Aan het huidige tempo van elektronische updates, is dat echter niet houdbaar. Tim Bésard, (in de zomer nog) student Industrieel Ingenieur Informatica aan de Hogeschool Gent, nam de uitdaging aan: een totaal nieuw systeem, samengesteld op maat, aangepast aan de huidige technologische vereisten. De sterrenwacht wacht niet langer op de toekomst... maar is er met Tims prototype klaar voor!
 
-Ter vervanging van de afstandsbediening gebruikt Tim een zelf ontworpen microcontroller. Vergelijk dit met de printplaten of 'grote chips' die in je computer zitten. 
-Op ... cm² werden volgende onderdelen een plaats gegeven: een voeding 
-(zorgt voor de juiste hoeveelheid stroomspanning), een oscillator (bepaalt de snelheid van de verschillende elektrische pulsen ofte bits), poortpinnen (die vangen
-de input van de keuzeknoppen op), signaalpinnen (die geven de keuze van de gebruiker door aan de kiosk), en koperen stroombaantjes tussen de verschillende onderdelen (de lijntjes die je op chips ziet).
-Dit alles werd door de student zelf uitgetekend en op maat besteld bij een gespecialiseerde firma. Kostprijs: 8 euro per plaatje - binnen het budget van de vzw.
 
-Eens de hardware aanwezig is, moet die echter ook nog aangestuurd worden door een programma. Omdat het printplaatje met een geheugen van 4 kilobytes niet veel ruimte heeft, 
-is programmeren met de gebruikelijke talen (Java, C++) niet wenselijk; dit levert immers teveel overhead. Dus moet er op alle mogelijke manieren bespaard worden op geheugen.
-Dit levert code op die zo cryptisch is dat zelfs een debugger, die je normaal helpt bij het ontdekken van fouten, niet bruikbaar is. 
-Gelukkig was de code maar 250 regels lang - dus toch maar zelf napluizen op fouten...  
+# Printplaatje
 
-server
+Ter vervanging van de afstandsbediening gebruikt Tim een zelf ontworpen microcontroller. Vergelijk dit met de printplaten of 'grote chips' die in je computer zitten. Op ... cm² werden volgende onderdelen een plaats gegeven: een voeding (zorgt voor de juiste hoeveelheid stroomspanning), een oscillator (bepaalt de snelheid van de verschillende elektrische pulsen ofte bits), poortpinnen (die vangen de input van de keuzeknoppen op), signaalpinnen (die geven de keuze van de gebruiker door aan de kiosk), en koperen stroombaantjes tussen de verschillende onderdelen (de lijntjes die je op chips ziet). Dit alles werd door de student zelf uitgetekend en op maat besteld bij een gespecialiseerde firma. Kostprijs: 8 euro per plaatje - binnen het budget van de vzw.
 
-Nu weet de kiosk dus al welke acties de gebruiker aanvraagt, en kan hij beginnen met afspelen. Maar waar worden de filmpjes bewaard? 
-Met het oude systeem was dit eenvoudig: elke kiosk had zijn eigen DVD. Maar beide medewerkers van het MIRA waren 's morgens
-wel even bezig met het opstarten van alle DVD-spelers afzonderlijk. Tim voorziet nu een centrale server waarop alle films en inhoud bewaard worden. Hij besloot tevens om
-de hapklare besturingssystemen zoals Windows en Linux aan de kant te laten, voor eentje dat hij zelf op maat kon bijwerken. Zijn oog viel op Debian, een compilatie van verschillende 
-stukken software onder Linux-paraplu die je à la carte kan samenstellen. Zo kon hij alle overbodige features achterwege laten, en enkel tijd en geheugenruimte besteden aan wat echt onmisbaar is. 
+Eens de hardware aanwezig is, moet die echter ook nog aangestuurd worden door een programma. Omdat het printplaatje met een geheugen van 4 kilobytes niet veel ruimte heeft, is programmeren met de gebruikelijke talen (Java, C++) niet wenselijk; dit levert immers teveel overhead. Dus moet er op alle mogelijke manieren bespaard worden op geheugen. Dit levert code op die zo cryptisch is dat zelfs een debugger, die je normaal helpt bij het ontdekken van fouten, niet bruikbaar is. Gelukkig was de code maar 250 regels lang - dus toch maar zelf napluizen op fouten...  
 
-open source
 
-De keuze voor Linux is niet vreemd, voor iemand die het Open Source idee genegen is. Open Source betekent dat iedereen zomaar in je code mag komen neuzen. Daar zou een bedrijf als Windows niet blij mee zijn, maar voor vele
-andere programmeurs is dit een ware inspiratiebron. Zij organiseren zich in communities, en zorgen voor verbetering van de code zodra er een bug ontdekt wordt. Tim verwoordt het aldus in zijn eindwerk:
-"Ook willen we het eindresultaat openstellen voor open-source gebruik, waar zouden we anders staan moesten anderen dit nooit gedaan hebben." 
-Dat iedereen zomaar je code kan zien, wil echter nog niet zeggen dat ze ook met de pluimen (en het geld) kunnen gaan lopen! Er bestaan verschillende soorten licenties om de auteur toch te beschermen. Zo 
-werd het nieuwe kiosksysteem gelicensieerd onder de Belgische Creative Commons Naamsvermelding 2.0. In gewone woorden: wie deze toepassing overneemt of aanpast 
-moet de naam van de auteur vermelden; mag de aanpassingen niet te gelde maken; mag op zijn werk geen licenties plaatsen die de code meer afschermen. 
+# Server
+
+Nu weet de kiosk dus al welke acties de gebruiker aanvraagt, en kan hij beginnen met afspelen. Maar waar worden de filmpjes bewaard? Met het oude systeem was dit eenvoudig: elke kiosk had zijn eigen DVD. Maar beide medewerkers van het MIRA waren 's morgens wel even bezig met het opstarten van alle DVD-spelers afzonderlijk. Tim voorziet nu een centrale server waarop alle films en inhoud bewaard worden. Hij besloot tevens om de hapklare besturingssystemen zoals Windows en Linux aan de kant te laten, voor eentje dat hij zelf op maat kon bijwerken. Zijn oog viel op Debian, een compilatie van verschillende  stukken software onder Linux-paraplu die je à la carte kan samenstellen. Zo kon hij alle overbodige features achterwege laten, en enkel tijd en geheugenruimte besteden aan wat echt onmisbaar is. 
+
+
+# Open source
+
+De keuze voor Linux is niet vreemd, voor iemand die het Open Source idee genegen is. Open Source betekent dat iedereen zomaar in je code mag komen neuzen. Daar zou een bedrijf als Windows niet blij mee zijn, maar voor vele andere programmeurs is dit een ware inspiratiebron. Zij organiseren zich in communities, en zorgen voor verbetering van de code zodra er een bug ontdekt wordt. Tim verwoordt het aldus in zijn eindwerk: "Ook willen we het eindresultaat openstellen voor open-source gebruik, waar zouden we anders staan moesten anderen dit nooit gedaan hebben."  Dat iedereen zomaar je code kan zien, wil echter nog niet zeggen dat ze ook met de pluimen (en het geld) kunnen gaan lopen! Er bestaan verschillende soorten licenties om de auteur toch te beschermen. Zo werd het nieuwe kiosksysteem gelicensieerd onder de Belgische Creative Commons Naamsvermelding 2.0. In gewone woorden: wie deze toepassing overneemt of aanpast moet de naam van de auteur vermelden; mag de aanpassingen niet te gelde maken; mag op zijn werk geen licenties plaatsen die de code meer afschermen. 
 
 .....  thin clients
 
 ..... ? enkel toe te voegen als hier nog iets zeer beeldends bij verteld kan worden; anders wordt het te lang / technisch - denk ik  ? .....
 
-3  2  1  GO!
+# 3  2  1  GO!
 
 Klaar voor de lancering? Zo goed als! Een eerste kiosk wordt omgebouwd in oktober, de medewerkers van MIRA krijgen de stuurknuppel van de server in handen, 
 en dan is het wachten op... genoeg bezoekers om een proefvlucht te maken 
